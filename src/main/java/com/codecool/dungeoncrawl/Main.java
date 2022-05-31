@@ -1,8 +1,12 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.data.AssetCollection;
+import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -29,6 +33,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        GameData gameData = new GameData(new AssetCollection(), new Player(, null))
+
         GridPane ui = new GridPane();
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
@@ -51,26 +57,8 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private void onKeyPressed(KeyEvent keyEvent) {
-        switch (keyEvent.getCode()) {
-            case UP:
-                map.getPlayer().move(0, -1);
-                refresh();
-                break;
-            case DOWN:
-                map.getPlayer().move(0, 1);
-                refresh();
-                break;
-            case LEFT:
-                map.getPlayer().move(-1, 0);
-                refresh();
-                break;
-            case RIGHT:
-                map.getPlayer().move(1,0);
-                refresh();
-                break;
-        }
-    }
+
+
 
     private void refresh() {
         context.setFill(Color.BLACK);

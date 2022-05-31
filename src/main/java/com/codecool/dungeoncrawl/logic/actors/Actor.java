@@ -4,12 +4,12 @@ import com.codecool.dungeoncrawl.logic.movement.Moveable;
 import com.codecool.dungeoncrawl.logic.movement.AutomaticMovement;
 
 public abstract class Actor implements Drawable {
-    private Cell cell;
     private int health = 10;
-    private AutomaticMovement normalMovement;
+    private int x;
+    private int y;
 
-    public Actor(Cell cell) {
-        this.cell = cell;
+
+    public Actor(int x, int y) {
     }
 
 
@@ -17,9 +17,6 @@ public abstract class Actor implements Drawable {
         return health;
     }
 
-    public Cell getCell() {
-        return cell;
-    }
 
     public int getX() {
         return cell.x();

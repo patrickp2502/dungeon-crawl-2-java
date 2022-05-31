@@ -4,7 +4,7 @@ import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.movement.PlayerMovement;
 
 public class Player extends Actor {
-    public Player(Cell cell) {
+    public Player(int x, int y) {
         super(cell);
     }
 

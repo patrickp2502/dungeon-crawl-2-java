@@ -1,5 +1,7 @@
 package com.codecool.dungeoncrawl.logic.eventengine;
 
+import com.codecool.dungeoncrawl.logic.eventengine.events.Event;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
