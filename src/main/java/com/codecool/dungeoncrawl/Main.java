@@ -14,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ public class Main extends Application {
         Scene scene = new Scene(borderPane);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
         primaryStage.setScene(scene);
-        renderer.getMapImage(assetList, context, canvas);
+        renderer.getMapTiles(assetList, context, canvas); // Replaces "refresh();"
         //refresh();
         scene.setOnKeyPressed(this::onKeyPressed);
 
@@ -66,22 +65,22 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
-                renderer.getMapImage(assetList, context, canvas);
+                renderer.getMapTiles(assetList, context, canvas);
                 //refresh();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
-                renderer.getMapImage(assetList, context, canvas);
+                renderer.getMapTiles(assetList, context, canvas);
                 //refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
-                renderer.getMapImage(assetList, context, canvas);
+                renderer.getMapTiles(assetList, context, canvas);
                 //refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
-                renderer.getMapImage(assetList, context, canvas);
+                renderer.getMapTiles(assetList, context, canvas);
                 //refresh();
                 break;
         }

@@ -7,6 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,30 +15,18 @@ import java.util.List;
  */
 public class Renderer {
 
-    public GraphicsContext getMapImage(List<Asset> assets, GraphicsContext context, Canvas canvas) {
-        /*context.setFill(Color.BLACK);
-        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
-                if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
-                } else {
-                    Tiles.drawTile(context, cell, x, y);
-                }
-            }
-        }*/
+    public List<Tiles.Tile> getMapTiles(List<Asset> assets, GraphicsContext context, Canvas canvas) {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        List<Tiles.Tile> tiles = new ArrayList<Tiles.Tile>();
         for (Asset asset : assets) {
-            int yCoordinate = asset.getYCoordinate();
-            int xCoordinate = asset.getXCoordinate();
-            Tiles.drawTile(context, asset, xCoordinate, yCoordinate);
+            Tiles.Tile newTile = Tiles.getTile(asset);
+            tiles.add(newTile);
         }
-        return context;
+        return tiles;
     }
 
     public String getHealthLabelText(Player player, Label healthLabel) {
-        return "" + player.getHealth();
+        return "" + player; // .getHealth();
     }
 }

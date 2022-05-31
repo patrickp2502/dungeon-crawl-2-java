@@ -1,35 +1,12 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
-import com.codecool.dungeoncrawl.display.Tiles;
-import com.codecool.dungeoncrawl.logic.movement.PlayerMovement;
+import com.codecool.dungeoncrawl.data.Asset;
 
-public class Player extends Actor {
-    public Player(Cell cell) {
-        super(cell);
+public class Player extends Asset {
+
+    public Player(String tileName, int xCoordinate, int yCoordinate) {
+        super(tileName, xCoordinate, yCoordinate);
     }
 
-    public String getTileName() {
-        return "player";
-    }
-
-    @Override
-    public boolean isCollectable() {
-        return false;
-    }
-
-    @Override
-    public boolean isCollideable() {
-        return false;
-    }
-
-    @Override
-    public void setCell(Cell newCell) {
-
-    }
-
-    @Override
-    public Tiles.Tile getTile() {
-        return null;
-    }
 
 }

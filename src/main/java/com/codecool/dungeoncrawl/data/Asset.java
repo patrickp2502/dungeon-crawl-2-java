@@ -1,11 +1,36 @@
 package com.codecool.dungeoncrawl.data;
 
-public class Asset {
+public abstract class Asset {
+
+    private final String tileName;
+
+    private int xCoordinate;
+
+    private int yCoordinate;
+
+    public Asset(String tileName, int xCoordinate, int yCoordinate) {
+        this.tileName = tileName;
+        this.xCoordinate = xCoordinate;
+        this.yCoordinate = yCoordinate;
+    }
+
     public int getYCoordinate() {
-        return 0;
+        return yCoordinate;
     }
 
     public int getXCoordinate() {
-        return 0;
+        return xCoordinate;
+    }
+
+    public void setXCoordinate(int xCoordinate) {
+        this.xCoordinate = xCoordinate;
+    }
+
+    public void setYCoordinate(int yCoordinate) {
+        this.yCoordinate = yCoordinate;
+    }
+
+    public String getTileName() {
+        return tileName;
     }
 }

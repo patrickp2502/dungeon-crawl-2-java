@@ -3,6 +3,8 @@ package com.codecool.dungeoncrawl.display;
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.scenery.Floor;
+import com.codecool.dungeoncrawl.logic.scenery.Wall;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -13,10 +15,13 @@ import java.util.Map;
 public class Tiles {
     public static int TILE_WIDTH = 32;
 
-    List<Asset> possibleAssets = ;
-
     private static Image tileset = new Image("/tiles.png", 543 * 2, 543 * 2, true, false);
     private static Map<String, Tile> tileMap = new HashMap<>();
+
+    public static Image getTileset() {
+        return tileset;
+    }
+
     public static class Tile {
         public final int x, y, w, h;
         Tile(int i, int j) {
@@ -33,19 +38,16 @@ public class Tiles {
         tileMap.put("floor", new Tile(2, 0));
         tileMap.put("player", new Tile(27, 0));
         tileMap.put("skeleton", new Tile(29, 6));
+        tileMap.put("key", new Tile(16, 23));
+        tileMap.put("sword", new Tile(30, 1));
+        tileMap.put("door closed", new Tile(11, 11));
+        tileMap.put("enemy robot", new Tile(31, 6));
+        tileMap.put("door open", new Tile(12, 11));
+        tileMap.put("ghost", new Tile(27, 6));
     }
 
-    public static void drawTile(GraphicsContext context, Asset asset, int x, int y) {
-        String tileName = "empty";
-        switch (asset) {
-            case asset instanceof Wall -> tileName = "wall";
-            case asset instanceof Floor -> tileName = "floor";
-            case asset instanceof Player -> tileName = "player";
-            case asset instanceof Skeleton -> tileName = "skeleton";
-        }
-        Tile tile = tileMap.get(tileName);
-
-        context.drawImage(tileset, tile.x, tile.y, tile.w, tile.h,
-                x * TILE_WIDTH, y * TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
+    public static Tile getTile(Asset asset) {
+        Tile tile = asset != null ? tileMap.get(asset.getTileName()) : tileMap.get("empty");
+        return tile;
     }
 }
