@@ -8,4 +8,13 @@ public record playerMoveEvent(Player player, int directionX, int directionY) imp
     public <T extends Event> T getEventInformation() {
         return (T) this;
     }
+
+    @Override
+    public String toString() {
+        return "playerMoveEvent{" +
+                "player=" + player +
+                ", directionX=" + directionX +
+                ", directionY=" + directionY +
+                '}';
+    }
 }

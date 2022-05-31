@@ -1,10 +1,15 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.controls.UserInput;
 import com.codecool.dungeoncrawl.data.Asset;
+import com.codecool.dungeoncrawl.data.AssetCollection;
+import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.display.Renderer;
 import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -20,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Application {
+    private static EventEngine eventEngine;
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -33,6 +39,12 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+
+    }
+
+    public static void turn() {
+        eventEngine.handle();
+
     }
 
     @Override
@@ -54,37 +66,20 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         renderer.getMapTiles(assetList, context, canvas); // Replaces "refresh();"
         //refresh();
-        scene.setOnKeyPressed(this::onKeyPressed);
+        //scene.setOnKeyPressed(this::onKeyPressed);
 
+
+        //TODO NEED ALL DATA HERE
+        List<Asset> assetCollection = AssetCollection.assets;
+        Player player = new Player("player", 10, 10);
+        EventEngine eventEngine = new EventEngine();
+        GameData gameData = new GameData(assetCollection, player, eventEngine);
+        UserInput userInput = new UserInput(gameData);
+        scene.setOnKeyPressed(userInput::onKeyPressed);
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
 
-
-    private void onKeyPressed(KeyEvent keyEvent) {
-        switch (keyEvent.getCode()) {
-            case UP:
-                map.getPlayer().move(0, -1);
-                renderer.getMapTiles(assetList, context, canvas);
-                //refresh();
-                break;
-            case DOWN:
-                map.getPlayer().move(0, 1);
-                renderer.getMapTiles(assetList, context, canvas);
-                //refresh();
-                break;
-            case LEFT:
-                map.getPlayer().move(-1, 0);
-                renderer.getMapTiles(assetList, context, canvas);
-                //refresh();
-                break;
-            case RIGHT:
-                map.getPlayer().move(1,0);
-                renderer.getMapTiles(assetList, context, canvas);
-                //refresh();
-                break;
-        }
-    }
 
     /*private void refresh() {
         context.setFill(Color.BLACK);

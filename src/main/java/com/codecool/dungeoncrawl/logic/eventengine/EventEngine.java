@@ -9,34 +9,32 @@ import java.util.List;
 public class EventEngine {
 
     private final List<Event> pendingEvents;
-    private final GameData gameData;
 
-    public EventEngine(GameData gameData) {
+    public EventEngine() {
         this.pendingEvents = new ArrayList<>();
-        this.gameData = gameData;
     }
 
     public List<Event> getPendingEvents() {
         return pendingEvents;
     }
 
-    public GameData getGameData() {
-        return gameData;
-    }
 
     public void addEvent(Event event) {
+        System.out.println("add event" + event);
         pendingEvents.add(event);
     }
 
     public void handle() {
-        System.out.println("Eventhandler handle");
+        for (Event event: pendingEvents) {
+            System.out.println("event = " + event);
+
+        }
     }
 
     @Override
     public String toString() {
         return "EventEngine{" +
                 "pendingEvents=" + pendingEvents +
-                ", gameData=" + gameData +
                 '}';
     }
 }
