@@ -19,23 +19,23 @@ public class MapLoader {
 
         scanner.nextLine(); // empty line
 
-        GameMap map = new GameMap(width, height, CellType.EMPTY);
+        GameMap map = new GameMap(width, height); // , CellType.EMPTY);
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();
             for (int x = 0; x < width; x++) {
                 if (x < line.length()) {
-                    Cell cell = map.getCell(x, y);
+                    // Cell cell = map.getCell(x, y);
                     switch (line.charAt(x)) {
                         case ' ':
-                            cell.setType(CellType.EMPTY);
+                            // cell.setType(CellType.EMPTY);
                             break;
                         case '#':
-                            cell.setType(CellType.WALL);
+                            // cell.setType(CellType.WALL);
                             Asset wallAsset = new Wall("wall", x, y);
                             AssetCollection.assets.add(wallAsset);
                             break;
                         case '.':
-                            cell.setType(CellType.FLOOR);
+                            // cell.setType(CellType.FLOOR);
                             Asset floorAsset = new Floor("floor", x, y);
                             AssetCollection.assets.add(floorAsset);
                             break;
