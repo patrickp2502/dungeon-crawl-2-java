@@ -1,13 +1,19 @@
 package com.codecool.dungeoncrawl.display;
 
+import com.codecool.dungeoncrawl.data.Asset;
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Tiles {
     public static int TILE_WIDTH = 32;
+
+    List<Asset> possibleAssets = ;
 
     private static Image tileset = new Image("/tiles.png", 543 * 2, 543 * 2, true, false);
     private static Map<String, Tile> tileMap = new HashMap<>();
@@ -29,8 +35,16 @@ public class Tiles {
         tileMap.put("skeleton", new Tile(29, 6));
     }
 
-    public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
-        Tile tile = tileMap.get(d.getTileName());
+    public static void drawTile(GraphicsContext context, Asset asset, int x, int y) {
+        String tileName = "empty";
+        switch (asset) {
+            case asset instanceof Wall -> tileName = "wall";
+            case asset instanceof Floor -> tileName = "floor";
+            case asset instanceof Player -> tileName = "player";
+            case asset instanceof Skeleton -> tileName = "skeleton";
+        }
+        Tile tile = tileMap.get(tileName);
+
         context.drawImage(tileset, tile.x, tile.y, tile.w, tile.h,
                 x * TILE_WIDTH, y * TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
     }

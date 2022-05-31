@@ -1,5 +1,7 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.data.Asset;
+import com.codecool.dungeoncrawl.display.Renderer;
 import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
@@ -15,6 +17,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
@@ -22,6 +27,10 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+
+    Renderer renderer = new Renderer();
+
+    List<Asset> assetList = new ArrayList<Asset>();
 
     public static void main(String[] args) {
         launch(args);
@@ -44,35 +53,41 @@ public class Main extends Application {
         Scene scene = new Scene(borderPane);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
         primaryStage.setScene(scene);
-        refresh();
+        renderer.getMapImage(assetList, context, canvas);
+        //refresh();
         scene.setOnKeyPressed(this::onKeyPressed);
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
 
+
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
-                refresh();
+                renderer.getMapImage(assetList, context, canvas);
+                //refresh();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
-                refresh();
+                renderer.getMapImage(assetList, context, canvas);
+                //refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
-                refresh();
+                renderer.getMapImage(assetList, context, canvas);
+                //refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
-                refresh();
+                renderer.getMapImage(assetList, context, canvas);
+                //refresh();
                 break;
         }
     }
 
-    private void refresh() {
+    /*private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         for (int x = 0; x < map.getWidth(); x++) {
@@ -86,5 +101,5 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
-    }
+    }*/
 }
