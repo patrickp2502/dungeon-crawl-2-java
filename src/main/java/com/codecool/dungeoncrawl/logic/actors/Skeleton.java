@@ -1,8 +1,11 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
-public class Skeleton extends Actor {
-    public Skeleton(Cell cell) {
-        super(cell);
+import com.codecool.dungeoncrawl.data.Asset;
+
+public class Skeleton extends Asset {
+
+    public Skeleton(String tileName, int xCoordinate, int yCoordinate) {
+        super(tileName, xCoordinate, yCoordinate);
     }
 
     @Override
