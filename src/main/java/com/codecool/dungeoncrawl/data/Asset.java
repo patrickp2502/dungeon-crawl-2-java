@@ -33,4 +33,13 @@ public abstract class Asset {
     public String getTileName() {
         return tileName;
     }
+
+    @Override
+    public String toString() {
+        return "Asset{" +
+                "tileName='" + tileName + '\'' +
+                ", xCoordinate=" + xCoordinate +
+                ", yCoordinate=" + yCoordinate +
+                '}';
+    }
 }

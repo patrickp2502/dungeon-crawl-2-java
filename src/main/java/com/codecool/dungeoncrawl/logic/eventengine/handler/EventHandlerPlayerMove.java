@@ -2,12 +2,15 @@ package com.codecool.dungeoncrawl.logic.eventengine.handler;
 
 import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
+import com.codecool.dungeoncrawl.logic.eventengine.events.EventRoundEnd;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventPlayerInputMove;
+import jdk.jfr.Event;
+
 //TODO Question - Using static OK? Performance? Advantages? or throwing away? When we don t need the object?
 //but what if we need to define interface? Why would we need to define an interface??
 public class EventHandlerPlayerMove implements GameEventHandler {
-    private EventPlayerInputMove eventPlayerInputMove;
     private int directionX;
     private int directionY;
     private Player player;
@@ -15,9 +18,25 @@ public class EventHandlerPlayerMove implements GameEventHandler {
 
     @Override
     public void handle(GameEvent event) {
-        eventPlayerInputMove = (EventPlayerInputMove) event;
+
+        EventPlayerInputMove eventPlayerInputMove = (EventPlayerInputMove) event;
         this.directionX = eventPlayerInputMove.directionX();
         this.directionY = eventPlayerInputMove.directionY();
         this.gameData = eventPlayerInputMove.gameData();
+        player = gameData.player();
+        movePlayer();
+        //TODO ask Mentor wtf eventing eventing eventing...
+        EventEngine.getInstance().addEvent(new EventRoundEnd(gameData));
+        EventEngine.getInstance().eventIsHandled(eventPlayerInputMove);
+    }
+
+    private void movePlayer() {
+        if (true) {
+            int playerXCoordinate = player.getXCoordinate();
+            int playerYCoordinate = player.getYCoordinate();
+            player.setXCoordinate(playerXCoordinate+directionX);
+            player.setYCoordinate(playerYCoordinate+directionY);
+        }
+        System.out.println("gameData.assetCollection().g = " + gameData.assetCollection().getPlayer());
     }
 }

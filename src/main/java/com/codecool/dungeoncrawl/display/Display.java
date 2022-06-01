@@ -16,11 +16,18 @@ import static com.codecool.dungeoncrawl.display.Tiles.getTile;
  * Only exit point to display everything
  */
 public class Display {
+
+    private final GraphicsData graphicsData;
+
+    public Display(GraphicsData graphicsData) {
+        this.graphicsData = graphicsData;
+    }
+
     public void drawHealth(Label healthLabel, String labelText, GraphicsContext context) {
         healthLabel.setText(labelText);
     }
 
-    public void drawMainGame(GraphicsData graphicsData) {
+    public void drawMainGame() {
         GraphicsContext context = graphicsData.context();
         List<Asset> assets = graphicsData.assets();
         Canvas canvas = graphicsData.canvas();

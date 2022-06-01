@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
-    public static GameMap loadMap() {
+    public GameMap loadMap(AssetCollection assetCollection) {
         InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
@@ -32,23 +32,23 @@ public class MapLoader {
                         case '#':
                             // cell.setType(CellType.WALL);
                             Asset wallAsset = new Wall("wall", x, y);
-                            AssetCollection.assets.add(wallAsset);
+                            assetCollection.addAsset(wallAsset);
                             break;
                         case '.':
                             // cell.setType(CellType.FLOOR);
                             Asset floorAsset = new Floor("floor", x, y);
-                            AssetCollection.assets.add(floorAsset);
+                            assetCollection.addAsset(floorAsset);
                             break;
                         case 's':
                             // cell.setType(CellType.FLOOR);
                             Asset skeletonAsset = new Skeleton("skeleton", x, y);
-                            AssetCollection.assets.add(skeletonAsset);
+                            assetCollection.addAsset(skeletonAsset);
                             break;
                         case '@':
                             // cell.setType(CellType.FLOOR);
-                            Asset playerAsset = new Player("player", x, y);
-                            AssetCollection.assets.add(playerAsset);
-                            map.setPlayer((Player) playerAsset);
+                            Player playerAsset = new Player("player", x, y);
+                            assetCollection.addAsset(playerAsset);
+                            map.setPlayer(playerAsset);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

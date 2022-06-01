@@ -4,10 +4,6 @@ import com.codecool.dungeoncrawl.data.GameData;
 
 public record EventPlayerInputMove(GameData gameData, int directionX, int directionY) implements GameEvent {
 
-    @Override
-    public <T extends GameEvent> T getEventInformation() {
-        return (T) this;
-    }
 
     @Override
     public String toString() {
@@ -17,4 +13,6 @@ public record EventPlayerInputMove(GameData gameData, int directionX, int direct
                 ", directionY=" + directionY +
                 '}';
     }
+
+
 }

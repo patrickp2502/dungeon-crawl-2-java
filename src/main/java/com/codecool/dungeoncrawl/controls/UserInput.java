@@ -29,5 +29,6 @@ public class UserInput {
                 eventEngine.addEvent(new EventPlayerInputMove(gameData, 1, 0));
                 break;
         }
+        eventEngine.handle();
     }
 }

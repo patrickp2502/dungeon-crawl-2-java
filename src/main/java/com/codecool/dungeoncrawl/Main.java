@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.controls.UserInput;
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.AssetCollection;
+import com.codecool.dungeoncrawl.data.DataHub;
 import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.display.GraphicsData;
@@ -18,25 +19,26 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.codecool.dungeoncrawl.data.AssetCollection.assets;
 
 public class Main extends Application {
+    AssetCollection assetCollection = new AssetCollection();
     EventEngine eventEngine;
-    GameMap map = MapLoader.loadMap();
+    MapLoader mapLoader = new MapLoader();
+    GameMap map = mapLoader.loadMap(assetCollection);
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
-
+    static Display display;
     Renderer renderer = new Renderer();
 
     List<Asset> assetList = new ArrayList<Asset>();
@@ -46,10 +48,7 @@ public class Main extends Application {
 
     }
 
-    public void turn() {
-        eventEngine.handle();
 
-    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -74,20 +73,25 @@ public class Main extends Application {
 
 
         //TODO NEED ALL DATA HERE
-        List<Asset> assetCollection = new ArrayList<>();
-        Player player = new Player("player", 10, 10);
-        EventEngine eventEngine = new EventEngine();
-        GraphicsData graphicsData = new GraphicsData(assets, context, canvas, map);
-        Display display = new Display();
-        display.drawMainGame(graphicsData);
+        Player player = assetCollection.getPlayer().get();
+        EventEngine eventEngine = EventEngine.getInstance();
+        GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map);
+        display = new Display(graphicsData);
+        display.drawMainGame();
         GameData gameData = new GameData(assetCollection, player);
+        DataHub.setGameData(gameData);
         UserInput userInput = new UserInput(gameData, eventEngine);
         scene.setOnKeyPressed(userInput::onKeyPressed);
+
+
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
 
+    public static void turn() {
+        display.drawMainGame();
 
+    }
     /*private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
