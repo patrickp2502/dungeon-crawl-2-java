@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.controls.UserInput;
 import com.codecool.dungeoncrawl.data.Asset;
-import com.codecool.dungeoncrawl.data.AssetCollection;
 import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.display.Renderer;
 import com.codecool.dungeoncrawl.display.Tiles;
@@ -16,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -73,8 +71,8 @@ public class Main extends Application {
         List<Asset> assetCollection = new ArrayList<>();
         Player player = new Player("player", 10, 10);
         EventEngine eventEngine = new EventEngine();
-        GameData gameData = new GameData(assetCollection, player, eventEngine);
-        UserInput userInput = new UserInput(gameData);
+        GameData gameData = new GameData(assetCollection, player);
+        UserInput userInput = new UserInput(gameData, eventEngine);
         scene.setOnKeyPressed(userInput::onKeyPressed);
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();

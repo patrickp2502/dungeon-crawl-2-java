@@ -7,6 +7,6 @@ import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import java.util.HashMap;
 import java.util.List;
 
-public record GameData(List<Asset> assetCollection, Player player, EventEngine eventEngine) {
+public record GameData(List<Asset> assetCollection, Player player) {
 
 }

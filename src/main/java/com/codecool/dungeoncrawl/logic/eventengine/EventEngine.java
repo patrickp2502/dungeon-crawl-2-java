@@ -28,9 +28,11 @@ public class EventEngine {
 
     public void handle() {
         for (GameEvent event: pendingEvents) {
-            if (event instanceof EventPlayerInputMove) {
-                new EventHandlerPlayerMove().handle(event);
+            switch (event){
+                case EventPlayerInputMove handler -> new EventHandlerPlayerMove().handle(event);
+                default -> throw new IllegalStateException("Unexpected value: " + event);
             }
+
         }
     }
 
