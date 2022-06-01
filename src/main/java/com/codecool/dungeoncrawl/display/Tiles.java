@@ -46,6 +46,11 @@ public class Tiles {
         tileMap.put("ghost", new Tile(27, 6));
     }
 
+    /**
+     * Enter null to get an empty tile
+     * @param asset could be null or a real asset
+     * @return Tile
+     */
     public static Tile getTile(Asset asset) {
         Tile tile = asset != null ? tileMap.get(asset.getTileName()) : tileMap.get("empty");
         return tile;
