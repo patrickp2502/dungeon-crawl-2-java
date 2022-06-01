@@ -4,6 +4,8 @@ import com.codecool.dungeoncrawl.controls.UserInput;
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.AssetCollection;
 import com.codecool.dungeoncrawl.data.GameData;
+import com.codecool.dungeoncrawl.display.Display;
+import com.codecool.dungeoncrawl.display.GraphicsData;
 import com.codecool.dungeoncrawl.display.Renderer;
 import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
@@ -23,6 +25,8 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.codecool.dungeoncrawl.data.AssetCollection.assets;
 
 public class Main extends Application {
     EventEngine eventEngine;
@@ -65,7 +69,6 @@ public class Main extends Application {
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
         primaryStage.setScene(scene);
         renderer.getMapTiles(assetList, context, canvas); // Replaces "refresh();"
-        //refresh();
         //scene.setOnKeyPressed(this::onKeyPressed);
 
 
@@ -74,26 +77,13 @@ public class Main extends Application {
         Player player = new Player("player", 10, 10);
         EventEngine eventEngine = new EventEngine();
         GameData gameData = new GameData(assetCollection, player, eventEngine);
+        GraphicsData graphicsData = new GraphicsData(assets, context, canvas, map);
+        Display display = new Display();
+        display.drawMainGame(graphicsData);
         UserInput userInput = new UserInput(gameData);
         scene.setOnKeyPressed(userInput::onKeyPressed);
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
 
-
-    /*private void refresh() {
-        context.setFill(Color.BLACK);
-        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
-                if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
-                } else {
-                    Tiles.drawTile(context, cell, x, y);
-                }
-            }
-        }
-        healthLabel.setText("" + map.getPlayer().getHealth());
-    }*/
 }
