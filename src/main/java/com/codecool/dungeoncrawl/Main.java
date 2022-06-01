@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Application {
-    private static EventEngine eventEngine;
+    EventEngine eventEngine;
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -42,7 +42,7 @@ public class Main extends Application {
 
     }
 
-    public static void turn() {
+    public void turn() {
         eventEngine.handle();
 
     }
@@ -70,7 +70,7 @@ public class Main extends Application {
 
 
         //TODO NEED ALL DATA HERE
-        List<Asset> assetCollection = AssetCollection.assets;
+        List<Asset> assetCollection = new ArrayList<>();
         Player player = new Player("player", 10, 10);
         EventEngine eventEngine = new EventEngine();
         GameData gameData = new GameData(assetCollection, player, eventEngine);

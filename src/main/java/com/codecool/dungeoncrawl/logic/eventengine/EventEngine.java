@@ -1,33 +1,36 @@
 package com.codecool.dungeoncrawl.logic.eventengine;
 
-import com.codecool.dungeoncrawl.data.GameData;
-import com.codecool.dungeoncrawl.logic.eventengine.events.Event;
+import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
+import com.codecool.dungeoncrawl.logic.eventengine.events.EventPlayerInputMove;
+import com.codecool.dungeoncrawl.logic.eventengine.handler.EventHandlerPlayerMove;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventEngine {
 
-    private final List<Event> pendingEvents;
+    private final List<GameEvent> pendingEvents;
 
     public EventEngine() {
         this.pendingEvents = new ArrayList<>();
     }
 
-    public List<Event> getPendingEvents() {
+    public List<GameEvent> getPendingEvents() {
         return pendingEvents;
     }
 
 
-    public void addEvent(Event event) {
+    public void addEvent(GameEvent event) {
         System.out.println("add event" + event);
         pendingEvents.add(event);
+        handle();
     }
 
     public void handle() {
-        for (Event event: pendingEvents) {
-            System.out.println("event = " + event);
-
+        for (GameEvent event: pendingEvents) {
+            if (event instanceof EventPlayerInputMove) {
+                new EventHandlerPlayerMove().handle(event);
+            }
         }
     }
 

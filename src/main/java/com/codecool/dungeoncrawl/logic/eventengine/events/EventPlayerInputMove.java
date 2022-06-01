@@ -1,18 +1,18 @@
 package com.codecool.dungeoncrawl.logic.eventengine.events;
 
-import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.data.GameData;
 
-public record playerMoveEvent(Player player, int directionX, int directionY) implements Event {
+public record EventPlayerInputMove(GameData gameData, int directionX, int directionY) implements GameEvent {
 
     @Override
-    public <T extends Event> T getEventInformation() {
+    public <T extends GameEvent> T getEventInformation() {
         return (T) this;
     }
 
     @Override
     public String toString() {
         return "playerMoveEvent{" +
-                "player=" + player +
+                "player=" + gameData +
                 ", directionX=" + directionX +
                 ", directionY=" + directionY +
                 '}';

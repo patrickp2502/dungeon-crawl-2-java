@@ -1,9 +1,7 @@
 package com.codecool.dungeoncrawl.controls;
 
-import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.data.GameData;
-import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
-import com.codecool.dungeoncrawl.logic.eventengine.events.playerMoveEvent;
+import com.codecool.dungeoncrawl.logic.eventengine.events.EventPlayerInputMove;
 import javafx.scene.input.KeyEvent;
 
 public class UserInput {
@@ -16,19 +14,20 @@ public class UserInput {
     public void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                gameData.eventEngine().addEvent(new playerMoveEvent(gameData.player(), 0, -1));
+                gameData.eventEngine().addEvent(new EventPlayerInputMove(gameData, 0, -1));
                 System.out.println("go up");
                 break;
             case DOWN:
-                gameData.eventEngine().addEvent(new playerMoveEvent(gameData.player(), 0, 1));
+                gameData.eventEngine().addEvent(new EventPlayerInputMove(gameData, 0, 1));
                 break;
             case LEFT:
-                gameData.eventEngine().addEvent(new playerMoveEvent(gameData.player(), -1, 1));
+                gameData.eventEngine().addEvent(new EventPlayerInputMove(gameData, -1, 1));
                 break;
             case RIGHT:
-                gameData.eventEngine().addEvent(new playerMoveEvent(gameData.player(), 1, 0));
+                gameData.eventEngine().addEvent(new EventPlayerInputMove(gameData, 1, 0));
                 break;
         }
-        Main.turn();
+        System.out.println("keyEvent = " + keyEvent);
+        System.out.println("gameData = " + gameData.eventEngine().getPendingEvents());
     }
 }
