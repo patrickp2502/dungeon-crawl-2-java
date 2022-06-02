@@ -4,6 +4,10 @@ import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.AssetCollection;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.collectables.Key;
+import com.codecool.dungeoncrawl.logic.collectables.Sword;
+import com.codecool.dungeoncrawl.logic.scenery.DoorClosed;
+import com.codecool.dungeoncrawl.logic.scenery.DoorOpened;
 import com.codecool.dungeoncrawl.logic.scenery.Floor;
 import com.codecool.dungeoncrawl.logic.scenery.Wall;
 
@@ -11,8 +15,8 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
-    public GameMap loadMap(AssetCollection assetCollection) {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
+    public GameMap loadMap(AssetCollection assetCollection, String filePath) {
+        InputStream is = MapLoader.class.getResourceAsStream(filePath);
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
@@ -45,6 +49,26 @@ public class MapLoader {
                             Floor floorUnderSkeletonAsset = new Floor("floor", x, y);
                             assetCollection.addAsset(skeletonAsset);
                             assetCollection.addAsset(floorUnderSkeletonAsset);
+                            break;
+                        case '|':
+                            DoorClosed doorClosed = new DoorClosed("door closed", x, y);
+                            assetCollection.addAsset(doorClosed);
+                            break;
+                        case '_':
+                            DoorOpened doorOpened = new DoorOpened("door open", x, y);
+                            assetCollection.addAsset(doorOpened);
+                            break;
+                        case 'K':
+                            Key key = new Key("key", x, y);
+                            Floor floorUnderKeyAsset = new Floor("floor", x, y);
+                            assetCollection.addAsset(key);
+                            assetCollection.addAsset(floorUnderKeyAsset);
+                            break;
+                        case 'S':
+                            Sword sword = new Sword("sword", x, y);
+                            Floor floorUnderSwordAsset = new Floor("floor", x, y);
+                            assetCollection.addAsset(sword);
+                            assetCollection.addAsset(floorUnderSwordAsset);
                             break;
                         case '@':
                             // cell.setType(CellType.FLOOR);

@@ -8,10 +8,10 @@ import com.codecool.dungeoncrawl.display.Renderer;
 import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Moveable;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
+import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import javafx.application.Application;
@@ -34,7 +34,8 @@ public class Main extends Application {
     EventEngine eventEngine;
     PhysEngine physEngine;
     MapLoader mapLoader = new MapLoader();
-    GameMap map = mapLoader.loadMap(assetCollection);
+    String[] FILE_PATHS = {"/map.txt", "/map2.txt"};
+    GameMap map = mapLoader.loadMap(assetCollection, FILE_PATHS[1]);
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -75,16 +76,15 @@ public class Main extends Application {
         //TODO NEED ALL DATA HERE
         Player player = assetCollection.getPlayer().get();
         List<Scenery> scenery = assetCollection.getScenery();
-        List<Collectable> collectables = assetCollection.separate(Collectable.class);
+        List<Collectable> collectables = assetCollection.getCollectables();
         List<Moveable> moveables = assetCollection.getMovables();
         EventEngine eventEngine = EventEngine.getInstance();
 
         GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map,
-                scenery, moveables, collectables);
+                scenery, moveables, collectables, ui);
         display = new Display(graphicsData);
         display.drawMainGame();
         eventEngine = EventEngine.getInstance();
-        GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map);
         GameData gameData = new GameData(assetCollection, player);
 
         WorldInformation worldInformation = new WorldInformation(

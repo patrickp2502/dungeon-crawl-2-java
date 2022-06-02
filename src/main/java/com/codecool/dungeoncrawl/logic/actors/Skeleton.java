@@ -1,6 +1,8 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.data.Asset;
+import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
+import com.codecool.dungeoncrawl.logic.movementengine.behaviour.MovementBehaviour;
 import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.isSolid;
 
 public class Skeleton extends Asset implements Moveable, isSolid {
@@ -12,5 +14,10 @@ public class Skeleton extends Asset implements Moveable, isSolid {
     @Override
     public String getTileName() {
         return "skeleton";
+    }
+
+    @Override
+    public MovementBehaviour getMovementBehaviour() {
+        return null;
     }
 }
