@@ -83,8 +83,6 @@ public final class EventEngine {
 
 
         }
-
-
         for (int i = 0; i < pendingEvents.size(); i++) {
             GameEvent event = pendingEvents.get(i);
             switch (event) {

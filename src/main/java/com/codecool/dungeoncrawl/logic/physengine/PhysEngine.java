@@ -13,23 +13,29 @@ public class PhysEngine {
     private final int boundaryMinY;
     WorldInformation worldInformation;
     AssetCollection assetCollection;
+    private static PhysEngine physEngineInstance = null;
 
 
-    public PhysEngine(GameData gameData, WorldInformation worldInformation) {
+    private PhysEngine(GameData gameData, WorldInformation worldInformation) {
+        boundaryMinX = worldInformation.levelBoundaryMinX();
+        boundaryMinY = worldInformation.levelBoundaryMinY();
         boundaryMaxX = worldInformation.levelBoundaryMaxX();
         boundaryMaxY = worldInformation.levelBoundaryMaxY();
-        boundaryMinX = worldInformation.levelBoundaryMaxY();
-        boundaryMinY = worldInformation.levelBoundaryMaxY();
         assetCollection = gameData.assetCollection();
-
-
     }
+
+    public static void setPhysEngine(GameData gameData, WorldInformation worldInformation) {
+        physEngineInstance = new PhysEngine(gameData, worldInformation);
+    }
+
+    public static PhysEngine getEngine() {
+        return physEngineInstance;
+    }
+
     public void collisionCheck(int x, int y) {
 
-
-        return;
+//        EventEngine.getInstance().addEvent(new EventAssetCollision(collidingAsset, getsCollidedAsset));
     }
-
 
 
     public boolean isCollideable(Asset asset) {
@@ -38,8 +44,8 @@ public class PhysEngine {
 
 
     public boolean isInBoundry(int x, int y) {
-        return x >= boundaryMinY &&
-                y >= boundaryMaxY &&
+        return x >= boundaryMinX &&
+                y >= boundaryMinY &&
                 x <= boundaryMaxX &&
                 y <= boundaryMaxY;
     }

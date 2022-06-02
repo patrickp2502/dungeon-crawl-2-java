@@ -6,6 +6,7 @@ import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventRoundEnd;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventPlayerInputMove;
+import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import jdk.jfr.Event;
 
 //TODO Question - Using static OK? Performance? Advantages? or throwing away? When we don t need the object?
@@ -15,6 +16,7 @@ public class EventHandlerPlayerMove implements GameEventHandler {
     private int directionY;
     private Player player;
     private GameData gameData;
+
 
     @Override
     public void handle(GameEvent event) {
@@ -31,6 +33,7 @@ public class EventHandlerPlayerMove implements GameEventHandler {
     }
 
     private void movePlayer() {
+        PhysEngine physEngine = PhysEngine.getEngine();
         if (true) {
             int playerXCoordinate = player.getXCoordinate();
             int playerYCoordinate = player.getYCoordinate();
