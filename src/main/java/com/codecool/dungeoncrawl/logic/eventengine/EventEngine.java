@@ -1,21 +1,18 @@
 package com.codecool.dungeoncrawl.logic.eventengine;
 
+import com.codecool.dungeoncrawl.logic.eventengine.events.EventPlayerInputMove;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventRoundEnd;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
-import com.codecool.dungeoncrawl.logic.eventengine.events.EventPlayerInputMove;
 import com.codecool.dungeoncrawl.logic.eventengine.handler.EventHandlerEndRound;
 import com.codecool.dungeoncrawl.logic.eventengine.handler.EventHandlerPlayerMove;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
 
 public final class EventEngine {
 
     private static EventEngine eventEngineInstance = null;
 
-    private final Stack<GameEvent> gameEventStack = new Stack<>();
     private final List<GameEvent> pendingEvents;
     private final List<GameEvent> handledEvents;
 
@@ -33,7 +30,6 @@ public final class EventEngine {
     }
 
 
-
     public List<GameEvent> getPendingEvents() {
         return pendingEvents;
     }
@@ -44,34 +40,60 @@ public final class EventEngine {
 
     public void addEvent(GameEvent event) {
         pendingEvents.add(event);
-        gameEventStack.add(event);
+        handleSingleEvent(event);
+
     }
 
-    public void handle() {
-        /*
-        Stack<GameEvent> gameEventStack = new Stack<>();
-        Iterator<GameEvent> iterator = gameEventStack.listIterator();
-        while (iterator.hasNext()) {
-            System.out.println(pendingEvents);
-            GameEvent event = gameEventStack.pop();
-            switch (event){
-                case EventPlayerInputMove e -> new EventHandlerPlayerMove().handle(e);
-                case EventRoundEnd e -> new EventHandlerEndRound().handle(e);
-                default -> throw new IllegalStateException("Unexpected value: " + event);
-            }
+    /*TODO Handle singleEvents as they happen! Maybe prepare a Que for pending events!
+     *
+     */
+    private void handleSingleEvent(GameEvent event) {
+        switch (event) {
+            case EventPlayerInputMove e -> new EventHandlerPlayerMove().handle(e);
+            case EventRoundEnd e -> new EventHandlerEndRound().handle(e);
+            default -> throw new IllegalStateException("Unexpected value: " + event);
         }
-        */
+
+        pendingEvents.remove(event);
+    }
+
+
+    /**
+     * this handle function should handle pending Events or a List of
+     * TODO Problem adding and removing events, dont be recursive
+     */
+    private void handle() {
+        int pendingEventCount;
+        while (pendingEvents.size() > 0) ;
+        {
+            for (GameEvent event : pendingEvents) {
+                System.out.println("pendingEvents = " + pendingEvents);
+                System.out.println("handledEvents = " + handledEvents);
+                if (handledEvents.contains(event)) {
+                    continue;
+                }
+
+                switch (event) {
+                    case EventPlayerInputMove e -> new EventHandlerPlayerMove().handle(e);
+                    case EventRoundEnd e -> new EventHandlerEndRound().handle(e);
+                    default -> throw new IllegalStateException("Unexpected value: " + event);
+                }
+                handledEvents.add(event);
+            }
+
+
+        }
 
 
         for (int i = 0; i < pendingEvents.size(); i++) {
             GameEvent event = pendingEvents.get(i);
-            switch (event){
+            switch (event) {
                 case EventPlayerInputMove e -> new EventHandlerPlayerMove().handle(e);
                 case EventRoundEnd e -> new EventHandlerEndRound().handle(e);
                 default -> throw new IllegalStateException("Unexpected value: " + event);
             }
             pendingEvents.remove(event);
-            System.out.println("PendingEvent "+ pendingEvents);
+            System.out.println("PendingEvent " + pendingEvents);
         }
 
 /*
@@ -100,8 +122,6 @@ public final class EventEngine {
             }
             iterator.remove();
         }*/
-
-
 
 
     }
