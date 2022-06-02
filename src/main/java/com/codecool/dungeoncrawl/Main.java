@@ -41,7 +41,7 @@ public class Main extends Application {
     static Display display;
     Renderer renderer = new Renderer();
 
-    List<Asset> assetList = new ArrayList<Asset>();
+    List<Asset> assetList = assetCollection.getAssets();
 
     public static void main(String[] args) {
         launch(args);
@@ -90,7 +90,7 @@ public class Main extends Application {
 
     public static void turn() {
         display.drawMainGame();
-
+        System.out.println("Main game drawn");
     }
     /*private void refresh() {
         context.setFill(Color.BLACK);

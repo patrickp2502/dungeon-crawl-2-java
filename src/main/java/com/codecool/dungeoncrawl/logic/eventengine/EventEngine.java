@@ -7,11 +7,15 @@ import com.codecool.dungeoncrawl.logic.eventengine.handler.EventHandlerEndRound;
 import com.codecool.dungeoncrawl.logic.eventengine.handler.EventHandlerPlayerMove;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 public final class EventEngine {
 
     private static EventEngine eventEngineInstance = null;
+
+    private final Stack<GameEvent> gameEventStack = new Stack<>();
     private final List<GameEvent> pendingEvents;
     private final List<GameEvent> handledEvents;
 
@@ -40,9 +44,24 @@ public final class EventEngine {
 
     public void addEvent(GameEvent event) {
         pendingEvents.add(event);
+        gameEventStack.add(event);
     }
 
     public void handle() {
+        /*
+        Stack<GameEvent> gameEventStack = new Stack<>();
+        Iterator<GameEvent> iterator = gameEventStack.listIterator();
+        while (iterator.hasNext()) {
+            System.out.println(pendingEvents);
+            GameEvent event = gameEventStack.pop();
+            switch (event){
+                case EventPlayerInputMove e -> new EventHandlerPlayerMove().handle(e);
+                case EventRoundEnd e -> new EventHandlerEndRound().handle(e);
+                default -> throw new IllegalStateException("Unexpected value: " + event);
+            }
+        }
+        */
+
 
         for (int i = 0; i < pendingEvents.size(); i++) {
             GameEvent event = pendingEvents.get(i);
@@ -52,6 +71,7 @@ public final class EventEngine {
                 default -> throw new IllegalStateException("Unexpected value: " + event);
             }
             pendingEvents.remove(event);
+            System.out.println("PendingEvent "+ pendingEvents);
         }
 
 /*
