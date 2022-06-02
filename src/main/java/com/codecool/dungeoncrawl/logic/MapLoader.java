@@ -42,12 +42,16 @@ public class MapLoader {
                         case 's':
                             // cell.setType(CellType.FLOOR);
                             Asset skeletonAsset = new Skeleton("skeleton", x, y);
+                            Floor floorUnderSkeletonAsset = new Floor("floor", x, y);
                             assetCollection.addAsset(skeletonAsset);
+                            assetCollection.addAsset(floorUnderSkeletonAsset);
                             break;
                         case '@':
                             // cell.setType(CellType.FLOOR);
                             Player playerAsset = new Player("player", x, y);
+                            Floor floorUnderPlayerAsset = new Floor("floor", x, y);
                             assetCollection.addAsset(playerAsset);
+                            assetCollection.addAsset(floorUnderPlayerAsset);
                             map.setPlayer(playerAsset);
                             break;
                         default:
@@ -58,5 +62,7 @@ public class MapLoader {
         }
         return map;
     }
+
+
 
 }

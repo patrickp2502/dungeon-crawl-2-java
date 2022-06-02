@@ -1,9 +1,13 @@
 package com.codecool.dungeoncrawl.data;
 
+import com.codecool.dungeoncrawl.logic.actors.Moveable;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Holds every Asset and its X and Y, Hält unsere Assets
@@ -26,6 +30,34 @@ public class AssetCollection {
                 .map(asset -> (Player) asset)
                 .findAny();
 
+    }
+
+    public <T> List<T> separate(Class<T> className) {
+        return assets
+                .stream()
+                .filter(element -> element.getClass().isAssignableFrom(className))
+                .map(asset -> (T) asset)
+                .collect(Collectors.toList());
+    }
+
+    public List<Moveable> getMovables() {
+        List<Moveable> returnList  = new ArrayList<>();
+        for (Asset asset : assets) {
+            if ( asset instanceof Moveable) {
+                returnList.add((Moveable) asset);
+            }
+        }
+        return returnList;
+    }
+
+    public List<Scenery> getScenery() {
+        List<Scenery> returnList  = new ArrayList<>();
+        for (Asset asset : assets) {
+            if ( asset instanceof Scenery) {
+                returnList.add((Scenery) asset);
+            }
+        }
+        return returnList;
     }
 
 }

@@ -11,8 +11,11 @@ import com.codecool.dungeoncrawl.display.Renderer;
 import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Moveable;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
+import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -30,6 +33,8 @@ import java.util.List;
 
 public class Main extends Application {
     AssetCollection assetCollection = new AssetCollection();
+    //List<Scenery> scenery = assetCollection.separate(Scenery.class);
+
     EventEngine eventEngine;
     MapLoader mapLoader = new MapLoader();
     GameMap map = mapLoader.loadMap(assetCollection);
@@ -67,15 +72,18 @@ public class Main extends Application {
         Scene scene = new Scene(borderPane);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
         primaryStage.setScene(scene);
-        renderer.getMapTiles(assetList, context, canvas); // Replaces "refresh();"
-        //refresh();
-        //scene.setOnKeyPressed(this::onKeyPressed);
+        renderer.getMapTiles(assetList, context, canvas);
 
 
         //TODO NEED ALL DATA HERE
         Player player = assetCollection.getPlayer().get();
+        List<Scenery> scenery = assetCollection.getScenery();
+        List<Collectable> collectables = assetCollection.separate(Collectable.class);
+        List<Moveable> moveables = assetCollection.getMovables();
         EventEngine eventEngine = EventEngine.getInstance();
-        GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map);
+
+        GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map,
+                scenery, moveables, collectables);
         display = new Display(graphicsData);
         display.drawMainGame();
         GameData gameData = new GameData(assetCollection, player);
@@ -92,19 +100,4 @@ public class Main extends Application {
         display.drawMainGame();
         System.out.println("Main game drawn");
     }
-    /*private void refresh() {
-        context.setFill(Color.BLACK);
-        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
-                if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
-                } else {
-                    Tiles.drawTile(context, cell, x, y);
-                }
-            }
-        }
-        healthLabel.setText("" + map.getPlayer().getHealth());
-    }*/
 }
