@@ -1,9 +1,11 @@
 package com.codecool.dungeoncrawl.logic.eventengine;
 
+import com.codecool.dungeoncrawl.logic.eventengine.events.EventAssetCollision;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventPlayerInputMove;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventRoundEnd;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
 import com.codecool.dungeoncrawl.logic.eventengine.handler.EventHandlerEndRound;
+import com.codecool.dungeoncrawl.logic.eventengine.handler.EventHandlerOnCollision;
 import com.codecool.dungeoncrawl.logic.eventengine.handler.EventHandlerPlayerMove;
 
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ public final class EventEngine {
         switch (event) {
             case EventPlayerInputMove e -> new EventHandlerPlayerMove().handle(e);
             case EventRoundEnd e -> new EventHandlerEndRound().handle(e);
+            case EventAssetCollision e -> new EventHandlerOnCollision().handle(e);
             default -> throw new IllegalStateException("Unexpected value: " + event);
         }
 
@@ -76,6 +79,7 @@ public final class EventEngine {
                 switch (event) {
                     case EventPlayerInputMove e -> new EventHandlerPlayerMove().handle(e);
                     case EventRoundEnd e -> new EventHandlerEndRound().handle(e);
+                    case EventAssetCollision e -> new EventHandlerOnCollision().handle(e);
                     default -> throw new IllegalStateException("Unexpected value: " + event);
                 }
                 handledEvents.add(event);

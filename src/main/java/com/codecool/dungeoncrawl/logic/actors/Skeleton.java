@@ -1,8 +1,9 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.data.Asset;
+import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.isSolid;
 
-public class Skeleton extends Asset {
+public class Skeleton extends Asset implements isSolid {
 
     public Skeleton(String tileName, int xCoordinate, int yCoordinate) {
         super(tileName, xCoordinate, yCoordinate);

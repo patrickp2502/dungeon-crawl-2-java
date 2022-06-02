@@ -33,13 +33,15 @@ public class EventHandlerPlayerMove implements GameEventHandler {
     }
 
     private void movePlayer() {
+        int playerXCoordinate = player.getXCoordinate();
+        int playerYCoordinate = player.getYCoordinate();
+        int newCoordinateX = player.getXCoordinate() + directionX;
+        int newCoordinateY = player.getYCoordinate() + directionY;
         PhysEngine physEngine = PhysEngine.getEngine();
-        if (true) {
-            int playerXCoordinate = player.getXCoordinate();
-            int playerYCoordinate = player.getYCoordinate();
+
+        if (physEngine.tryToMove(player, newCoordinateX, newCoordinateY)) {
             player.setXCoordinate(playerXCoordinate+directionX);
             player.setYCoordinate(playerYCoordinate+directionY);
         }
-        System.out.println("gameData.assetCollection().g = " + gameData.assetCollection().getPlayer());
     }
 }

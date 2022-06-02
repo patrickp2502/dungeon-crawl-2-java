@@ -77,8 +77,9 @@ public class Main extends Application {
         WorldInformation worldInformation = new WorldInformation(
                 0,
                 0,
-                map.getWidth(),
-                map.getHeight());
+                map.getWidth()-1,
+                map.getHeight()-1);
+        System.out.println("map.getWidth() = " + map.getWidth());
         PhysEngine.setPhysEngine(gameData, worldInformation);
         DataHub.setGameData(gameData);
         UserInput userInput = new UserInput(gameData, eventEngine);
