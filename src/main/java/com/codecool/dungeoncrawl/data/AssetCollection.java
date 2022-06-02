@@ -42,6 +42,7 @@ public class AssetCollection {
         return assets
                 .stream()
                 .filter(asset -> asset instanceof Moveable)
+                .collect(Collectors.toList());
     }
 
 
