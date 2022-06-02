@@ -1,10 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.controls.UserInput;
-import com.codecool.dungeoncrawl.data.Asset;
-import com.codecool.dungeoncrawl.data.AssetCollection;
-import com.codecool.dungeoncrawl.data.DataHub;
-import com.codecool.dungeoncrawl.data.GameData;
+import com.codecool.dungeoncrawl.data.*;
 import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.display.GraphicsData;
 import com.codecool.dungeoncrawl.display.Renderer;
@@ -15,6 +12,7 @@ import com.codecool.dungeoncrawl.logic.actors.Moveable;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
+import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -26,8 +24,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import javax.xml.crypto.Data;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,6 +32,7 @@ public class Main extends Application {
     //List<Scenery> scenery = assetCollection.separate(Scenery.class);
 
     EventEngine eventEngine;
+    PhysEngine physEngine;
     MapLoader mapLoader = new MapLoader();
     GameMap map = mapLoader.loadMap(assetCollection);
     Canvas canvas = new Canvas(
@@ -86,10 +83,22 @@ public class Main extends Application {
                 scenery, moveables, collectables);
         display = new Display(graphicsData);
         display.drawMainGame();
+        eventEngine = EventEngine.getInstance();
+        GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map);
         GameData gameData = new GameData(assetCollection, player);
+
+        WorldInformation worldInformation = new WorldInformation(
+                0,
+                0,
+                map.getWidth()-1,
+                map.getHeight()-1);
+        System.out.println("map.getWidth() = " + map.getWidth());
+        PhysEngine.setPhysEngine(gameData, worldInformation);
         DataHub.setGameData(gameData);
         UserInput userInput = new UserInput(gameData, eventEngine);
         scene.setOnKeyPressed(userInput::onKeyPressed);
+        display = new Display(graphicsData);
+        display.drawMainGame();
 
 
         primaryStage.setTitle("Dungeon Crawl");
