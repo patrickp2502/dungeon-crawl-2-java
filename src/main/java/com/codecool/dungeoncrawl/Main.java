@@ -36,7 +36,8 @@ public class Main extends Application {
     PhysEngine physEngine;
     MapLoader mapLoader = new MapLoader();
     String[] FILE_PATHS = {"/map.txt", "/map2.txt"};
-    GameMap gameMap = mapLoader.loadMap(assetCollection, FILE_PATHS[0]);
+//    GameMap map = mapLoader.loadMap(assetCollection, FILE_PATHS[0]);
+    GameMap map = mapLoader.loadMap(assetCollection, FILE_PATHS[0]);
 
     /*ArrayList<String> file_paths = new ArrayList<>();
     file_paths.add("/map.txt");
@@ -99,7 +100,7 @@ public class Main extends Application {
                 0,
                 map.getWidth()-1,
                 map.getHeight()-1);
-        System.out.println("map.getWidth() = " + map.getWidth());
+        // System.out.println("map.getWidth() = " + map.getWidth());
         PhysEngine.setPhysEngine(gameData, worldInformation);
         DataHub.setGameData(gameData);
         UserInput userInput = new UserInput(gameData, eventEngine);
@@ -114,6 +115,6 @@ public class Main extends Application {
 
     public static void turn() {
         display.drawMainGame();
-        System.out.println("Main game drawn");
+        // System.out.println("Main game drawn");
     }
 }
