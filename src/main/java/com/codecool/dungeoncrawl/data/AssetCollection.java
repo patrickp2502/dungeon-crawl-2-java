@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.data;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 
@@ -72,6 +73,16 @@ public class AssetCollection {
         for (Asset asset : assets) {
             if ( asset instanceof Scenery) {
                 returnList.add((Scenery) asset);
+            }
+        }
+        return returnList;
+    }
+
+    public List<Collectable> getCollectables() {
+        List<Collectable> returnList  = new ArrayList<>();
+        for (Asset asset : assets) {
+            if ( asset instanceof Collectable) {
+                returnList.add((Collectable) asset);
             }
         }
         return returnList;

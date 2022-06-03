@@ -4,8 +4,10 @@ import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.AssetCollection;
 import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.data.WorldInformation;
+import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventAssetCollision;
+import com.codecool.dungeoncrawl.logic.eventengine.events.EventStandingOn;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
 import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.isSolid;
 
@@ -54,6 +56,8 @@ public class PhysEngine {
             if (asset instanceof isSolid) {
                 EventEngine.getInstance().addEvent(new EventAssetCollision(movingAsset, asset));
                 return true;
+            } else if (asset instanceof Collectable) {
+                EventEngine.getInstance().addEvent(new EventStandingOn(asset));
             }
         }
         return false;
