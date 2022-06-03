@@ -8,10 +8,10 @@ import com.codecool.dungeoncrawl.display.Renderer;
 import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Moveable;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
+import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import javafx.application.Application;
@@ -24,17 +24,26 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class Main extends Application {
     AssetCollection assetCollection = new AssetCollection();
-    //List<Scenery> scenery = assetCollection.separate(Scenery.class);
 
     EventEngine eventEngine;
     PhysEngine physEngine;
     MapLoader mapLoader = new MapLoader();
-    GameMap map = mapLoader.loadMap(assetCollection);
+    String[] FILE_PATHS = {"/map.txt", "/map2.txt"};
+//    GameMap map = mapLoader.loadMap(assetCollection, FILE_PATHS[0]);
+    GameMap map = mapLoader.loadMap(assetCollection, FILE_PATHS[0]);
+
+    /*ArrayList<String> file_paths = new ArrayList<>();
+    file_paths.add("/map.txt");
+    file_paths.add("/map2.txt");
+
+    GameMap map = mapLoader.loadMap(assetCollection, file_paths.get(1));*/
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -75,16 +84,15 @@ public class Main extends Application {
         //TODO NEED ALL DATA HERE
         Player player = assetCollection.getPlayer().get();
         List<Scenery> scenery = assetCollection.getScenery();
-        List<Collectable> collectables = assetCollection.separate(Collectable.class);
+        List<Collectable> collectables = assetCollection.getCollectables();
         List<Moveable> moveables = assetCollection.getMovables();
         EventEngine eventEngine = EventEngine.getInstance();
 
         GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map,
-                scenery, moveables, collectables);
+                scenery, moveables, collectables, ui);
         display = new Display(graphicsData);
         display.drawMainGame();
         eventEngine = EventEngine.getInstance();
-        GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map);
         GameData gameData = new GameData(assetCollection, player);
 
         WorldInformation worldInformation = new WorldInformation(
@@ -92,7 +100,7 @@ public class Main extends Application {
                 0,
                 map.getWidth()-1,
                 map.getHeight()-1);
-        System.out.println("map.getWidth() = " + map.getWidth());
+        // System.out.println("map.getWidth() = " + map.getWidth());
         PhysEngine.setPhysEngine(gameData, worldInformation);
         DataHub.setGameData(gameData);
         UserInput userInput = new UserInput(gameData, eventEngine);
@@ -107,6 +115,6 @@ public class Main extends Application {
 
     public static void turn() {
         display.drawMainGame();
-        System.out.println("Main game drawn");
+        // System.out.println("Main game drawn");
     }
 }
