@@ -6,11 +6,9 @@ import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.data.WorldInformation;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventAssetCollision;
-import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
-import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.isSolid;
+import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.IsSolid;
 
 import java.util.List;
-import java.util.Optional;
 
 
 public class PhysEngine {
@@ -51,7 +49,7 @@ public class PhysEngine {
             return false;
         }
         for (Asset asset : getsCollidedAssets) {
-            if (asset instanceof isSolid) {
+            if (asset instanceof IsSolid) {
                 EventEngine.getInstance().addEvent(new EventAssetCollision(movingAsset, asset));
                 return true;
             }

@@ -1,6 +1,5 @@
 package com.codecool.dungeoncrawl.data;
 
-import com.codecool.dungeoncrawl.logic.actors.Moveable;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;

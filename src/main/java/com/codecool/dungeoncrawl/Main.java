@@ -8,10 +8,10 @@ import com.codecool.dungeoncrawl.display.Renderer;
 import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Moveable;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
+import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import javafx.application.Application;
@@ -77,14 +77,11 @@ public class Main extends Application {
         List<Scenery> scenery = assetCollection.getScenery();
         List<Collectable> collectables = assetCollection.separate(Collectable.class);
         List<Moveable> moveables = assetCollection.getMovables();
-        EventEngine eventEngine = EventEngine.getInstance();
-
         GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map,
                 scenery, moveables, collectables);
         display = new Display(graphicsData);
         display.drawMainGame();
         eventEngine = EventEngine.getInstance();
-        GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map);
         GameData gameData = new GameData(assetCollection, player);
 
         WorldInformation worldInformation = new WorldInformation(
@@ -97,6 +94,9 @@ public class Main extends Application {
         DataHub.setGameData(gameData);
         UserInput userInput = new UserInput(gameData, eventEngine);
         scene.setOnKeyPressed(userInput::onKeyPressed);
+
+        System.out.println("moveables = " + moveables);
+        System.out.println("assetCollection = " + assetCollection.getMovableAssets());
         display = new Display(graphicsData);
         display.drawMainGame();
 
