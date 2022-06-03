@@ -8,10 +8,10 @@ import com.codecool.dungeoncrawl.display.Renderer;
 import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
-import com.codecool.dungeoncrawl.logic.actors.Moveable;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
+import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import javafx.application.Application;
@@ -84,7 +84,6 @@ public class Main extends Application {
         display = new Display(graphicsData);
         display.drawMainGame();
         eventEngine = EventEngine.getInstance();
-        GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map);
         GameData gameData = new GameData(assetCollection, player);
 
         WorldInformation worldInformation = new WorldInformation(
