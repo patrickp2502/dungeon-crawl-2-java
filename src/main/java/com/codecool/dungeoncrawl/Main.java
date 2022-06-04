@@ -11,6 +11,7 @@ import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
+import com.codecool.dungeoncrawl.logic.eventengine.InitEventHandlers;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
@@ -90,7 +91,10 @@ public class Main extends Application {
                 scenery, moveables, collectables, ui);
         display = new Display(graphicsData);
         display.drawMainGame();
+
         eventEngine = EventEngine.getInstance();
+        eventEngine.setHandlers(new InitEventHandlers().getGameEventHandlers());
+
         GameData gameData = new GameData(assetCollection, player);
 
         WorldInformation worldInformation = new WorldInformation(

@@ -1,10 +1,7 @@
 package com.codecool.dungeoncrawl.logic.eventengine;
 
 import com.codecool.dungeoncrawl.logic.eventengine.events.*;
-import com.codecool.dungeoncrawl.logic.eventengine.handler.EventHandlerEndRound;
-import com.codecool.dungeoncrawl.logic.eventengine.handler.EventHandlerOnCollision;
-import com.codecool.dungeoncrawl.logic.eventengine.handler.EventHandlerPlayerMove;
-import com.codecool.dungeoncrawl.logic.eventengine.handler.EventHandlerStandingOn;
+import com.codecool.dungeoncrawl.logic.eventengine.handler.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +12,7 @@ public final class EventEngine {
 
     private final List<GameEvent> pendingEvents;
     private final List<GameEvent> handledEvents;
+    private List<GameEventHandler> eventHandlers;
 
 
     private EventEngine() {
@@ -29,6 +27,10 @@ public final class EventEngine {
         return eventEngineInstance;
     }
 
+    public void setHandlers(List<GameEventHandler> eventHandlers) {
+        this.eventHandlers = eventHandlers;
+    }
+
 
     public List<GameEvent> getPendingEvents() {
         return pendingEvents;
@@ -41,12 +43,11 @@ public final class EventEngine {
     public void addEvent(GameEvent event) {
         pendingEvents.add(event);
         handleSingleEvent(event);
-
     }
-
     /*TODO Handle singleEvents as they happen! Maybe prepare a Que for pending events!
      *
      */
+/*
     private void handleSingleEvent(GameEvent event) {
         switch (event) {
             case EventPlayerInputMove e -> new EventHandlerPlayerMove().handle(e);
@@ -58,12 +59,27 @@ public final class EventEngine {
 
         pendingEvents.remove(event);
     }
+*/
 
+    private void handleSingleEvent(GameEvent event) {
+        GameEventHandler gameEventHandler = getEventHandler(event);
+        gameEventHandler.handle(event);
+    }
+
+
+    private GameEventHandler getEventHandler(GameEvent gameEvent) {
+        return eventHandlers.stream()
+                .filter(handler -> handler.getGameEvents().stream()
+                        .anyMatch(eventClass -> eventClass.isInstance(gameEvent)))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("No registered event: " + gameEvent));
+    }
 
     /**
      * this handle function should handle pending Events or a List of
      * TODO Problem adding and removing events, dont be recursive
      */
+    /*
     private void handle() {
         int pendingEventCount;
         while (pendingEvents.size() > 0) ;
@@ -96,7 +112,7 @@ public final class EventEngine {
             pendingEvents.remove(event);
             System.out.println("PendingEvent " + pendingEvents);
         }
-
+*/
 /*
         for (GameEvent event: pendingEvents) {
             System.out.println("pendingEvents = " + pendingEvents);
@@ -125,7 +141,7 @@ public final class EventEngine {
         }*/
 
 
-    }
+
 
     @Override
     public String toString() {
