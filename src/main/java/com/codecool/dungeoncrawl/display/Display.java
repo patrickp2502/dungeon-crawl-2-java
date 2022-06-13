@@ -2,7 +2,9 @@ package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
+import com.codecool.dungeoncrawl.logic.collections.Inventory;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import com.codecool.dungeoncrawl.util.AssetUtil;
@@ -14,6 +16,7 @@ import javafx.scene.paint.Color;
 import java.io.InputStream;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.Optional;
 
 import static com.codecool.dungeoncrawl.display.Tiles.getTile;
 
@@ -91,4 +94,14 @@ public class Display {
         graphicsData.ui().add(new Label(labelText), 0, rowOfLabel);
     }
 
+    public void drawInventory(Label inventorySection) {
+        Player player = (Player) graphicsData.moveables()
+                .stream()
+                .filter(gamer -> gamer instanceof Player)
+                .findAny().get();
+
+        Inventory inventory = player.getInventory();
+        inventorySection.setText(inventory.toString());
+
+    }
 }

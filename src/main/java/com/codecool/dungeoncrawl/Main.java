@@ -117,8 +117,6 @@ public class Main extends Application {
         UserInput userInput = new UserInput(gameData, eventEngine);
         scene.setOnKeyPressed(userInput::onKeyPressed);
 
-        System.out.println("moveables = " + moveables);
-        System.out.println("assetCollection = " + assetCollection.getMovableAssets());
         display = new Display(graphicsData);
         display.drawMainGame();
 
