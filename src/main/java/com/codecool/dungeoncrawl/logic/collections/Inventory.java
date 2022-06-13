@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Inventory {
     private final List<Collectable> items = new ArrayList<>();
@@ -24,9 +25,10 @@ public class Inventory {
 
     @Override
     public String toString() {
-/*        return items
+        List<String> itemList = items
                 .stream()
-                .forEach(item -> String.format("%s", item.getClass()))
-                .collect(Collections.toList().join());*/
+                .map(item -> String.format("%s", item.getClass())).toList();
+        String finalString = String.join("\n", itemList);
+        return finalString + "Should work";
     }
 }

@@ -8,17 +8,19 @@ import com.codecool.dungeoncrawl.logic.collections.Inventory;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import com.codecool.dungeoncrawl.util.AssetUtil;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.stream.IntStream;
-import java.util.Optional;
 
 import static com.codecool.dungeoncrawl.display.Tiles.getTile;
+import static com.codecool.dungeoncrawl.display.Tiles.getTileset;
 
 /**
  * Only exit point to display everything
@@ -78,20 +80,22 @@ public class Display {
                 x * Tiles.TILE_WIDTH, y * Tiles.TILE_WIDTH, Tiles.TILE_WIDTH, Tiles.TILE_WIDTH);
     }
 
-    public void showGameHint(String hint) {
-        graphicsData.ui().add(new Label("GAME HINTS: \n" + hint), 0, graphicsData.map().getHeight() - 10);
+    public void showNewInformationUnderLabel(String hint, Label label) {
+        label.setText(label.getText() + hint);
     }
 
     public void showSpacesBetweenInfoboxContent(int emptyLines, int startRow) {
         stringBuilder = new StringBuilder();
         IntStream
                 .range(0, emptyLines)
-                .forEach(line -> stringBuilder.append("\n"));
+                .forEach(line -> stringBuilder.append(" \n"));
         graphicsData.ui().add(new Label(stringBuilder.toString()), 0, startRow);
     }
 
-    public  void  showNewLabelAlignedLeft(String labelText, int rowOfLabel) {
-        graphicsData.ui().add(new Label(labelText), 0, rowOfLabel);
+    public Label  showAndGetNewLabelAlignedLeft(String labelText, int rowOfLabel) {
+        Label label = new Label(labelText);
+        graphicsData.ui().add(label, 0, rowOfLabel);
+        return label;
     }
 
     public void drawInventory(Label inventorySection) {
@@ -102,6 +106,5 @@ public class Display {
 
         Inventory inventory = player.getInventory();
         inventorySection.setText(inventory.toString());
-
     }
 }

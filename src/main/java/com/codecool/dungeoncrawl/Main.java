@@ -73,9 +73,6 @@ public class Main extends Application {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
 
-//        ui.add(new Label("Health: "), 0, 0);
-        ui.add(healthLabel, 1, 0);
-
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -92,14 +89,21 @@ public class Main extends Application {
         List<Scenery> scenery = assetCollection.getScenery();
         List<Collectable> collectables = assetCollection.getCollectables();
         List<Moveable> moveables = assetCollection.getMovables();
+
+        //*****************   DRAWING   *****************
         GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map,
                 scenery, moveables, collectables, ui);
         display = new Display(graphicsData);
         display.drawMainGame();
-        display.showNewLabelAlignedLeft("Health: ", 0);
-        display.showSpacesBetweenInfoboxContent(30, 20);
-        display.showGameHint("TEST HINT");
-
+        Label healthSection = display.showAndGetNewLabelAlignedLeft("Health: ", 0);
+        display.showNewInformationUnderLabel("+++++++++--", healthSection);
+        display.showSpacesBetweenInfoboxContent(10, 2);
+        Label inventorySection = display.showAndGetNewLabelAlignedLeft("Inventory: \n", 13);
+        display.showNewInformationUnderLabel(player.getInventory().toString(), inventorySection);
+        display.showSpacesBetweenInfoboxContent(10, 14);
+        Label hintSection = display.showAndGetNewLabelAlignedLeft("Game hints: \n", 15);
+        display.showNewInformationUnderLabel("TEST HINT", hintSection);
+        //*****************   DRAWING DONE   *****************
 
         eventEngine = EventEngine.getInstance();
         eventEngine.setHandlers(new InitEventHandlers().getGameEventHandlers());
