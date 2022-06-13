@@ -2,11 +2,13 @@ package com.codecool.dungeoncrawl.logic.eventengine.combat;
 
 public class CombatStats {
     private static final int STANDARD_ATTACK_POINT = 1;
+
     int health;
     int attackPoints;
 
-    public void setHealth(int health) {
+    public CombatStats(int health, int attackPoints) {
         this.health = health;
+        this.attackPoints = attackPoints;
     }
 
     public void decreaseHealth(int amountDecreaseHealth) {
@@ -21,14 +23,8 @@ public class CombatStats {
         health += additionalHealth;
     }
 
-
     int getHealth() {
         return health;
-    }
-
-
-    void setAttackPoints(int attackPoints) {
-        this.attackPoints = attackPoints;
     }
 
 
