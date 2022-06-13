@@ -1,3 +1,4 @@
+/*
 package com.codecool.dungeoncrawl.model;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
@@ -55,3 +56,4 @@ public class PlayerModel extends BaseModel {
         this.y = y;
     }
 }
+*/

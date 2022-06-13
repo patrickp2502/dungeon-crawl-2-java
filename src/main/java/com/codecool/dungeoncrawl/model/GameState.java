@@ -1,3 +1,4 @@
+/*
 package com.codecool.dungeoncrawl.model;
 
 import java.util.ArrayList;
@@ -48,3 +49,4 @@ public class GameState extends BaseModel {
         this.player = player;
     }
 }
+*/

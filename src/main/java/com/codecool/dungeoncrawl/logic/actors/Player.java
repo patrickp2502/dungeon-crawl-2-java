@@ -1,28 +1,32 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
-import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.data.Asset;
+import com.codecool.dungeoncrawl.logic.collections.Inventory;
+import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
+import com.codecool.dungeoncrawl.logic.movementengine.behaviour.MovementBehaviour;
+import com.codecool.dungeoncrawl.logic.movementengine.behaviour.RandomMovementBehaviour;
+import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.IsSolid;
 
-public class Player extends Actor {
-    private String name;
+public class Player extends Asset implements IsSolid, Moveable {
 
-    public Player(Cell cell) {
-        super(cell);
+   private MovementBehaviour movementBehaviour;
+
+   private final Inventory inventory;
+
+
+    public Player(String tileName, int xCoordinate, int yCoordinate) {
+        super(tileName, xCoordinate, yCoordinate);
+        movementBehaviour = new RandomMovementBehaviour();
+        inventory = new Inventory();
     }
 
-    public Player(Cell cell, String name) {
-        super(cell);
-        this.name = name;
+
+    @Override
+    public MovementBehaviour getMovementBehaviour() {
+        return null;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTileName() {
-        return "player";
+    public Inventory getInventory() {
+        return inventory;
     }
 }

@@ -1,3 +1,4 @@
+/*
 package com.codecool.dungeoncrawl.model;
 
 import java.lang.reflect.Field;
@@ -32,3 +33,4 @@ public class BaseModel {
         return sb.toString();
     }
 }
+*/
