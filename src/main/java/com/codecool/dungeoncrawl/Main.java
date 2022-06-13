@@ -38,7 +38,12 @@ public class Main extends Application {
     MapLoader mapLoader = new MapLoader();
     String[] FILE_PATHS = {"/map.txt", "/map2.txt"};
 //    GameMap map = mapLoader.loadMap(assetCollection, FILE_PATHS[0]);
-    GameMap map = mapLoader.loadMap(assetCollection, FILE_PATHS[0]);
+    GameMap map;
+
+    {
+        String firstLevel = FILE_PATHS[0];
+        map = mapLoader.loadMap(assetCollection, firstLevel);
+    }
 
     /*ArrayList<String> file_paths = new ArrayList<>();
     file_paths.add("/map.txt");
@@ -68,7 +73,7 @@ public class Main extends Application {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
 
-        ui.add(new Label("Health: "), 0, 0);
+//        ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
 
         BorderPane borderPane = new BorderPane();
@@ -91,6 +96,10 @@ public class Main extends Application {
                 scenery, moveables, collectables, ui);
         display = new Display(graphicsData);
         display.drawMainGame();
+        display.showNewLabelAlignedLeft("Health: ", 0);
+        display.showSpacesBetweenInfoboxContent(30, 20);
+        display.showGameHint("TEST HINT");
+
 
         eventEngine = EventEngine.getInstance();
         eventEngine.setHandlers(new InitEventHandlers().getGameEventHandlers());

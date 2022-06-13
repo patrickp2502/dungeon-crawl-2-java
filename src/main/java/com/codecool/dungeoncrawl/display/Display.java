@@ -11,7 +11,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
+import java.io.InputStream;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static com.codecool.dungeoncrawl.display.Tiles.getTile;
 
@@ -20,10 +22,13 @@ import static com.codecool.dungeoncrawl.display.Tiles.getTile;
  */
 public class Display {
 
+    private StringBuilder stringBuilder;
+
     private final GraphicsData graphicsData;
 
     public Display(GraphicsData graphicsData) {
         this.graphicsData = graphicsData;
+        stringBuilder = new StringBuilder();
     }
 
     public void drawHealth(Label healthLabel, String labelText, GraphicsContext context) {
@@ -71,7 +76,19 @@ public class Display {
     }
 
     public void showGameHint(String hint) {
-        graphicsData.ui().add(new Label("GAME HINTS: " + hint), 1, 0);
+        graphicsData.ui().add(new Label("GAME HINTS: \n" + hint), 0, graphicsData.map().getHeight() - 10);
+    }
+
+    public void showSpacesBetweenInfoboxContent(int emptyLines, int startRow) {
+        stringBuilder = new StringBuilder();
+        IntStream
+                .range(0, emptyLines)
+                .forEach(line -> stringBuilder.append("\n"));
+        graphicsData.ui().add(new Label(stringBuilder.toString()), 0, startRow);
+    }
+
+    public  void  showNewLabelAlignedLeft(String labelText, int rowOfLabel) {
+        graphicsData.ui().add(new Label(labelText), 0, rowOfLabel);
     }
 
 }
