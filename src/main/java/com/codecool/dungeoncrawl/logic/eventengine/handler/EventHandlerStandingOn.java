@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic.eventengine.handler;
 
+import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventStandingOn;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
 
@@ -26,6 +27,14 @@ public class EventHandlerStandingOn implements GameEventHandler {
     @Override
     public void handle(GameEvent event) {
         EventStandingOn actualEvent = (EventStandingOn) event;
-        // activate pickup possible
+        Collectable item = (Collectable) actualEvent.item();
+        item.setPickUpPossible(true);
+        if (item.isPickUpPossible()) {
+            System.out.println("OOOKK LETTTSSS GOO");
+        }
+        // show pick up button
+        // let user pick up item
+        // put Item in the Inventory
+        // delete Item from game field
     }
 }

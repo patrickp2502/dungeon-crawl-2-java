@@ -8,28 +8,24 @@ import com.codecool.dungeoncrawl.logic.collections.Inventory;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import com.codecool.dungeoncrawl.util.AssetUtil;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
 import static com.codecool.dungeoncrawl.display.Tiles.getTile;
-import static com.codecool.dungeoncrawl.display.Tiles.getTileset;
 
 /**
  * Only exit point to display everything
  */
 public class Display {
 
-    private StringBuilder stringBuilder;
-
     private final GraphicsData graphicsData;
+    private StringBuilder stringBuilder;
 
     public Display(GraphicsData graphicsData) {
         this.graphicsData = graphicsData;
@@ -63,7 +59,8 @@ public class Display {
                         AssetUtil.getAssetByCoordinates((List<Asset>) assets, x, y).get(0) : null;
                 if (actual != null && AssetUtil.getAssetByCoordinates((List<Asset>) assets, x, y).size() == 1) {
                     drawTile(context, getTile(actual), x, y);
-                }            }
+                }
+            }
         }
     }
 
@@ -92,7 +89,7 @@ public class Display {
         graphicsData.ui().add(new Label(stringBuilder.toString()), 0, startRow);
     }
 
-    public Label  showAndGetNewLabelAlignedLeft(String labelText, int rowOfLabel) {
+    public Label showAndGetNewLabelAlignedLeft(String labelText, int rowOfLabel) {
         Label label = new Label(labelText);
         graphicsData.ui().add(label, 0, rowOfLabel);
         return label;
@@ -107,4 +104,12 @@ public class Display {
         Inventory inventory = player.getInventory();
         inventorySection.setText(inventory.toString());
     }
+
+    public Button addButtonUnderLabel(Label label, String buttonLabel) {
+        Button button = new Button(buttonLabel);
+        graphicsData.ui().add(button, (int) label.getLayoutX() + 1, (int) label.getLayoutY() + 1);
+        //label.setText(label.getText() + button);
+        return button;
+    }
+
 }

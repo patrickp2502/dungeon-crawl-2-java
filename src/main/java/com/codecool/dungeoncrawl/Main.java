@@ -15,12 +15,16 @@ import com.codecool.dungeoncrawl.logic.eventengine.InitEventHandlers;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
+import com.codecool.dungeoncrawl.util.CollectableManager;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -41,7 +45,7 @@ public class Main extends Application {
     GameMap map;
 
     {
-        String firstLevel = FILE_PATHS[0];
+        String firstLevel = FILE_PATHS[1];
         map = mapLoader.loadMap(assetCollection, firstLevel);
     }
 
@@ -54,7 +58,6 @@ public class Main extends Application {
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
-    Label healthLabel = new Label();
     static Display display;
     Renderer renderer = new Renderer();
 
@@ -103,6 +106,11 @@ public class Main extends Application {
         display.showSpacesBetweenInfoboxContent(10, 14);
         Label hintSection = display.showAndGetNewLabelAlignedLeft("Game hints: \n", 15);
         display.showNewInformationUnderLabel("TEST HINT", hintSection);
+        Button pickUpButton = display.addButtonUnderLabel(hintSection, "Test Pick Up Button");
+        pickUpButton.setDefaultButton(false);
+
+
+
         //*****************   DRAWING DONE   *****************
 
         eventEngine = EventEngine.getInstance();
@@ -125,6 +133,9 @@ public class Main extends Application {
         display.drawMainGame();
 
 
+
+
+
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
@@ -132,5 +143,6 @@ public class Main extends Application {
     public static void turn() {
         display.drawMainGame();
         // System.out.println("Main game drawn");
+
     }
 }
