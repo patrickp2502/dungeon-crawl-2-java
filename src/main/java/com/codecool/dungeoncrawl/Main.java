@@ -15,6 +15,8 @@ import com.codecool.dungeoncrawl.logic.eventengine.InitEventHandlers;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
+import com.codecool.dungeoncrawl.util.FileDetector;
+import com.codecool.dungeoncrawl.util.GameMapsInitializer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -26,6 +28,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,20 +39,17 @@ public class Main extends Application {
     EventEngine eventEngine;
     PhysEngine physEngine;
     MapLoader mapLoader = new MapLoader();
-    String[] FILE_PATHS = {"/map.txt", "/map2.txt"};
-//    GameMap map = mapLoader.loadMap(assetCollection, FILE_PATHS[0]);
+    List<String> levels = FileDetector.getAvailableFileNamesInResources();
+    List<GameMap> gameMaps = GameMapsInitializer.getAllAvailableGameMaps(mapLoader, levels, assetCollection);
+
     GameMap map;
 
     {
-        String firstLevel = FILE_PATHS[0];
+        String firstLevel = levels.get(0);
         map = mapLoader.loadMap(assetCollection, firstLevel);
     }
 
-    /*ArrayList<String> file_paths = new ArrayList<>();
-    file_paths.add("/map.txt");
-    file_paths.add("/map2.txt");
 
-    GameMap map = mapLoader.loadMap(assetCollection, file_paths.get(1));*/
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
