@@ -28,7 +28,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,24 +39,26 @@ public class Main extends Application {
     PhysEngine physEngine;
     MapLoader mapLoader = new MapLoader();
     List<String> levels = FileDetector.getAvailableFileNamesInResources();
-    List<GameMap> gameMaps = GameMapsInitializer.getAllAvailableGameMaps(mapLoader, levels, assetCollection);
-
     GameMap map;
 
     {
         String firstLevel = levels.get(0);
-        map = mapLoader.loadMap(assetCollection, firstLevel);
+        String secondLevel = levels.get(1);
+        map = mapLoader.loadMap(assetCollection, secondLevel);
     }
 
 
-    Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
+    Canvas canvas = getCanvas(map);
+
+    private Canvas getCanvas(GameMap gameMap) {
+        return new Canvas(
+                gameMap.getWidth() * Tiles.TILE_WIDTH,
+                gameMap.getHeight() * Tiles.TILE_WIDTH);
+    }
+
     GraphicsContext context = canvas.getGraphicsContext2D();
     static Display display;
     Renderer renderer = new Renderer();
-
-    List<Asset> assetList = assetCollection.getAssets();
 
     public static void main(String[] args) {
         launch(args);
@@ -80,7 +81,7 @@ public class Main extends Application {
         Scene scene = new Scene(borderPane);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
         primaryStage.setScene(scene);
-        renderer.getMapTiles(assetList, context, canvas);
+        renderer.getMapTiles(assetCollection.getAssets(), context, canvas);
 
 
         //TODO NEED ALL DATA HERE
@@ -122,7 +123,6 @@ public class Main extends Application {
                 0,
                 map.getWidth()-1,
                 map.getHeight()-1);
-        // System.out.println("map.getWidth() = " + map.getWidth());
         PhysEngine.setPhysEngine(gameData, worldInformation);
         DataHub.setGameData(gameData);
         UserInput userInput = new UserInput(gameData, eventEngine);
@@ -142,6 +142,5 @@ public class Main extends Application {
     public static void turn() {
         display.drawMainGame();
         // System.out.println("Main game drawn");
-
     }
 }

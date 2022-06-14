@@ -16,4 +16,8 @@ public class GameMapsInitializer {
         }
         return gameMaps;
     }
+
+    public static GameMap loadNextLevel(MapLoader mapLoader, String level, AssetCollection assetCollection) {
+        return mapLoader.loadMap(assetCollection, level);
+    }
 }
