@@ -5,18 +5,25 @@ import com.codecool.dungeoncrawl.logic.eventengine.Fighter;
 import com.codecool.dungeoncrawl.logic.eventengine.combat.CombatStats;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.movementengine.behaviour.MovementBehaviour;
+import com.codecool.dungeoncrawl.logic.movementengine.behaviour.RandomMovementBehaviour;
 import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.IsSolid;
 
 public class FatDude extends Asset implements Moveable, Fighter, IsSolid {
 
 
+    private MovementBehaviour movementBehaviour;
+    private final CombatStats combatStats;
+
     public FatDude(String tileName, int xCoordinate, int yCoordinate) {
         super(tileName, xCoordinate, yCoordinate);
+        this.movementBehaviour = new RandomMovementBehaviour();
+        this.combatStats = new CombatStats(200, 10);
+
     }
 
     @Override
     public CombatStats getCombatStats() {
-        return null;
+        return combatStats;
     }
 
     @Override
@@ -36,12 +43,12 @@ public class FatDude extends Asset implements Moveable, Fighter, IsSolid {
 
     @Override
     public MovementBehaviour getMovementBehaviour() {
-        return null;
+        return movementBehaviour;
     }
 
     @Override
     public void setMovementBehaviour(MovementBehaviour movementBehaviour) {
-
+        this.movementBehaviour = movementBehaviour;
     }
 
     @Override

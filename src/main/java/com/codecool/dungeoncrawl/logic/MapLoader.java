@@ -2,6 +2,8 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.AssetCollection;
+import com.codecool.dungeoncrawl.logic.actors.FatDude;
+import com.codecool.dungeoncrawl.logic.actors.Goblin;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.collectables.Key;
@@ -69,7 +71,17 @@ public class MapLoader {
                             Floor floorUnderSwordAsset = new Floor("floor", x, y);
                             assetCollection.addAsset(sword);
                             assetCollection.addAsset(floorUnderSwordAsset);
+                        case 'f':
+                            FatDude fatDude = new FatDude("fat dude", x, y);
+                            assetCollection.addAsset(fatDude);
                             break;
+                        case 'g':
+                            Goblin goblin = new Goblin("goblin", x, y);
+                            assetCollection.addAsset(goblin);
+                            break;
+
+
+
                         case '@':
                             // cell.setType(CellType.FLOOR);
                             Player playerAsset = new Player("player", x, y);
