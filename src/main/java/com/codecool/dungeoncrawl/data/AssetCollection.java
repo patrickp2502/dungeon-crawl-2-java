@@ -88,4 +88,8 @@ public class AssetCollection {
         return returnList;
     }
 
+    public void removeAsset(Asset asset) {
+        assets.remove(asset);
+    }
+
 }

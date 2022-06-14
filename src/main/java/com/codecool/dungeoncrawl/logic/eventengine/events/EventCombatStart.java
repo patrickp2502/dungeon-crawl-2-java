@@ -1,7 +1,7 @@
 package com.codecool.dungeoncrawl.logic.eventengine.events;
 
-import com.codecool.dungeoncrawl.data.Asset;
+import com.codecool.dungeoncrawl.logic.eventengine.Fighter;
 
-public record EventCombatStart(Asset attackerAsset, Asset defenderAsset) implements GameEvent {
+public record EventCombatStart(Fighter attackerAsset, Fighter defenderAsset) implements GameEvent {
 
 }

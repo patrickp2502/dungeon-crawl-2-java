@@ -1,5 +1,7 @@
 package com.codecool.dungeoncrawl.logic.eventengine;
 
+import com.codecool.dungeoncrawl.data.GameData;
+import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.logic.actors.Player;
@@ -21,6 +23,8 @@ import java.util.Set;
  */
 public class InitEventHandlers {
     private List<GameEventHandler> gameEventHandlers;
+    private Display display;
+    private GameData gameData;
 
     private final Display display;
 
@@ -32,7 +36,7 @@ public class InitEventHandlers {
 
     private final List<Asset> assets;
 
-    public InitEventHandlers(Display display, List<Label> labels, List<Button> buttons, List<Asset> assets) {
+    public InitEventHandlers(Display display, List<Label> labels, List<Button> buttons, List<Asset> assets, GameData gameData) {
 
         this.display = display;
         this.labels = labels;
@@ -40,7 +44,11 @@ public class InitEventHandlers {
         this.player = getPlayer(assets);
         this.assets = assets;
         //
+        this.display = display;
+        this.gameData = gameData;
         gameEventHandlers = new ArrayList<>();
+
+
         //Register EventPlayerInputMove.class to EventHandlerPlayerMove
         Set<Class<? extends GameEvent>> playerMoveEvents = new HashSet<>();
         playerMoveEvents.add(EventPlayerInputMove.class);
@@ -54,7 +62,7 @@ public class InitEventHandlers {
         //Register EventAssetCollision.class to EventHandlerOnCollision
         Set<Class<? extends GameEvent>> onCollisionEvents = new HashSet<>();
         onCollisionEvents.add(EventAssetCollision.class);
-        gameEventHandlers.add(new EventHandlerOnCollision(onCollisionEvents));
+        gameEventHandlers.add(new EventHandlerOnCollision(onCollisionEvents, gameData));
 
         //Register EventRoundEnd.class to EventHandlerRoundEnd
         Set<Class<? extends GameEvent>> endRoundEvents = new HashSet<>();
@@ -75,6 +83,18 @@ public class InitEventHandlers {
                 .findFirst()
                 .get();
     }
+        //Register CombatEvents to EventHandlerCombat
+        Set<Class<? extends GameEvent>> combatEvents = new HashSet<>();
+        combatEvents.add(EventCombatStart.class);
+        gameEventHandlers.add(new EventHandlerCombat(combatEvents, gameData));
+
+        //Register CombatEvents to EventHandlerCombat
+        Set<Class<? extends GameEvent>> onDeathEvents = new HashSet<>();
+        onDeathEvents.add(EventOnDeath.class);
+        gameEventHandlers.add(new EventHandlerOnDeath(onDeathEvents, gameData));
+
+
+
 
     public List<GameEventHandler> getGameEventHandlers() {
         return gameEventHandlers;
