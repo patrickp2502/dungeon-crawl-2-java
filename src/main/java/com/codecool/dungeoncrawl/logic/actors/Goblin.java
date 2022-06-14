@@ -1,57 +1,35 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.data.Asset;
-import com.codecool.dungeoncrawl.logic.collections.Inventory;
 import com.codecool.dungeoncrawl.logic.eventengine.Fighter;
 import com.codecool.dungeoncrawl.logic.eventengine.combat.CombatStats;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.movementengine.behaviour.MovementBehaviour;
-import com.codecool.dungeoncrawl.logic.movementengine.behaviour.RandomMovementBehaviour;
 import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.IsSolid;
 
-public class Player extends Asset implements IsSolid, Fighter, Moveable {
-
-    private final Inventory inventory;
-    private CombatStats combatStats;
-
-
-    public Player(String tileName, int xCoordinate, int yCoordinate) {
+public class Goblin extends Asset implements Fighter, Moveable, IsSolid {
+    public Goblin(String tileName, int xCoordinate, int yCoordinate) {
         super(tileName, xCoordinate, yCoordinate);
-        inventory = new Inventory();
-        combatStats = new CombatStats(100, 10);
     }
-
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
 
     @Override
     public CombatStats getCombatStats() {
-        if (combatStats == null) {
-            throw new IllegalStateException("Set Combatstats first!");
-        }
-        return combatStats;
+        return null;
     }
 
     @Override
     public void setCombatStats(CombatStats combatStats) {
-        this.combatStats = combatStats;
+
     }
 
-
-    /**
-     * There will be no movement when player is in combat - player is in full control
-     */
     @Override
     public void startCombatMovement() {
+
     }
-    /**
-     * There will be no movement when player is in combat - player is in full control
-     */
+
     @Override
     public void stopCombatMovement() {
+
     }
 
     @Override

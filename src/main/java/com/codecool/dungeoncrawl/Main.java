@@ -13,6 +13,7 @@ import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import com.codecool.dungeoncrawl.logic.eventengine.InitEventHandlers;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
+import com.codecool.dungeoncrawl.logic.movementengine.MovementEngine;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import javafx.application.Application;
@@ -35,6 +36,7 @@ public class Main extends Application {
 
     EventEngine eventEngine;
     PhysEngine physEngine;
+    static MovementEngine movementEngine;
     MapLoader mapLoader = new MapLoader();
     String[] FILE_PATHS = {"/map.txt", "/map2.txt"};
 //    GameMap map = mapLoader.loadMap(assetCollection, FILE_PATHS[0]);
@@ -106,7 +108,7 @@ public class Main extends Application {
         //*****************   DRAWING DONE   *****************
 
         GameData gameData = new GameData(assetCollection, player);
-        //init EventEngine
+         //init EventEngine
         eventEngine = EventEngine.getInstance();
         eventEngine.setHandlers(new InitEventHandlers(display, gameData).getGameEventHandlers());
 
@@ -121,6 +123,9 @@ public class Main extends Application {
         UserInput userInput = new UserInput(gameData, eventEngine);
         scene.setOnKeyPressed(userInput::onKeyPressed);
 
+        //Init MovementEngine
+        movementEngine = new MovementEngine(gameData, PhysEngine.getEngine(), eventEngine);
+
         display = new Display(graphicsData);
         display.drawMainGame();
 
@@ -130,7 +135,10 @@ public class Main extends Application {
     }
 
     public static void turn() {
+        movementEngine.moveAssets();
         display.drawMainGame();
+
+
         // System.out.println("Main game drawn");
     }
 }

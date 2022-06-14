@@ -39,7 +39,6 @@ public class EventHandlerOnDeath implements GameEventHandler {
         EventOnDeath eventOnDeath = (EventOnDeath) event;
         Asset deadAsset = eventOnDeath.deadAsset();
         Random random = new Random();
-        System.out.println("gameData.assetCollection().getAssets() = " + gameData.assetCollection().getMovableAssets());
         gameData.assetCollection().removeAsset(deadAsset);
         //TODO Factory for Items here
         //Asset randomDrop = new Sword("sword", deadCoordinateX, deadCoordinateY);
