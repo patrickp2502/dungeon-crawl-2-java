@@ -66,7 +66,7 @@ public class EventHandlerStandingOn implements GameEventHandler {
             public void handle(ActionEvent actionEvent) {
                 player.getInventory().addItem(item);
                 deleteItem(item);
-                display.showNewInformationUnderLabel("\nCollecting " + item + " worked!", hintSection);
+                // display.showNewInformationUnderLabel("\nCollecting " + item + " worked!", hintSection);
                 pickUpButton.setDisable(true);
                 display.drawInventory(inventorySection);
             }
