@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.eventengine.handler;
 
 import com.codecool.dungeoncrawl.data.Asset;
+import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import com.codecool.dungeoncrawl.logic.eventengine.Fighter;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventAssetCollision;
@@ -10,10 +11,14 @@ import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
 import java.util.Set;
 
 public class EventHandlerOnCollision implements GameEventHandler {
+    private final GameData gameData;
     private Set<Class<? extends GameEvent>> gameEventClasses;
 
-    public EventHandlerOnCollision(Set<Class<? extends GameEvent>> gameEventClasses) {
+
+
+    public EventHandlerOnCollision(Set<Class<? extends GameEvent>> gameEventClasses, GameData gameData) {
         this.gameEventClasses = gameEventClasses;
+        this.gameData = gameData;
     }
 
     @Override
@@ -32,6 +37,7 @@ public class EventHandlerOnCollision implements GameEventHandler {
         EventAssetCollision eventAssetCollision = (EventAssetCollision) event;
         Asset colliding = eventAssetCollision.collides();
         Asset getsCollided = eventAssetCollision.getCollided();
+
         delegateActions(colliding, getsCollided);
     }
 

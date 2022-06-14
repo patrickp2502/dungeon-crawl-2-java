@@ -92,10 +92,10 @@ public class Main extends Application {
         display = new Display(graphicsData);
         display.drawMainGame();
 
-        eventEngine = EventEngine.getInstance();
-        eventEngine.setHandlers(new InitEventHandlers().getGameEventHandlers());
-
         GameData gameData = new GameData(assetCollection, player);
+        //init EventEngine
+        eventEngine = EventEngine.getInstance();
+        eventEngine.setHandlers(new InitEventHandlers(display, gameData).getGameEventHandlers());
 
         WorldInformation worldInformation = new WorldInformation(
                 0,
@@ -108,8 +108,6 @@ public class Main extends Application {
         UserInput userInput = new UserInput(gameData, eventEngine);
         scene.setOnKeyPressed(userInput::onKeyPressed);
 
-        System.out.println("moveables = " + moveables);
-        System.out.println("assetCollection = " + assetCollection.getMovableAssets());
         display = new Display(graphicsData);
         display.drawMainGame();
 

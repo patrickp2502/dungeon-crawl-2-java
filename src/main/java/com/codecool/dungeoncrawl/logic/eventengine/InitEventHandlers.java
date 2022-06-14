@@ -1,5 +1,7 @@
 package com.codecool.dungeoncrawl.logic.eventengine;
 
+import com.codecool.dungeoncrawl.data.GameData;
+import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.logic.eventengine.events.*;
 import com.codecool.dungeoncrawl.logic.eventengine.handler.*;
 
@@ -14,10 +16,17 @@ import java.util.Set;
  */
 public class InitEventHandlers {
     private List<GameEventHandler> gameEventHandlers;
+    private Display display;
+    private GameData gameData;
 
-    public InitEventHandlers() {
+
+    public InitEventHandlers(Display display, GameData gameData) {
         //
+        this.display = display;
+        this.gameData = gameData;
         gameEventHandlers = new ArrayList<>();
+
+
         //Register EventPlayerInputMove.class to EventHandlerPlayerMove
         Set<Class<? extends GameEvent>> playerMoveEvents = new HashSet<>();
         playerMoveEvents.add(EventPlayerInputMove.class);
@@ -31,12 +40,24 @@ public class InitEventHandlers {
         //Register EventAssetCollision.class to EventHandlerOnCollision
         Set<Class<? extends GameEvent>> onCollisionEvents = new HashSet<>();
         onCollisionEvents.add(EventAssetCollision.class);
-        gameEventHandlers.add(new EventHandlerOnCollision(onCollisionEvents));
+        gameEventHandlers.add(new EventHandlerOnCollision(onCollisionEvents, gameData));
 
         //Register EventRoundEnd.class to EventHandlerRoundEnd
         Set<Class<? extends GameEvent>> endRoundEvents = new HashSet<>();
         endRoundEvents.add(EventRoundEnd.class);
         gameEventHandlers.add(new EventHandlerEndRound(endRoundEvents));
+
+        //Register CombatEvents to EventHandlerCombat
+        Set<Class<? extends GameEvent>> combatEvents = new HashSet<>();
+        combatEvents.add(EventCombatStart.class);
+        gameEventHandlers.add(new EventHandlerCombat(combatEvents, gameData));
+
+        //Register CombatEvents to EventHandlerCombat
+        Set<Class<? extends GameEvent>> onDeathEvents = new HashSet<>();
+        onDeathEvents.add(EventOnDeath.class);
+        gameEventHandlers.add(new EventHandlerOnDeath(onDeathEvents, gameData));
+
+
     }
 
     public List<GameEventHandler> getGameEventHandlers() {
