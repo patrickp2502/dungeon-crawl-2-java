@@ -2,28 +2,39 @@ package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
+import com.codecool.dungeoncrawl.logic.collections.Inventory;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import com.codecool.dungeoncrawl.util.AssetUtil;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.codecool.dungeoncrawl.display.Tiles.getTile;
+import static com.codecool.dungeoncrawl.display.Tiles.getTileset;
 
 /**
  * Only exit point to display everything
  */
 public class Display {
 
+    private StringBuilder stringBuilder;
+
     private final GraphicsData graphicsData;
 
     public Display(GraphicsData graphicsData) {
         this.graphicsData = graphicsData;
+        stringBuilder = new StringBuilder();
     }
 
     public void drawHealth(Label healthLabel, String labelText, GraphicsContext context) {
@@ -34,7 +45,10 @@ public class Display {
         GraphicsContext context = graphicsData.context();
         List<Scenery> scenery = graphicsData.scenery();
         List<Collectable> collectables = graphicsData.collectables();
-        List<Moveable> moveables = graphicsData.moveables();
+        List<Asset> moveables = graphicsData.assets()
+                .stream()
+                .filter(asset -> asset instanceof Moveable)
+                .collect(Collectors.toList());
         List<Asset> assets = graphicsData.assets();
         Canvas canvas = graphicsData.canvas();
         GameMap map = graphicsData.map();
@@ -70,8 +84,31 @@ public class Display {
                 x * Tiles.TILE_WIDTH, y * Tiles.TILE_WIDTH, Tiles.TILE_WIDTH, Tiles.TILE_WIDTH);
     }
 
-    public void showGameHint(String hint) {
-        graphicsData.ui().add(new Label("GAME HINTS: " + hint), 1, 0);
+    public void showNewInformationUnderLabel(String hint, Label label) {
+        label.setText(label.getText() + hint);
     }
 
+    public void showSpacesBetweenInfoboxContent(int emptyLines, int startRow) {
+        stringBuilder = new StringBuilder();
+        IntStream
+                .range(0, emptyLines)
+                .forEach(line -> stringBuilder.append(" \n"));
+        graphicsData.ui().add(new Label(stringBuilder.toString()), 0, startRow);
+    }
+
+    public Label  showAndGetNewLabelAlignedLeft(String labelText, int rowOfLabel) {
+        Label label = new Label(labelText);
+        graphicsData.ui().add(label, 0, rowOfLabel);
+        return label;
+    }
+
+    public void drawInventory(Label inventorySection) {
+        Player player = (Player) graphicsData.moveables()
+                .stream()
+                .filter(gamer -> gamer instanceof Player)
+                .findAny().get();
+
+        Inventory inventory = player.getInventory();
+        inventorySection.setText(inventory.toString());
+    }
 }

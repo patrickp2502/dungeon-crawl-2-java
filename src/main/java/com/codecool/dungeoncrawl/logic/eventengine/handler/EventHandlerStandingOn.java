@@ -26,5 +26,6 @@ public class EventHandlerStandingOn implements GameEventHandler {
     @Override
     public void handle(GameEvent event) {
         EventStandingOn actualEvent = (EventStandingOn) event;
+        // activate pickup possible
     }
 }

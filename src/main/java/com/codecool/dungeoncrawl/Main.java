@@ -38,7 +38,12 @@ public class Main extends Application {
     MapLoader mapLoader = new MapLoader();
     String[] FILE_PATHS = {"/map.txt", "/map2.txt"};
 //    GameMap map = mapLoader.loadMap(assetCollection, FILE_PATHS[0]);
-    GameMap map = mapLoader.loadMap(assetCollection, FILE_PATHS[0]);
+    GameMap map;
+
+    {
+        String firstLevel = FILE_PATHS[0];
+        map = mapLoader.loadMap(assetCollection, firstLevel);
+    }
 
     /*ArrayList<String> file_paths = new ArrayList<>();
     file_paths.add("/map.txt");
@@ -68,9 +73,6 @@ public class Main extends Application {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
 
-        ui.add(new Label("Health: "), 0, 0);
-        ui.add(healthLabel, 1, 0);
-
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -87,10 +89,21 @@ public class Main extends Application {
         List<Scenery> scenery = assetCollection.getScenery();
         List<Collectable> collectables = assetCollection.getCollectables();
         List<Moveable> moveables = assetCollection.getMovables();
+
+        //*****************   DRAWING   *****************
         GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map,
                 scenery, moveables, collectables, ui);
         display = new Display(graphicsData);
         display.drawMainGame();
+        Label healthSection = display.showAndGetNewLabelAlignedLeft("Health: ", 0);
+        display.showNewInformationUnderLabel("+++++++++--", healthSection);
+        display.showSpacesBetweenInfoboxContent(10, 2);
+        Label inventorySection = display.showAndGetNewLabelAlignedLeft("Inventory: \n", 13);
+        display.showNewInformationUnderLabel(player.getInventory().toString(), inventorySection);
+        display.showSpacesBetweenInfoboxContent(10, 14);
+        Label hintSection = display.showAndGetNewLabelAlignedLeft("Game hints: \n", 15);
+        display.showNewInformationUnderLabel("TEST HINT", hintSection);
+        //*****************   DRAWING DONE   *****************
 
         GameData gameData = new GameData(assetCollection, player);
         //init EventEngine
