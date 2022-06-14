@@ -10,6 +10,8 @@ import com.codecool.dungeoncrawl.logic.movementengine.behaviour.MovementBehaviou
 import com.codecool.dungeoncrawl.logic.movementengine.behaviour.RandomMovementBehaviour;
 import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.IsSolid;
 
+import java.util.List;
+
 public class Player extends Asset implements IsSolid, Moveable, Fighter {
 
     private final Inventory inventory;

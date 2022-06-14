@@ -23,7 +23,6 @@ import java.util.Set;
  */
 public class InitEventHandlers {
     private List<GameEventHandler> gameEventHandlers;
-    private Display display;
     private GameData gameData;
 
     private final Display display;
@@ -44,7 +43,6 @@ public class InitEventHandlers {
         this.player = getPlayer(assets);
         this.assets = assets;
         //
-        this.display = display;
         this.gameData = gameData;
         gameEventHandlers = new ArrayList<>();
 
@@ -69,20 +67,12 @@ public class InitEventHandlers {
         endRoundEvents.add(EventRoundEnd.class);
         gameEventHandlers.add(new EventHandlerEndRound(endRoundEvents, display, labels, buttons));
 
-
+        //Register playerHasKeyEvents to EventHandlerPlayerHasKey
         Set<Class<? extends GameEvent>> playerHasKeyEvents = new HashSet<>();
         playerHasKeyEvents.add(EventPlayerHasKey.class);
         ItemEngine itemEngine = new ItemEngine(assets);
         gameEventHandlers.add(new EventHandlerPlayerHasKey(assets, itemEngine.getDoor()));
-    }
 
-    private Player getPlayer(List<Asset> assets) {
-        return (Player) assets
-                .stream()
-                .filter(asset -> asset instanceof Player)
-                .findFirst()
-                .get();
-    }
         //Register CombatEvents to EventHandlerCombat
         Set<Class<? extends GameEvent>> combatEvents = new HashSet<>();
         combatEvents.add(EventCombatStart.class);
@@ -92,6 +82,17 @@ public class InitEventHandlers {
         Set<Class<? extends GameEvent>> onDeathEvents = new HashSet<>();
         onDeathEvents.add(EventOnDeath.class);
         gameEventHandlers.add(new EventHandlerOnDeath(onDeathEvents, gameData));
+    }
+
+    private Player getPlayer(List<Asset> assets) {
+        return (Player) assets
+                .stream()
+                .filter(asset -> asset instanceof Player)
+                .findFirst()
+                .get();
+    }
+
+
 
 
 

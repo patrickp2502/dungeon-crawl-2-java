@@ -114,7 +114,7 @@ public class Main extends Application {
         //*****************   DRAWING DONE   *****************
 
         eventEngine = EventEngine.getInstance();
-        eventEngine.setHandlers(new InitEventHandlers(display, labels, buttons, graphicsData.assets()).getGameEventHandlers());
+        eventEngine.setHandlers(new InitEventHandlers(display, labels, buttons, graphicsData.assets(), gameData).getGameEventHandlers());
 
 
 
