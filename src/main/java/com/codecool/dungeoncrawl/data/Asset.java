@@ -36,10 +36,6 @@ public abstract class Asset {
 
     @Override
     public String toString() {
-        return "Asset{" +
-                "tileName='" + tileName + '\'' +
-                ", xCoordinate=" + xCoordinate +
-                ", yCoordinate=" + yCoordinate +
-                '}';
+        return tileName;
     }
 }

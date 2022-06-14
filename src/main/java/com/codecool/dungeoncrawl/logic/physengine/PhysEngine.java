@@ -4,11 +4,16 @@ import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.AssetCollection;
 import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.data.WorldInformation;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
+import com.codecool.dungeoncrawl.logic.collectables.Key;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventAssetCollision;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventStandingOn;
 import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.IsSolid;
+import com.codecool.dungeoncrawl.logic.scenery.DoorClosed;
+import com.codecool.dungeoncrawl.logic.scenery.Scenery;
+import com.codecool.dungeoncrawl.util.DoorOpener;
 
 import java.util.List;
 
@@ -51,7 +56,11 @@ public class PhysEngine {
             return false;
         }
         for (Asset asset : getsCollidedAssets) {
-            if (asset instanceof IsSolid) {
+            if (checkForKey(getPlayer()) && asset instanceof DoorClosed) {
+                Scenery door = (Scenery) asset;
+                DoorOpener.openDoor((DoorClosed) door, assetCollection.getAssets());
+                return false;
+            } else if (asset instanceof IsSolid) {
                 EventEngine.getInstance().addEvent(new EventAssetCollision(movingAsset, asset));
                 return true;
             } else if (asset instanceof Collectable) {
@@ -60,6 +69,23 @@ public class PhysEngine {
         }
         return false;
 
+    }
+
+    private boolean checkForKey(Player player) {
+        return player
+                .getInventory()
+                .getItems()
+                .stream()
+                .anyMatch(item -> item instanceof Key);
+    }
+
+    private Player getPlayer() {
+        return (Player) assetCollection
+                .getAssets()
+                .stream()
+                .filter(asset -> asset instanceof Player)
+                .findFirst()
+                .get();
     }
 
     public boolean isCollideable(Asset asset) {

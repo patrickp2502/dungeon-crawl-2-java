@@ -1,11 +1,10 @@
 package com.codecool.dungeoncrawl.logic.collections;
 
+import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Inventory {
@@ -25,10 +24,13 @@ public class Inventory {
 
     @Override
     public String toString() {
-        List<String> itemList = items
+        Map<String, Long> itemStrings = items
                 .stream()
-                .map(item -> String.format("%s", item.getClass())).toList();
-        String finalString = String.join("\n", itemList);
-        return finalString + "Should work";
+                .collect(Collectors.groupingBy(Object::toString, Collectors.counting()));
+        StringBuilder finalString = new StringBuilder();
+        itemStrings
+                .forEach((key, value) -> finalString.append(key).append(": ").append(value).append("\n"));
+
+        return finalString.toString();
     }
 }

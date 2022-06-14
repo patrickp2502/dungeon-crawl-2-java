@@ -15,18 +15,20 @@ import com.codecool.dungeoncrawl.logic.eventengine.InitEventHandlers;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
+import com.codecool.dungeoncrawl.util.FileDetector;
+import com.codecool.dungeoncrawl.util.GameMapsInitializer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -36,29 +38,27 @@ public class Main extends Application {
     EventEngine eventEngine;
     PhysEngine physEngine;
     MapLoader mapLoader = new MapLoader();
-    String[] FILE_PATHS = {"/map.txt", "/map2.txt"};
-//    GameMap map = mapLoader.loadMap(assetCollection, FILE_PATHS[0]);
+    List<String> levels = FileDetector.getAvailableFileNamesInResources();
     GameMap map;
 
     {
-        String firstLevel = FILE_PATHS[0];
-        map = mapLoader.loadMap(assetCollection, firstLevel);
+        String firstLevel = levels.get(0);
+        String secondLevel = levels.get(1);
+        map = mapLoader.loadMap(assetCollection, secondLevel);
     }
 
-    /*ArrayList<String> file_paths = new ArrayList<>();
-    file_paths.add("/map.txt");
-    file_paths.add("/map2.txt");
 
-    GameMap map = mapLoader.loadMap(assetCollection, file_paths.get(1));*/
-    Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
+    Canvas canvas = getCanvas(map);
+
+    private Canvas getCanvas(GameMap gameMap) {
+        return new Canvas(
+                gameMap.getWidth() * Tiles.TILE_WIDTH,
+                gameMap.getHeight() * Tiles.TILE_WIDTH);
+    }
+
     GraphicsContext context = canvas.getGraphicsContext2D();
-    Label healthLabel = new Label();
     static Display display;
     Renderer renderer = new Renderer();
-
-    List<Asset> assetList = assetCollection.getAssets();
 
     public static void main(String[] args) {
         launch(args);
@@ -81,7 +81,7 @@ public class Main extends Application {
         Scene scene = new Scene(borderPane);
         scene.getRoot().setStyle("-fx-font-family: 'serif'");
         primaryStage.setScene(scene);
-        renderer.getMapTiles(assetList, context, canvas);
+        renderer.getMapTiles(assetCollection.getAssets(), context, canvas);
 
 
         //TODO NEED ALL DATA HERE
@@ -89,11 +89,11 @@ public class Main extends Application {
         List<Scenery> scenery = assetCollection.getScenery();
         List<Collectable> collectables = assetCollection.getCollectables();
         List<Moveable> moveables = assetCollection.getMovables();
-
+        GameData gameData = new GameData(assetCollection, player);
         //*****************   DRAWING   *****************
         GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map,
                 scenery, moveables, collectables, ui);
-        display = new Display(graphicsData);
+        display = new Display(graphicsData, gameData);
         display.drawMainGame();
         Label healthSection = display.showAndGetNewLabelAlignedLeft("Health: ", 0);
         display.showNewInformationUnderLabel("+++++++++--", healthSection);
@@ -102,27 +102,37 @@ public class Main extends Application {
         display.showNewInformationUnderLabel(player.getInventory().toString(), inventorySection);
         display.showSpacesBetweenInfoboxContent(10, 14);
         Label hintSection = display.showAndGetNewLabelAlignedLeft("Game hints: \n", 15);
-        display.showNewInformationUnderLabel("TEST HINT", hintSection);
+        display.showSpacesBetweenInfoboxContent(5, 17);
+        Label buttonLabel = display.showAndGetNewLabelAlignedLeft("Buttons: \n", 23);
+        Button pickUpButton = display.addButtonUnderLabel(buttonLabel, "Pick up");
+        pickUpButton.setFocusTraversable(false);
+        pickUpButton.setDisable(true);
+
+
+        List<Label> labels = Arrays.asList(healthSection, inventorySection, hintSection, buttonLabel);
+        List<Button> buttons = List.of(pickUpButton);
         //*****************   DRAWING DONE   *****************
 
         eventEngine = EventEngine.getInstance();
-        eventEngine.setHandlers(new InitEventHandlers().getGameEventHandlers());
+        eventEngine.setHandlers(new InitEventHandlers(display, labels, buttons, graphicsData.assets()).getGameEventHandlers());
 
-        GameData gameData = new GameData(assetCollection, player);
+
 
         WorldInformation worldInformation = new WorldInformation(
                 0,
                 0,
                 map.getWidth()-1,
                 map.getHeight()-1);
-        // System.out.println("map.getWidth() = " + map.getWidth());
         PhysEngine.setPhysEngine(gameData, worldInformation);
         DataHub.setGameData(gameData);
         UserInput userInput = new UserInput(gameData, eventEngine);
         scene.setOnKeyPressed(userInput::onKeyPressed);
 
-        display = new Display(graphicsData);
+        display = new Display(graphicsData, gameData);
         display.drawMainGame();
+
+
+
 
 
         primaryStage.setTitle("Dungeon Crawl");

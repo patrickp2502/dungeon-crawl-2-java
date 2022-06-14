@@ -1,6 +1,8 @@
 package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.data.Asset;
+import com.codecool.dungeoncrawl.data.GameData;
+import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
@@ -8,32 +10,32 @@ import com.codecool.dungeoncrawl.logic.collections.Inventory;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import com.codecool.dungeoncrawl.util.AssetUtil;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.codecool.dungeoncrawl.display.Tiles.getTile;
-import static com.codecool.dungeoncrawl.display.Tiles.getTileset;
 
 /**
  * Only exit point to display everything
  */
 public class Display {
 
-    private StringBuilder stringBuilder;
-
     private final GraphicsData graphicsData;
 
-    public Display(GraphicsData graphicsData) {
+    private final GameData gameData;
+    private StringBuilder stringBuilder;
+
+    public Display(GraphicsData graphicsData, GameData gameData) {
         this.graphicsData = graphicsData;
+        this.gameData = gameData;
         stringBuilder = new StringBuilder();
     }
 
@@ -43,8 +45,14 @@ public class Display {
 
     public void drawMainGame() {
         GraphicsContext context = graphicsData.context();
-        List<Scenery> scenery = graphicsData.scenery();
-        List<Collectable> collectables = graphicsData.collectables();
+        List<Asset> scenery = graphicsData.assets()
+                .stream()
+                .filter(asset -> asset instanceof Scenery)
+                .collect(Collectors.toList());
+        List<Asset> collectables = graphicsData.assets()
+                .stream()
+                .filter(asset -> asset instanceof Collectable)
+                .collect(Collectors.toList());
         List<Asset> moveables = graphicsData.assets()
                 .stream()
                 .filter(asset -> asset instanceof Moveable)
@@ -67,7 +75,8 @@ public class Display {
                         AssetUtil.getAssetByCoordinates((List<Asset>) assets, x, y).get(0) : null;
                 if (actual != null && AssetUtil.getAssetByCoordinates((List<Asset>) assets, x, y).size() == 1) {
                     drawTile(context, getTile(actual), x, y);
-                }            }
+                }
+            }
         }
     }
 
@@ -96,7 +105,7 @@ public class Display {
         graphicsData.ui().add(new Label(stringBuilder.toString()), 0, startRow);
     }
 
-    public Label  showAndGetNewLabelAlignedLeft(String labelText, int rowOfLabel) {
+    public Label showAndGetNewLabelAlignedLeft(String labelText, int rowOfLabel) {
         Label label = new Label(labelText);
         graphicsData.ui().add(label, 0, rowOfLabel);
         return label;
@@ -109,6 +118,25 @@ public class Display {
                 .findAny().get();
 
         Inventory inventory = player.getInventory();
-        inventorySection.setText(inventory.toString());
+        inventorySection.setText("Inventory:\n" + inventory.toString());
     }
+
+    public Button addButtonUnderLabel(Label label, String buttonLabel) {
+        Button button = new Button(buttonLabel);
+        double layoutX = 0; // label.getLayoutX();
+        double layoutY = 25; // label.getLayoutY();
+        graphicsData.ui().add(button, (int) layoutX, (int) layoutY);
+        return button;
+    }
+
+    public void resetLabel(Label label) {
+        label.setText(label.getText().split("\n")[0]);
+    }
+
+    public void resetPreviousLine(Label label) {
+        String[] lines = label.getText().split("\n");
+        String text = lines.length > 2 ? lines[0] + "\n" + lines[2] : String.join("\n", lines);
+        label.setText(text);
+    }
+
 }
