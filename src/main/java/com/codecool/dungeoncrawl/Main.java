@@ -20,6 +20,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -100,16 +101,19 @@ public class Main extends Application {
         display.showNewInformationUnderLabel(player.getInventory().toString(), inventorySection);
         display.showSpacesBetweenInfoboxContent(10, 14);
         Label hintSection = display.showAndGetNewLabelAlignedLeft("Game hints: \n", 15);
-        display.showNewInformationUnderLabel("TEST HINT", hintSection);
-        /*Button pickUpButton = display.addButtonUnderLabel(hintSection, "Test Pick Up Button");
-        pickUpButton.setDefaultButton(false);*/
+        display.showSpacesBetweenInfoboxContent(5, 17);
+        Label buttonLabel = display.showAndGetNewLabelAlignedLeft("Buttons: \n", 23);
+        Button pickUpButton = display.addButtonUnderLabel(buttonLabel, "Pick up");
+        pickUpButton.setFocusTraversable(false);
+        pickUpButton.setDisable(true);
 
 
-        List<Label> labels = Arrays.asList(healthSection, inventorySection, hintSection);
+        List<Label> labels = Arrays.asList(healthSection, inventorySection, hintSection, buttonLabel);
+        List<Button> buttons = List.of(pickUpButton);
         //*****************   DRAWING DONE   *****************
 
         eventEngine = EventEngine.getInstance();
-        eventEngine.setHandlers(new InitEventHandlers(display, labels).getGameEventHandlers());
+        eventEngine.setHandlers(new InitEventHandlers(display, labels, buttons, graphicsData.assets()).getGameEventHandlers());
 
 
 

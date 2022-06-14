@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic.eventengine.handler;
 import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import java.util.List;
@@ -15,11 +16,14 @@ public class EventHandlerEndRound implements GameEventHandler {
 
     private final List<Label> labels;
 
+    private final List<Button> buttons;
+
     public EventHandlerEndRound(Set<Class <? extends GameEvent>> eventClassToRegister, Display display,
-                                List<Label> labels) {
+                                List<Label> labels, List<Button> buttons) {
         this.gameEventClasses = eventClassToRegister;
         this.display = display;
         this.labels = labels;
+        this.buttons = buttons;
     }
 
 
@@ -35,19 +39,55 @@ public class EventHandlerEndRound implements GameEventHandler {
 
     @Override
     public void handle(GameEvent event) {
-        Label hintSection = labels
+        handleEndRoundTasks();
+        Main.turn();
+    }
+
+    private void handleEndRoundTasks() {
+        Label hintSection = handleHintSection();
+        Label inventorySection = handleInventorySection();
+        Label buttonLabel = labels
                 .stream()
-                .filter(label -> label.getText().contains("Game hint"))
+                .filter(label -> label.getText().contains("Buttons"))
                 .findFirst()
                 .get();
+        Button pickUpButton = getPickUpButton();
+        if (hintSection.getText().contains("Pick up item")) {
+            pickUpButton.setDisable(false);
 
-        Label inventorySection = labels
+        } else {
+            pickUpButton.setDisable(true);
+        }
+    }
+
+    private Button getPickUpButton() {
+        return buttons
                 .stream()
-                        .filter(label -> label.getText().contains("Inventory"))
-                                .findFirst()
-                                        .get();
-        display.resetPreviousLine(hintSection);
+                .filter(button -> button.getText().contains("Pick up"))
+                .findFirst()
+                .get();
+    }
+
+    private Label handleInventorySection() {
+        Label inventorySection = getLabelThatHas("Inventory");
         display.drawInventory(inventorySection);
-        Main.turn();
+        return inventorySection;
+    }
+
+    private Label handleHintSection() {
+        Label hintSection = getLabelThatHas("Game hint");
+
+
+        hintSection.setText(hintSection.getText() + "\n \n");
+        display.resetPreviousLine(hintSection);
+        return hintSection;
+    }
+
+    private Label getLabelThatHas(String text) {
+        return labels
+                .stream()
+                .filter(label -> label.getText().contains(text))
+                .findFirst()
+                .get();
     }
 }

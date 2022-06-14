@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -43,8 +44,14 @@ public class Display {
 
     public void drawMainGame() {
         GraphicsContext context = graphicsData.context();
-        List<Scenery> scenery = graphicsData.scenery();
-        List<Collectable> collectables = graphicsData.collectables();
+        List<Asset> scenery = graphicsData.assets()
+                .stream()
+                .filter(asset -> asset instanceof Scenery)
+                .collect(Collectors.toList());
+        List<Asset> collectables = graphicsData.assets()
+                .stream()
+                .filter(asset -> asset instanceof Collectable)
+                .collect(Collectors.toList());
         List<Asset> moveables = graphicsData.assets()
                 .stream()
                 .filter(asset -> asset instanceof Moveable)
@@ -115,7 +122,9 @@ public class Display {
 
     public Button addButtonUnderLabel(Label label, String buttonLabel) {
         Button button = new Button(buttonLabel);
-        graphicsData.ui().add(button, (int) label.getLayoutX() + 1, (int) label.getLayoutY() + 1);
+        double layoutX = 0; // label.getLayoutX();
+        double layoutY = 25; // label.getLayoutY();
+        graphicsData.ui().add(button, (int) layoutX, (int) layoutY);
         return button;
     }
 
@@ -125,7 +134,7 @@ public class Display {
 
     public void resetPreviousLine(Label label) {
         String[] lines = label.getText().split("\n");
-        String text = lines.length > 2 ? lines[0] + lines[2] : String.join("", lines);
+        String text = lines.length > 2 ? lines[0] + "\n" + lines[2] : String.join("\n", lines);
         label.setText(text);
     }
 
