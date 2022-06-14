@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.movementengine.behaviour;
 
 import com.codecool.dungeoncrawl.data.Asset;
+import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.logic.movementengine.Direction;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
@@ -10,7 +11,7 @@ import java.util.Random;
 public class RandomMovementBehaviour implements MovementBehaviour {
 
     @Override
-    public <T extends Asset & Moveable> void move(T moveableAsset, PhysEngine physEngine) {
+    public <T extends Asset & Moveable> void move(T moveableAsset, PhysEngine physEngine, GameData gameData) {
         if (moveableAsset.getMovementStop()) {
             return;
         }

@@ -24,8 +24,8 @@ public class MovementEngine {
     public void moveAssets() {
         List<Moveable> moveables = gameData.assetCollection().getMovableWithoutPlayer();
         //TODO @Markus will I join HELL for this?
-        moveables.forEach(moveable -> moveable.getMovementBehaviour().move((Asset & Moveable) moveable, physEngine));
-        
+        moveables.forEach(moveable -> moveable.getMovementBehaviour().move((Asset & Moveable) moveable, physEngine, gameData));
+
     }
 
 

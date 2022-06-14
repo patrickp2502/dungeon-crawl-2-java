@@ -1,7 +1,7 @@
 package com.codecool.dungeoncrawl.logic.movementengine;
 
 public enum Direction {
-    UP(0,-1), DOWN(0,1), RIGHT(1,0), LEFT(-1,0);
+    UP(0,-1), DOWN(0,+1), RIGHT(1,0), LEFT(-1,0);
 
     private final int xDirection;
     private final int yDirection;
