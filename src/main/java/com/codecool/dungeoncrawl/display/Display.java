@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.codecool.dungeoncrawl.display.Tiles.getTile;
@@ -44,7 +45,10 @@ public class Display {
         GraphicsContext context = graphicsData.context();
         List<Scenery> scenery = graphicsData.scenery();
         List<Collectable> collectables = graphicsData.collectables();
-        List<Moveable> moveables = graphicsData.moveables();
+        List<Asset> moveables = graphicsData.assets()
+                .stream()
+                .filter(asset -> asset instanceof Moveable)
+                .collect(Collectors.toList());
         List<Asset> assets = graphicsData.assets();
         Canvas canvas = graphicsData.canvas();
         GameMap map = graphicsData.map();
