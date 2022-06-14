@@ -15,22 +15,17 @@ import com.codecool.dungeoncrawl.logic.eventengine.InitEventHandlers;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
-import com.codecool.dungeoncrawl.util.CollectableManager;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -45,7 +40,7 @@ public class Main extends Application {
     GameMap map;
 
     {
-        String firstLevel = FILE_PATHS[1];
+        String firstLevel = FILE_PATHS[0];
         map = mapLoader.loadMap(assetCollection, firstLevel);
     }
 
@@ -92,11 +87,11 @@ public class Main extends Application {
         List<Scenery> scenery = assetCollection.getScenery();
         List<Collectable> collectables = assetCollection.getCollectables();
         List<Moveable> moveables = assetCollection.getMovables();
-
+        GameData gameData = new GameData(assetCollection, player);
         //*****************   DRAWING   *****************
         GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map,
                 scenery, moveables, collectables, ui);
-        display = new Display(graphicsData);
+        display = new Display(graphicsData, gameData);
         display.drawMainGame();
         Label healthSection = display.showAndGetNewLabelAlignedLeft("Health: ", 0);
         display.showNewInformationUnderLabel("+++++++++--", healthSection);
@@ -106,17 +101,17 @@ public class Main extends Application {
         display.showSpacesBetweenInfoboxContent(10, 14);
         Label hintSection = display.showAndGetNewLabelAlignedLeft("Game hints: \n", 15);
         display.showNewInformationUnderLabel("TEST HINT", hintSection);
-        Button pickUpButton = display.addButtonUnderLabel(hintSection, "Test Pick Up Button");
-        pickUpButton.setDefaultButton(false);
+        /*Button pickUpButton = display.addButtonUnderLabel(hintSection, "Test Pick Up Button");
+        pickUpButton.setDefaultButton(false);*/
 
 
-
+        List<Label> labels = Arrays.asList(healthSection, inventorySection, hintSection);
         //*****************   DRAWING DONE   *****************
 
         eventEngine = EventEngine.getInstance();
-        eventEngine.setHandlers(new InitEventHandlers().getGameEventHandlers());
+        eventEngine.setHandlers(new InitEventHandlers(display, labels).getGameEventHandlers());
 
-        GameData gameData = new GameData(assetCollection, player);
+
 
         WorldInformation worldInformation = new WorldInformation(
                 0,
@@ -129,7 +124,7 @@ public class Main extends Application {
         UserInput userInput = new UserInput(gameData, eventEngine);
         scene.setOnKeyPressed(userInput::onKeyPressed);
 
-        display = new Display(graphicsData);
+        display = new Display(graphicsData, gameData);
         display.drawMainGame();
 
 

@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.data.Asset;
+import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
@@ -15,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.codecool.dungeoncrawl.display.Tiles.getTile;
@@ -25,10 +27,13 @@ import static com.codecool.dungeoncrawl.display.Tiles.getTile;
 public class Display {
 
     private final GraphicsData graphicsData;
+
+    private final GameData gameData;
     private StringBuilder stringBuilder;
 
-    public Display(GraphicsData graphicsData) {
+    public Display(GraphicsData graphicsData, GameData gameData) {
         this.graphicsData = graphicsData;
+        this.gameData = gameData;
         stringBuilder = new StringBuilder();
     }
 
@@ -40,7 +45,10 @@ public class Display {
         GraphicsContext context = graphicsData.context();
         List<Scenery> scenery = graphicsData.scenery();
         List<Collectable> collectables = graphicsData.collectables();
-        List<Moveable> moveables = graphicsData.moveables();
+        List<Asset> moveables = graphicsData.assets()
+                .stream()
+                .filter(asset -> asset instanceof Moveable)
+                .collect(Collectors.toList());
         List<Asset> assets = graphicsData.assets();
         Canvas canvas = graphicsData.canvas();
         GameMap map = graphicsData.map();
@@ -102,14 +110,23 @@ public class Display {
                 .findAny().get();
 
         Inventory inventory = player.getInventory();
-        inventorySection.setText(inventory.toString());
+        inventorySection.setText("Inventory:\n" + inventory.toString());
     }
 
     public Button addButtonUnderLabel(Label label, String buttonLabel) {
         Button button = new Button(buttonLabel);
         graphicsData.ui().add(button, (int) label.getLayoutX() + 1, (int) label.getLayoutY() + 1);
-        //label.setText(label.getText() + button);
         return button;
+    }
+
+    public void resetLabel(Label label) {
+        label.setText(label.getText().split("\n")[0]);
+    }
+
+    public void resetPreviousLine(Label label) {
+        String[] lines = label.getText().split("\n");
+        String text = lines.length > 2 ? lines[0] + lines[2] : String.join("", lines);
+        label.setText(text);
     }
 
 }
