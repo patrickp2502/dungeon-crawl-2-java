@@ -46,15 +46,12 @@ public final class EventEngine {
     }
 
     private void handleSingleEvent(GameEvent event) {
-        System.out.println("event = " + event);
-        System.out.println("event.getClass() = " + event.getClass());
         GameEventHandler gameEventHandler = getEventHandler(event);
         gameEventHandler.handle(event);
     }
 
 
     private GameEventHandler getEventHandler(GameEvent gameEvent) {
-        System.out.println("eventHandlers = " + eventHandlers);
         return eventHandlers.stream()
                 .filter(handler -> handler.getGameEvents().stream()
                         .anyMatch(eventClass -> eventClass.isInstance(gameEvent)))

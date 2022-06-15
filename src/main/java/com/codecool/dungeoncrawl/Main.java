@@ -48,7 +48,7 @@ public class Main extends Application {
     {
         String firstLevel = levels.get(0);
         String secondLevel = levels.get(1);
-        map = mapLoader.loadMap(assetCollection, secondLevel);
+        map = mapLoader.loadMap(assetCollection, firstLevel);
     }
 
 

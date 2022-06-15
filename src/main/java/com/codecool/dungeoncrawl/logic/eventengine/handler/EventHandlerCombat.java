@@ -34,7 +34,6 @@ public class EventHandlerCombat implements GameEventHandler {
 
     @Override
     public void handle(GameEvent event) {
-        System.out.println("FIGHT");
 
         EventCombatStart eventCombatStart = (EventCombatStart) event;
         attacker = eventCombatStart.attackerAsset();
@@ -50,7 +49,6 @@ public class EventHandlerCombat implements GameEventHandler {
         int defenderHealth = defender.getCombatStats().getHealth();
 
         defenderHealth -= attackerAttackPoints;
-        System.out.println("defenderHealth = " + defenderHealth);
         if (defenderHealth <= 0) {
             EventEngine.getInstance().addEvent(new EventOnDeath((Asset) defender));
 

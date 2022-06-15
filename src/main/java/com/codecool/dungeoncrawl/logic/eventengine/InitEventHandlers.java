@@ -66,13 +66,13 @@ public class InitEventHandlers {
         Set<Class<? extends GameEvent>> endRoundEvents = new HashSet<>();
         endRoundEvents.add(EventRoundEnd.class);
         gameEventHandlers.add(new EventHandlerEndRound(endRoundEvents, display, labels, buttons));
-
+        /*
         //Register playerHasKeyEvents to EventHandlerPlayerHasKey
         Set<Class<? extends GameEvent>> playerHasKeyEvents = new HashSet<>();
         playerHasKeyEvents.add(EventPlayerHasKey.class);
         ItemEngine itemEngine = new ItemEngine(assets);
         gameEventHandlers.add(new EventHandlerPlayerHasKey(assets, itemEngine.getDoor()));
-
+*/
         //Register CombatEvents to EventHandlerCombat
         Set<Class<? extends GameEvent>> combatEvents = new HashSet<>();
         combatEvents.add(EventCombatStart.class);
