@@ -21,7 +21,8 @@ public class CrawlerDataBaseManager {
     public CrawlerDataBaseManager(GameData gameData) {
         this.gameData = gameData;
         env = System.getenv();
-        setUp();
+        //TODO for working dataconnection uncomment the setUp
+        //setUp();
         }
 
     private DataSource connect() {

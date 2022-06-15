@@ -134,8 +134,6 @@ public class Display {
         int playerYstart = 9;
         int differenceX = playerXstart - playerX;
         int differenceY = playerYstart - playerY;
-        System.out.println("playerY = " + playerY);
-        System.out.println("playerX = " + playerX);
 
 
 

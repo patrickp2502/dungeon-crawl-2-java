@@ -13,7 +13,7 @@ public class CombatStats {
 
     public void decreaseHealth(int amountDecreaseHealth) {
         if (health <= 0) {
-            throw new IllegalStateException("Health already at zero!");
+            health = 0;
         }
         health -= amountDecreaseHealth;
     }

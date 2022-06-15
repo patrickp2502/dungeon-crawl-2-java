@@ -23,10 +23,12 @@ import com.codecool.dungeoncrawl.logic.userActionEngine.SaveHandler;
 import com.codecool.dungeoncrawl.persistance.CrawlerDataBaseManager;
 import com.codecool.dungeoncrawl.util.FileDetector;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -48,23 +50,29 @@ public class Main extends Application {
     GameMap map;
 
     {
-        System.out.println(levels);
         String firstLevel = levels.get(0);
         String secondLevel = levels.get(1);
         String testLevel = levels.get(2);
         map = mapLoader.loadMap(assetCollection, "/levels/mapTest.txt");
-        System.out.println("testLevel = " + testLevel);
     }
 
 
     Canvas canvas = getCanvas(map);
-/* old rendering
-    private Canvas getCanvas(GameMap gameMap) {
-        return new Canvas(
-                gameMap.getWidth() * Tiles.TILE_WIDTH,
-                gameMap.getHeight() * Tiles.TILE_WIDTH);
+
+    public static void exit() {
+        Alert alert = new Alert(Alert.AlertType.WARNING, "YOU LOST!!!");
+        alert.showAndWait();
+        Platform.exit();
+
     }
-*/
+
+    /* old rendering
+        private Canvas getCanvas(GameMap gameMap) {
+            return new Canvas(
+                    gameMap.getWidth() * Tiles.TILE_WIDTH,
+                    gameMap.getHeight() * Tiles.TILE_WIDTH);
+        }
+    */
     private Canvas getCanvas(GameMap gameMap) {
         return new Canvas(
                 20*Tiles.TILE_WIDTH,
@@ -164,4 +172,6 @@ public class Main extends Application {
         display.drawMainGame();
         // System.out.println("Main game drawn");
     }
+
+
 }

@@ -1,11 +1,14 @@
 package com.codecool.dungeoncrawl.logic.eventengine.handler;
 
+import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.GameData;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.collectables.Sword;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventOnDeath;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
+import javafx.application.Application;
 
 import java.util.List;
 import java.util.Random;
@@ -39,6 +42,10 @@ public class EventHandlerOnDeath implements GameEventHandler {
         EventOnDeath eventOnDeath = (EventOnDeath) event;
         Asset deadAsset = eventOnDeath.deadAsset();
         Random random = new Random();
+        if (deadAsset instanceof Player) {
+            Main.exit();
+            return;
+        }
         gameData.assetCollection().removeAsset(deadAsset);
         //TODO Factory for Items here
         //Asset randomDrop = new Sword("sword", deadCoordinateX, deadCoordinateY);
