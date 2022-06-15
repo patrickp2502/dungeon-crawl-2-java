@@ -47,8 +47,8 @@ public class EventHandlerCombat implements GameEventHandler {
         int defenderAttackPoints = defender.getCombatStats().getAttackPoints();
         int attackerHealth = attacker.getCombatStats().getHealth();
         int defenderHealth = defender.getCombatStats().getHealth();
-
         defenderHealth -= attackerAttackPoints;
+        defender.getCombatStats().decreaseHealth(attackerAttackPoints);
         if (defenderHealth <= 0) {
             EventEngine.getInstance().addEvent(new EventOnDeath((Asset) defender));
 
@@ -56,8 +56,10 @@ public class EventHandlerCombat implements GameEventHandler {
         }
 
         attackerHealth -= defenderAttackPoints;
+        attacker.getCombatStats().decreaseHealth(defenderAttackPoints);
         if (attackerHealth <= 0) {
             EventEngine.getInstance().addEvent(new EventOnDeath((Asset) attacker));
         }
+
     }
 }

@@ -18,12 +18,27 @@ public class Player extends Asset implements IsSolid, Fighter, Moveable {
     private MovementBehaviour movementBehaviour;
     private CombatStats combatStats;
 
+    private final int MAX_HEALTH;
+
+    private final int ATTACK_POINTS;
+
+    public int getMAX_HEALTH() {
+        return MAX_HEALTH;
+    }
+
+    public int getATTACK_POINTS() {
+        return ATTACK_POINTS;
+    }
 
     public Player(String tileName, int xCoordinate, int yCoordinate) {
         super(tileName, xCoordinate, yCoordinate);
         movementBehaviour = new RandomMovementBehaviour();
         inventory = new Inventory();
-        combatStats = new CombatStats(100, 10);
+        int health = 100;
+        int attackPoints = 10;
+        combatStats = new CombatStats(health, attackPoints);
+        MAX_HEALTH = health;
+        ATTACK_POINTS = attackPoints;
     }
 
 

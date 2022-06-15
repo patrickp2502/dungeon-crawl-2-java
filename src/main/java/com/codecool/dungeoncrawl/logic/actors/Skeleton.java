@@ -18,7 +18,7 @@ public class Skeleton extends Asset implements Moveable, IsSolid, Fighter {
 
     public Skeleton(String tileName, int xCoordinate, int yCoordinate) {
         super(tileName, xCoordinate, yCoordinate);
-        combatStats = new CombatStats(10, 4);
+        combatStats = new CombatStats(15, 4);
         //movementBehaviour = new RandomMovementBehaviour();
         movementBehaviour = new AggressiveMovementBehaviour();
 

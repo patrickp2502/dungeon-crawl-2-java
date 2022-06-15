@@ -56,6 +56,9 @@ public class PhysEngine {
             return false;
         }
         for (Asset asset : getsCollidedAssets) {
+            if (movingAsset.equals(asset)) {
+                return false;
+            }
             if (checkForKey(getPlayer()) && asset instanceof DoorClosed) {
                 Scenery door = (Scenery) asset;
                 DoorOpener.openDoor((DoorClosed) door, assetCollection.getAssets());
