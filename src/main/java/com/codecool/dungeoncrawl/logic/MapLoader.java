@@ -71,6 +71,7 @@ public class MapLoader {
                             Floor floorUnderSwordAsset = new Floor("floor", x, y);
                             assetCollection.addAsset(sword);
                             assetCollection.addAsset(floorUnderSwordAsset);
+                            break;
                         case 'f':
                             FatDude fatDude = new FatDude("fat dude", x, y);
                             Floor floorUnderFatDude = new Floor("floor",x,y);

@@ -48,7 +48,7 @@ public class Main extends Application {
     {
         String firstLevel = levels.get(0);
         String secondLevel = levels.get(1);
-        map = mapLoader.loadMap(assetCollection, firstLevel);
+        map = mapLoader.loadMap(assetCollection, secondLevel);
     }
 
 
@@ -98,9 +98,9 @@ public class Main extends Application {
                 scenery, moveables, collectables, ui);
         display = new Display(graphicsData, gameData);
         display.drawMainGame();
-        Label healthSection = display.showAndGetNewLabelAlignedLeft("Health: ", 0);
-        display.showNewInformationUnderLabel("+++++++++--", healthSection);
-        display.showSpacesBetweenInfoboxContent(10, 2);
+        Label healthSection = display.initializeHealthProgressBar(); // display.showAndGetNewLabelAlignedLeft("Health: ", 0);
+        Label attackPointsSection = display.initializeAttackPointsProgressBar();
+        display.showSpacesBetweenInfoboxContent(7, 5);
         Label inventorySection = display.showAndGetNewLabelAlignedLeft("Inventory: \n", 13);
         display.showNewInformationUnderLabel(player.getInventory().toString(), inventorySection);
         display.showSpacesBetweenInfoboxContent(10, 14);
@@ -112,7 +112,8 @@ public class Main extends Application {
         pickUpButton.setDisable(true);
 
 
-        List<Label> labels = Arrays.asList(healthSection, inventorySection, hintSection, buttonLabel);
+        List<Label> labels = Arrays.asList(healthSection, attackPointsSection, inventorySection,
+                hintSection, buttonLabel);
         List<Button> buttons = List.of(pickUpButton);
         //*****************   DRAWING DONE   *****************
 

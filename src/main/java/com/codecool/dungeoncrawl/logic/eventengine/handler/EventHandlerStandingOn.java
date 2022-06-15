@@ -4,6 +4,8 @@ import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
+import com.codecool.dungeoncrawl.logic.collectables.Sword;
+import com.codecool.dungeoncrawl.logic.eventengine.combat.CombatStats;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventStandingOn;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
 import javafx.event.ActionEvent;
@@ -68,9 +70,17 @@ public class EventHandlerStandingOn implements GameEventHandler {
                 deleteItem(item);
                 // display.showNewInformationUnderLabel("\nCollecting " + item + " worked!", hintSection);
                 pickUpButton.setDisable(true);
+                if (item instanceof Sword sword) {
+                    player.getCombatStats().increaseAttackPoints(sword.getCombatStats().getAttackPoints());
+                }
+                display.setAttackPointsLabel(getAttackPointsLabel("Attack Points:"));
                 display.drawInventory(inventorySection);
             }
         });
+    }
+
+    private Label getAttackPointsLabel(String s) {
+        return labels.stream().filter(label -> label.getText().contains(s)).findFirst().get();
     }
 
     private void deleteItem(Collectable item) {

@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.GameData;
-import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
@@ -15,9 +14,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.paint.Color;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -31,16 +30,44 @@ public class Display {
     private final GraphicsData graphicsData;
 
     private final GameData gameData;
+
+    private final ProgressBar healthBar;
+
     private StringBuilder stringBuilder;
 
     public Display(GraphicsData graphicsData, GameData gameData) {
         this.graphicsData = graphicsData;
         this.gameData = gameData;
         stringBuilder = new StringBuilder();
+        healthBar = new ProgressBar();
     }
 
-    public void drawHealth(Label healthLabel, String labelText, GraphicsContext context) {
-        healthLabel.setText(labelText);
+    public Label initializeHealthProgressBar() {
+        Label healthLabelCreated = showAndGetNewLabelAlignedLeft("Health: \n", 0);
+        addProgressBarUnderLabel(healthLabelCreated, healthBar);
+
+        healthBar.setProgress(1);
+        return healthLabelCreated;
+    }
+
+    public Label initializeAttackPointsProgressBar() {
+        Label attackPointsLabel = showAndGetNewLabelAlignedLeft("Attack Points: ", 4);
+        setAttackPointsLabel(attackPointsLabel);
+        return attackPointsLabel;
+    }
+
+    public void setAttackPointsLabel(Label attackPointsLabel) {
+        String currentText = attackPointsLabel.getText();
+        String[] textLines = currentText.split(":");
+        int attackPoints = gameData.player().getCombatStats().getAttackPoints();
+        attackPointsLabel.setText(textLines[0] + ": " + attackPoints);
+    }
+
+    public void setHealthProgressBar(Player player) {
+        double playerHealth = player.getCombatStats().getHealth();
+        double playerMaxHealth = player.getMAX_HEALTH();
+        double healthPercentage = playerHealth/playerMaxHealth ;
+        healthBar.setProgress(healthPercentage);
     }
 
     public void drawMainGame() {
@@ -127,6 +154,12 @@ public class Display {
         double layoutY = 25; // label.getLayoutY();
         graphicsData.ui().add(button, (int) layoutX, (int) layoutY);
         return button;
+    }
+
+    public void addProgressBarUnderLabel(Label label, ProgressBar progressBar) {
+        double layoutX = 0; // label.getLayoutX();
+        double layoutY = label.getLayoutY() + 1; // label.getLayoutY();
+        graphicsData.ui().add(progressBar, (int) layoutX, (int) layoutY);
     }
 
     public void resetLabel(Label label) {

@@ -65,7 +65,7 @@ public class InitEventHandlers {
         //Register EventRoundEnd.class to EventHandlerRoundEnd
         Set<Class<? extends GameEvent>> endRoundEvents = new HashSet<>();
         endRoundEvents.add(EventRoundEnd.class);
-        gameEventHandlers.add(new EventHandlerEndRound(endRoundEvents, display, labels, buttons));
+        gameEventHandlers.add(new EventHandlerEndRound(endRoundEvents, display, labels, buttons, getPlayer(assets)));
         /*
         //Register playerHasKeyEvents to EventHandlerPlayerHasKey
         Set<Class<? extends GameEvent>> playerHasKeyEvents = new HashSet<>();
@@ -91,11 +91,6 @@ public class InitEventHandlers {
                 .findFirst()
                 .get();
     }
-
-
-
-
-
 
     public List<GameEventHandler> getGameEventHandlers() {
         return gameEventHandlers;

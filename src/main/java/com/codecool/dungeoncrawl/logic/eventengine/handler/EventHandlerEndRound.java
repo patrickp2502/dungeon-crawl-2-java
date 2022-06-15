@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.eventengine.handler;
 
 import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.display.Display;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,13 +18,16 @@ public class EventHandlerEndRound implements GameEventHandler {
     private final List<Label> labels;
 
     private final List<Button> buttons;
+    
+    private final Player player;
 
     public EventHandlerEndRound(Set<Class <? extends GameEvent>> eventClassToRegister, Display display,
-                                List<Label> labels, List<Button> buttons) {
+                                List<Label> labels, List<Button> buttons, Player player) {
         this.gameEventClasses = eventClassToRegister;
         this.display = display;
         this.labels = labels;
         this.buttons = buttons;
+        this.player = player;
     }
 
 
@@ -44,6 +48,8 @@ public class EventHandlerEndRound implements GameEventHandler {
     }
 
     private void handleEndRoundTasks() {
+        display.setHealthProgressBar(player);
+        display.setAttackPointsLabel(getLabelThatHas("Attack Points:"));
         Label hintSection = handleHintSection();
         Label inventorySection = handleInventorySection();
         Label buttonLabel = labels

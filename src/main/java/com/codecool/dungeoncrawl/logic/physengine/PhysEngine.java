@@ -56,6 +56,9 @@ public class PhysEngine {
             return false;
         }
         for (Asset asset : getsCollidedAssets) {
+            if (movingAsset.equals(asset)) {
+                return false;
+            }
             if (checkForKey(getPlayer()) && asset instanceof DoorClosed) {
                 Scenery door = (Scenery) asset;
                 DoorOpener.openDoor((DoorClosed) door, assetCollection.getAssets());
@@ -63,7 +66,7 @@ public class PhysEngine {
             } else if (asset instanceof IsSolid) {
                 EventEngine.getInstance().addEvent(new EventAssetCollision(movingAsset, asset));
                 return true;
-            } else if (asset instanceof Collectable) {
+            } else if (asset instanceof Collectable && movingAsset instanceof Player) {
                 EventEngine.getInstance().addEvent(new EventStandingOn(asset));
             }
         }
