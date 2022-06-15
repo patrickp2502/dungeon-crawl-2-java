@@ -27,11 +27,6 @@ public class Player extends Asset implements IsSolid, Fighter, Moveable {
     }
 
 
-    @Override
-    public MovementBehaviour getMovementBehaviour() {
-        return null;
-    }
-
     public Inventory getInventory() {
         return inventory;
     }

@@ -1,7 +1,10 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.controls.UserInput;
-import com.codecool.dungeoncrawl.data.*;
+import com.codecool.dungeoncrawl.data.AssetCollection;
+import com.codecool.dungeoncrawl.data.DataHub;
+import com.codecool.dungeoncrawl.data.GameData;
+import com.codecool.dungeoncrawl.data.WorldInformation;
 import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.display.GraphicsData;
 import com.codecool.dungeoncrawl.display.Renderer;
@@ -17,7 +20,6 @@ import com.codecool.dungeoncrawl.logic.movementengine.MovementEngine;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import com.codecool.dungeoncrawl.util.FileDetector;
-import com.codecool.dungeoncrawl.util.GameMapsInitializer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -68,7 +70,6 @@ public class Main extends Application {
     }
 
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         GridPane ui = new GridPane();
@@ -115,18 +116,16 @@ public class Main extends Application {
         List<Button> buttons = List.of(pickUpButton);
         //*****************   DRAWING DONE   *****************
 
-        GameData gameData = new GameData(assetCollection, player);
-         //init EventEngine
+        //init EventEngine
         eventEngine = EventEngine.getInstance();
         eventEngine.setHandlers(new InitEventHandlers(display, labels, buttons, graphicsData.assets(), gameData).getGameEventHandlers());
-
 
 
         WorldInformation worldInformation = new WorldInformation(
                 0,
                 0,
-                map.getWidth()-1,
-                map.getHeight()-1);
+                map.getWidth() - 1,
+                map.getHeight() - 1);
         // System.out.println("map.getWidth() = " + map.getWidth());
         PhysEngine.setPhysEngine(gameData, worldInformation);
         DataHub.setGameData(gameData);
@@ -138,9 +137,7 @@ public class Main extends Application {
         //Init MovementEngine
         movementEngine = new MovementEngine(gameData, PhysEngine.getEngine(), eventEngine);
 
-        display = new Display(graphicsData);
         display.drawMainGame();
-
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
