@@ -49,7 +49,6 @@ public class AssetCollection {
 
 
 
-
     public <T> List<T> separate(Class<T> className) {
         return assets
                 .stream()
@@ -57,6 +56,14 @@ public class AssetCollection {
                 .map(asset -> (T) asset)
                 .collect(Collectors.toList());
     }
+
+    public List<Moveable> getMovableWithoutPlayer() {
+        return assets.stream()
+                .filter(asset -> asset instanceof Moveable && !(asset instanceof Player))
+                .map(asset -> (Moveable) asset)
+                .collect(Collectors.toList());
+    }
+
 
     public List<Moveable> getMovables() {
         List<Moveable> returnList  = new ArrayList<>();

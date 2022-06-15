@@ -44,6 +44,8 @@ public class Tiles {
         tileMap.put("enemy robot", new Tile(31, 6));
         tileMap.put("door open", new Tile(12, 11));
         tileMap.put("ghost", new Tile(27, 6));
+        tileMap.put("fat dude", new Tile(30, 6));
+        tileMap.put("goblin", new Tile(5,6));
     }
 
     /**

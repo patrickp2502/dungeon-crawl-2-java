@@ -14,7 +14,7 @@ public class MovementEngine {
 
 
 
-    private MovementEngine(GameData gameData, PhysEngine physEngine, EventEngine eventEngine) {
+    public MovementEngine(GameData gameData, PhysEngine physEngine, EventEngine eventEngine) {
         this.gameData = gameData;
         this.physEngine = physEngine;
         this.eventEngine = eventEngine;
@@ -22,7 +22,9 @@ public class MovementEngine {
 
 
     public void moveAssets() {
-        List<Asset> assetsToMove = gameData.assetCollection().getMovableAssets();
+        List<Moveable> moveables = gameData.assetCollection().getMovableWithoutPlayer();
+        //TODO @Markus will I join HELL for this?
+        moveables.forEach(moveable -> moveable.getMovementBehaviour().move((Asset & Moveable) moveable, physEngine, gameData));
 
     }
 

@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.eventengine.handler;
 
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.GameData;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import com.codecool.dungeoncrawl.logic.eventengine.Fighter;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventAssetCollision;
@@ -42,7 +43,8 @@ public class EventHandlerOnCollision implements GameEventHandler {
     }
 
     private void delegateActions(Asset colliding, Asset getsCollided) {
-        if (colliding instanceof Fighter && getsCollided instanceof Fighter) {
+        if (colliding instanceof Fighter && getsCollided instanceof Fighter &&
+                !(!(colliding instanceof Player) && !(getsCollided instanceof Player) )) {
             EventEngine.getInstance().addEvent(new EventCombatStart((Fighter) colliding,(Fighter) getsCollided));
         }
 

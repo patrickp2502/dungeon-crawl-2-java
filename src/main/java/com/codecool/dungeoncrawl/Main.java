@@ -13,6 +13,7 @@ import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import com.codecool.dungeoncrawl.logic.eventengine.InitEventHandlers;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
+import com.codecool.dungeoncrawl.logic.movementengine.MovementEngine;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import com.codecool.dungeoncrawl.util.FileDetector;
@@ -37,6 +38,7 @@ public class Main extends Application {
 
     EventEngine eventEngine;
     PhysEngine physEngine;
+    static MovementEngine movementEngine;
     MapLoader mapLoader = new MapLoader();
     List<String> levels = FileDetector.getAvailableFileNamesInResources();
     GameMap map;
@@ -113,6 +115,8 @@ public class Main extends Application {
         List<Button> buttons = List.of(pickUpButton);
         //*****************   DRAWING DONE   *****************
 
+        GameData gameData = new GameData(assetCollection, player);
+         //init EventEngine
         eventEngine = EventEngine.getInstance();
         eventEngine.setHandlers(new InitEventHandlers(display, labels, buttons, graphicsData.assets(), gameData).getGameEventHandlers());
 
@@ -123,16 +127,19 @@ public class Main extends Application {
                 0,
                 map.getWidth()-1,
                 map.getHeight()-1);
+        // System.out.println("map.getWidth() = " + map.getWidth());
         PhysEngine.setPhysEngine(gameData, worldInformation);
         DataHub.setGameData(gameData);
         UserInput userInput = new UserInput(gameData, eventEngine);
         scene.setOnKeyPressed(userInput::onKeyPressed);
 
+
         display = new Display(graphicsData, gameData);
+        //Init MovementEngine
+        movementEngine = new MovementEngine(gameData, PhysEngine.getEngine(), eventEngine);
+
+        display = new Display(graphicsData);
         display.drawMainGame();
-
-
-
 
 
         primaryStage.setTitle("Dungeon Crawl");
@@ -140,6 +147,7 @@ public class Main extends Application {
     }
 
     public static void turn() {
+        movementEngine.moveAssets();
         display.drawMainGame();
         // System.out.println("Main game drawn");
     }
