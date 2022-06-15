@@ -13,6 +13,7 @@ import com.codecool.dungeoncrawl.util.AssetUtil;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 
@@ -27,7 +28,6 @@ import static com.codecool.dungeoncrawl.display.Tiles.getTile;
  * Only exit point to display everything
  */
 public class Display {
-
     private final GraphicsData graphicsData;
 
     private final GameData gameData;
