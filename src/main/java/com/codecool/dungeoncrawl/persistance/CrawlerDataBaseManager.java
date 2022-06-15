@@ -55,14 +55,10 @@ public class CrawlerDataBaseManager {
 
     public void saveGameData(String name) {
         setUp();
-        try (Connection con = connect().getConnection()) {
-            int gameStateId = gameStateJdbc.safe(name);
-            List<Asset> assets = gameData.assetCollection().getAssets();
-            assets.forEach(asset -> assetDaoJdbc.safe(asset, gameStateId));
+        int gameStateId = gameStateJdbc.safe(name);
+        List<Asset> assets = gameData.assetCollection().getAssets();
+        assets.forEach(asset -> assetDaoJdbc.safe(asset, gameStateId));
 
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void loadGameData() {
