@@ -3,11 +3,10 @@ package com.codecool.dungeoncrawl.logic.eventengine.handler;
 import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
+import com.codecool.dungeoncrawl.logic.eventengine.events.EventPlayerInputMove;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventRoundEnd;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
-import com.codecool.dungeoncrawl.logic.eventengine.events.EventPlayerInputMove;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
-import jdk.jfr.Event;
 
 import java.util.Set;
 
@@ -19,7 +18,7 @@ public class EventHandlerPlayerMove implements GameEventHandler {
     private Player player;
     private GameData gameData;
 
-    private Set<Class <? extends GameEvent>> gameEventClasses;
+    private Set<Class<? extends GameEvent>> gameEventClasses;
 
     public EventHandlerPlayerMove(Set<Class<? extends GameEvent>> gameEventClasses) {
         this.gameEventClasses = gameEventClasses;
@@ -57,8 +56,8 @@ public class EventHandlerPlayerMove implements GameEventHandler {
         PhysEngine physEngine = PhysEngine.getEngine();
 
         if (physEngine.tryToMove(player, newCoordinateX, newCoordinateY)) {
-            player.setXCoordinate(playerXCoordinate+directionX);
-            player.setYCoordinate(playerYCoordinate+directionY);
+            player.setXCoordinate(playerXCoordinate + directionX);
+            player.setYCoordinate(playerYCoordinate + directionY);
         }
     }
 }

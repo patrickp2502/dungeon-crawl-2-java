@@ -96,21 +96,52 @@ public class Display {
     }
 
     private <T> void iterateAndDraw(List<T> assets, GameMap map, GraphicsContext context) {
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
+        //TODO NEED TO REFACTOR!
+        int playerX = gameData.player().getXCoordinate();
+        int playerY = gameData.player().getYCoordinate();
+        int playerXstart = 10;
+        int playerYstart = 9;
+        int differenceX = playerXstart - playerX;
+        int differenceY = playerYstart - playerY;
+
+        int maxX = map.getWidth();
+        int maxY = map.getHeight();
+        int minX = 0;
+        int minY = 0;
+
+
+        for (int x = minX; x < maxX; x++) {
+            for (int y = minY; y < maxY; y++) {
                 Asset actual = AssetUtil.getAssetByCoordinates((List<Asset>) assets, x, y).size() > 0 ?
                         AssetUtil.getAssetByCoordinates((List<Asset>) assets, x, y).get(0) : null;
                 if (actual != null && AssetUtil.getAssetByCoordinates((List<Asset>) assets, x, y).size() == 1) {
-                    drawTile(context, getTile(actual), x, y);
+                    drawTile(context, getTile(actual), x+differenceX, y+differenceY);
                 }
             }
         }
     }
 
     public void drawFirstLayer(GameMap map, GraphicsContext context) {
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                drawTile(context, getTile(null), x, y);
+    //TODO NEED TO REFACTOR!
+        int playerX = gameData.player().getXCoordinate();
+        int playerY = gameData.player().getYCoordinate();
+
+        int maxX = map.getWidth()+10;
+        int maxY = map.getHeight()+10;
+        int minX = 0;
+        int minY = 0;
+        int playerXstart = 5;
+        int playerYstart = 9;
+        int differenceX = playerXstart - playerX;
+        int differenceY = playerYstart - playerY;
+        System.out.println("playerY = " + playerY);
+        System.out.println("playerX = " + playerX);
+
+
+
+        for (int x = minX; x < maxX; x++) {
+            for (int y = minY; y < maxY; y++) {
+                drawTile(context, getTile(null), x+differenceX, y+differenceY);
             }
         }
     }

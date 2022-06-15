@@ -48,18 +48,27 @@ public class Main extends Application {
     GameMap map;
 
     {
+        System.out.println(levels);
         String firstLevel = levels.get(0);
         String secondLevel = levels.get(1);
-        map = mapLoader.loadMap(assetCollection, secondLevel);
+        String testLevel = levels.get(2);
+        map = mapLoader.loadMap(assetCollection, "/levels/mapTest.txt");
+        System.out.println("testLevel = " + testLevel);
     }
 
 
     Canvas canvas = getCanvas(map);
-
+/* old rendering
     private Canvas getCanvas(GameMap gameMap) {
         return new Canvas(
                 gameMap.getWidth() * Tiles.TILE_WIDTH,
                 gameMap.getHeight() * Tiles.TILE_WIDTH);
+    }
+*/
+    private Canvas getCanvas(GameMap gameMap) {
+        return new Canvas(
+                20*Tiles.TILE_WIDTH,
+                20 * Tiles.TILE_WIDTH);
     }
 
     GraphicsContext context = canvas.getGraphicsContext2D();
