@@ -73,11 +73,15 @@ public class MapLoader {
                             assetCollection.addAsset(floorUnderSwordAsset);
                         case 'f':
                             FatDude fatDude = new FatDude("fat dude", x, y);
+                            Floor floorUnderFatDude = new Floor("floor",x,y);
+                            assetCollection.addAsset(floorUnderFatDude);
                             assetCollection.addAsset(fatDude);
                             break;
                         case 'g':
                             Goblin goblin = new Goblin("goblin", x, y);
+                            Floor floorUnderGoblin = new Floor("floor",x,y);
                             assetCollection.addAsset(goblin);
+                            assetCollection.addAsset(floorUnderGoblin);
                             break;
 
 
