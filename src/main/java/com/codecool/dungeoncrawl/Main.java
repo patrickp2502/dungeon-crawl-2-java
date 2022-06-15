@@ -8,9 +8,7 @@ import com.codecool.dungeoncrawl.data.WorldInformation;
 import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.display.GraphicsData;
 import com.codecool.dungeoncrawl.display.Renderer;
-import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
@@ -19,7 +17,7 @@ import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.movementengine.MovementEngine;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
-import com.codecool.dungeoncrawl.util.FileDetector;
+import com.codecool.dungeoncrawl.util.GameManager;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -36,39 +34,32 @@ import java.util.List;
 
 
 public class Main extends Application {
+    static MovementEngine movementEngine;
+    static Display display;
     AssetCollection assetCollection = new AssetCollection();
-
     EventEngine eventEngine;
     PhysEngine physEngine;
-    static MovementEngine movementEngine;
-    MapLoader mapLoader = new MapLoader();
-    List<String> levels = FileDetector.getAvailableFileNamesInResources();
     GameMap map;
-
-    {
-        String firstLevel = levels.get(0);
-        String secondLevel = levels.get(1);
-        map = mapLoader.loadMap(assetCollection, secondLevel);
-    }
-
-
-    Canvas canvas = getCanvas(map);
-
-    private Canvas getCanvas(GameMap gameMap) {
-        return new Canvas(
-                gameMap.getWidth() * Tiles.TILE_WIDTH,
-                gameMap.getHeight() * Tiles.TILE_WIDTH);
-    }
+    Canvas canvas = GameManager.getCanvas(map);
 
     GraphicsContext context = canvas.getGraphicsContext2D();
-    static Display display;
     Renderer renderer = new Renderer();
+
+    {
+        int firstLevelToLoad = 1;
+        map = GameManager.loadMap(assetCollection, firstLevelToLoad);
+    }
 
     public static void main(String[] args) {
         launch(args);
 
     }
 
+    public static void turn() {
+        movementEngine.moveAssets();
+        display.drawMainGame();
+        // System.out.println("Main game drawn");
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -142,11 +133,5 @@ public class Main extends Application {
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
-    }
-
-    public static void turn() {
-        movementEngine.moveAssets();
-        display.drawMainGame();
-        // System.out.println("Main game drawn");
     }
 }

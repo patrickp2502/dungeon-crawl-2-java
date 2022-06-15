@@ -12,6 +12,7 @@ import com.codecool.dungeoncrawl.logic.scenery.DoorClosed;
 import com.codecool.dungeoncrawl.logic.scenery.DoorOpened;
 import com.codecool.dungeoncrawl.logic.scenery.Floor;
 import com.codecool.dungeoncrawl.logic.scenery.Wall;
+import com.codecool.dungeoncrawl.util.GameManager;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -22,10 +23,11 @@ public class MapLoader {
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
+        int level = GameManager.getLevelFromFileName(filePath);
 
         scanner.nextLine(); // empty line
 
-        GameMap map = new GameMap(width, height); // , CellType.EMPTY);
+        GameMap map = new GameMap(width, height, level); // , CellType.EMPTY);
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();
             for (int x = 0; x < width; x++) {
