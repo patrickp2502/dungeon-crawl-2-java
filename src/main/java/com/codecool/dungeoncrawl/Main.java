@@ -19,6 +19,8 @@ import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.movementengine.MovementEngine;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
+import com.codecool.dungeoncrawl.logic.userActionEngine.SaveHandler;
+import com.codecool.dungeoncrawl.persistance.CrawlerDataBaseManager;
 import com.codecool.dungeoncrawl.util.FileDetector;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -87,7 +89,6 @@ public class Main extends Application {
         renderer.getMapTiles(assetCollection.getAssets(), context, canvas);
 
 
-        //TODO NEED ALL DATA HERE
         Player player = assetCollection.getPlayer().get();
         List<Scenery> scenery = assetCollection.getScenery();
         List<Collectable> collectables = assetCollection.getCollectables();
@@ -127,11 +128,16 @@ public class Main extends Application {
                 0,
                 map.getWidth() - 1,
                 map.getHeight() - 1);
-        // System.out.println("map.getWidth() = " + map.getWidth());
+
+
         PhysEngine.setPhysEngine(gameData, worldInformation);
         DataHub.setGameData(gameData);
-        UserInput userInput = new UserInput(gameData, eventEngine);
+
+        CrawlerDataBaseManager dataManager = new CrawlerDataBaseManager(gameData);
+        SaveHandler saveHandler = new SaveHandler(gameData, display, dataManager);
+        UserInput userInput = new UserInput(gameData, eventEngine, saveHandler);
         scene.setOnKeyPressed(userInput::onKeyPressed);
+
 
 
         display = new Display(graphicsData, gameData);

@@ -1,19 +1,25 @@
 package com.codecool.dungeoncrawl.display;
 
-import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+
+import java.util.List;
+import java.util.Optional;
 
 public class SaveDialog {
-    private Alert alert;
-    public SaveDialog(){
-        alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("this is a test");
-        Dialog dialog = new Dialog<>();
+    private final TextInputDialog textInputDialog;
 
+    public SaveDialog() {
+        textInputDialog = new TextInputDialog();
+        textInputDialog.setHeaderText("Please name your saving:");
+        textInputDialog.setContentText("Name:");
     }
-    public void show() {
-        alert.show();
+
+    public String getInputName() {
+        Optional<String> result = textInputDialog.showAndWait();
+        return result.get();
     }
 
 }
