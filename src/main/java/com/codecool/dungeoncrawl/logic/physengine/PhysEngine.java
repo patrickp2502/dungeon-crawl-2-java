@@ -63,7 +63,7 @@ public class PhysEngine {
             } else if (asset instanceof IsSolid) {
                 EventEngine.getInstance().addEvent(new EventAssetCollision(movingAsset, asset));
                 return true;
-            } else if (asset instanceof Collectable) {
+            } else if (asset instanceof Collectable && movingAsset instanceof Player) {
                 EventEngine.getInstance().addEvent(new EventStandingOn(asset));
             }
         }

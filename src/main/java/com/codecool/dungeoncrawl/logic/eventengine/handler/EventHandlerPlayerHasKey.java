@@ -38,8 +38,7 @@ public class EventHandlerPlayerHasKey implements GameEventHandler{
         switch (door) {
             case DoorOpened doorOpened -> DoorOpener.closeDoor(doorOpened, assets);
             case DoorClosed doorClosed -> DoorOpener.openDoor(doorClosed, assets);
-            case null, default -> {
-            }
+            case null, default -> {}
         }
     }
 }

@@ -92,11 +92,6 @@ public class InitEventHandlers {
                 .get();
     }
 
-
-
-
-
-
     public List<GameEventHandler> getGameEventHandlers() {
         return gameEventHandlers;
     }
