@@ -63,6 +63,7 @@ public final class EventEngine {
 
     private void handleSingleEvent(GameEvent event) {
         GameEventHandler gameEventHandler = getEventHandler(event);
+        System.out.println("event = " + event);
         gameEventHandler.handle(event);
     }
 

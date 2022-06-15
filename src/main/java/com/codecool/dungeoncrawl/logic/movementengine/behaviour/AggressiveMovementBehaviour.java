@@ -27,7 +27,6 @@ public class AggressiveMovementBehaviour implements MovementBehaviour {
                 gameData.player().getYCoordinate());
 
         List<HelperCoordinate> possibleCoordinates = createPossibleCoordinates();
-        possibleCoordinates.forEach(possibleCoordinate -> System.out.println(possibleCoordinate.getDistance(playerCoordinate)));
         for (HelperCoordinate coordinate : possibleCoordinates) {
             if (physEngine.tryToMove(moveableAsset, coordinate.x, coordinate.y)) {
                 moveableAsset.setXCoordinate(coordinate.x);

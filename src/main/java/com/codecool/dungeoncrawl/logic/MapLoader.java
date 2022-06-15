@@ -84,8 +84,6 @@ public class MapLoader {
                             assetCollection.addAsset(floorUnderGoblin);
                             break;
 
-
-
                         case '@':
                             // cell.setType(CellType.FLOOR);
                             Player playerAsset = new Player("player", x, y);
