@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.AssetCollection;
-import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.logic.actors.FatDude;
 import com.codecool.dungeoncrawl.logic.actors.Goblin;
 import com.codecool.dungeoncrawl.logic.actors.Player;
@@ -13,7 +12,6 @@ import com.codecool.dungeoncrawl.logic.scenery.DoorClosed;
 import com.codecool.dungeoncrawl.logic.scenery.DoorOpened;
 import com.codecool.dungeoncrawl.logic.scenery.Floor;
 import com.codecool.dungeoncrawl.logic.scenery.Wall;
-import com.codecool.dungeoncrawl.util.GameInformation;
 import com.codecool.dungeoncrawl.util.GameManager;
 
 import java.io.InputStream;
@@ -92,26 +90,20 @@ public class MapLoader {
                         case '@':
                             // cell.setType(CellType.FLOOR);
                             if (playerInAssets) {
-                                Player player = (Player) assetCollection
-                                        .getAssets()
-                                        .stream()
-                                        .filter(asset -> asset instanceof  Player)
-                                        .findFirst()
-                                        .get();
-                                assetCollection.getAssets().remove(player);
+                                Player player = assetCollection.getPlayer().get();
+                                assetCollection.removeAsset(player);
                                 player.setYCoordinate(y);
                                 player.setXCoordinate(x);
-                                Floor floorUnderPlayerAsset = new Floor("floor", x, y);
-                                assetCollection.addAsset(floorUnderPlayerAsset);
                                 Key oldKey = (Key) player.getInventory()
                                         .getItems()
                                         .stream()
                                         .filter(item -> item instanceof Key)
                                         .findFirst().get();
                                 player.getInventory().deleteItem(oldKey);
-                                assetCollection.getAssets().add(player);
-
-                                map.setPlayer(player);
+                                assetCollection.addAsset(player);
+                                Floor floorUnderPlayerAsset = new Floor("floor", x, y);
+                                assetCollection.addAsset(floorUnderPlayerAsset);
+                                map.setPlayer(assetCollection.getPlayer().get());
                             } else {
                                 Player playerAsset = new Player("player", x, y);
                                 Floor floorUnderPlayerAsset = new Floor("floor", x, y);

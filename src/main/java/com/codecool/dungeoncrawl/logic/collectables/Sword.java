@@ -12,7 +12,7 @@ public class Sword extends Asset implements Collectable {
     public Sword(String tileName, int xCoordinate, int yCoordinate) {
         super(tileName, xCoordinate, yCoordinate);
         pickUpPossible = false;
-        combatStats = new CombatStats(100, 5);
+        combatStats = new CombatStats(100, 2);
     }
 
     public CombatStats getCombatStats() {

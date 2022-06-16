@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl.logic.physengine;
 
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.AssetCollection;
-import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.data.WorldInformation;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
@@ -15,6 +14,7 @@ import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.IsSolid;
 import com.codecool.dungeoncrawl.logic.scenery.DoorClosed;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import com.codecool.dungeoncrawl.util.DoorOpener;
+import com.codecool.dungeoncrawl.util.GameInformation;
 
 import java.util.List;
 
@@ -28,16 +28,16 @@ public class PhysEngine {
     private static PhysEngine physEngineInstance = null;
 
 
-    private PhysEngine(GameData gameData, WorldInformation worldInformation) {
+    private PhysEngine(GameInformation gameInformation, WorldInformation worldInformation) {
         boundaryMinX = worldInformation.levelBoundaryMinX();
         boundaryMinY = worldInformation.levelBoundaryMinY();
         boundaryMaxX = worldInformation.levelBoundaryMaxX();
         boundaryMaxY = worldInformation.levelBoundaryMaxY();
-        assetCollection = gameData.assetCollection();
+        assetCollection = gameInformation.getAssetCollection();
     }
 
-    public static void setPhysEngine(GameData gameData, WorldInformation worldInformation) {
-        physEngineInstance = new PhysEngine(gameData, worldInformation);
+    public static void setPhysEngine(GameInformation gameInformation, WorldInformation worldInformation) {
+        physEngineInstance = new PhysEngine(gameInformation, worldInformation);
     }
 
     public static PhysEngine getEngine() {
@@ -64,7 +64,7 @@ public class PhysEngine {
                 Scenery door = (Scenery) asset;
                 DoorOpener.openDoor((DoorClosed) door, assetCollection.getAssets());
                 EventEngine.getInstance().addEvent(new EventNextLevel());
-                return false;
+                return true;
             } else if (asset instanceof IsSolid) {
                 EventEngine.getInstance().addEvent(new EventAssetCollision(movingAsset, asset));
                 return true;

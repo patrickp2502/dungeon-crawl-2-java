@@ -1,12 +1,12 @@
 package com.codecool.dungeoncrawl.logic.eventengine.handler;
 
-import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventPlayerInputMove;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventRoundEnd;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
+import com.codecool.dungeoncrawl.util.GameInformation;
 
 import java.util.Set;
 
@@ -16,7 +16,7 @@ public class EventHandlerPlayerMove implements GameEventHandler {
     private int directionX;
     private int directionY;
     private Player player;
-    private GameData gameData;
+    private GameInformation gameInformation;
 
     private Set<Class<? extends GameEvent>> gameEventClasses;
 
@@ -40,11 +40,11 @@ public class EventHandlerPlayerMove implements GameEventHandler {
         EventPlayerInputMove eventPlayerInputMove = (EventPlayerInputMove) event;
         this.directionX = eventPlayerInputMove.directionX();
         this.directionY = eventPlayerInputMove.directionY();
-        this.gameData = eventPlayerInputMove.gameData();
-        player = gameData.player();
+        this.gameInformation = eventPlayerInputMove.gameInformation();
+        player = gameInformation.getAssetCollection().getPlayer().get();
         movePlayer();
         //TODO ask Mentor wtf eventing eventing eventing...
-        EventEngine.getInstance().addEvent(new EventRoundEnd(gameData));
+        EventEngine.getInstance().addEvent(new EventRoundEnd(gameInformation));
         EventEngine.getInstance().eventIsHandled(eventPlayerInputMove);
     }
 

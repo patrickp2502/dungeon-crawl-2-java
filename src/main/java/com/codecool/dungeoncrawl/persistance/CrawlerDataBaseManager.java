@@ -3,23 +3,22 @@ package com.codecool.dungeoncrawl.persistance;
 import com.codecool.dungeoncrawl.persistance.Data.GameState;
 import com.codecool.dungeoncrawl.persistance.Data.GameStateDaoJdbc;
 import com.codecool.dungeoncrawl.data.Asset;
-import com.codecool.dungeoncrawl.data.GameData;
+import com.codecool.dungeoncrawl.util.GameInformation;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 public class CrawlerDataBaseManager {
-    private final GameData gameData;
+    private final GameInformation gameInformation;
     private GameStateDaoJdbc gameStateJdbc;
     private AssetDaoJdbc assetDaoJdbc;
     private Map<String, String> env;
 
-    public CrawlerDataBaseManager(GameData gameData) {
-        this.gameData = gameData;
+    public CrawlerDataBaseManager(GameInformation gameInformation) {
+        this.gameInformation = gameInformation;
         env = System.getenv();
         //TODO for working dataconnection uncomment the setUp
         //setUp();
@@ -57,7 +56,7 @@ public class CrawlerDataBaseManager {
     public void saveGameData(String name) {
         setUp();
         int gameStateId = gameStateJdbc.safe(name);
-        List<Asset> assets = gameData.assetCollection().getAssets();
+        List<Asset> assets = gameInformation.getAssetCollection().getAssets();
         assets.forEach(asset -> assetDaoJdbc.safe(asset, gameStateId));
 
     }

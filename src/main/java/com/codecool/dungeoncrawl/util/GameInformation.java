@@ -2,9 +2,7 @@ package com.codecool.dungeoncrawl.util;
 
 import com.codecool.dungeoncrawl.controls.UserInput;
 import com.codecool.dungeoncrawl.data.AssetCollection;
-import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.display.Display;
-import com.codecool.dungeoncrawl.display.GraphicsData;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -32,8 +30,6 @@ public class GameInformation {
 
     private Display display;
 
-    private GameData gameData;
-
     public GameInformation(Canvas canvas, GraphicsContext graphicsContext, AssetCollection assetCollection,
                            GameMap map, GridPane gridPane, BorderPane borderPane) {
         this.canvas = canvas;
@@ -52,13 +48,6 @@ public class GameInformation {
         this.userInput = userInput;
     }
 
-    public GameData getGameData() {
-        return gameData;
-    }
-
-    public void setGameData(GameData gameData) {
-        this.gameData = gameData;
-    }
 
     public Display getDisplay() {
         return display;

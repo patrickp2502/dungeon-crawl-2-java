@@ -1,14 +1,12 @@
 package com.codecool.dungeoncrawl.logic.eventengine;
 
 import com.codecool.dungeoncrawl.data.AssetCollection;
-import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.eventengine.events.*;
 import com.codecool.dungeoncrawl.logic.eventengine.handler.*;
 import com.codecool.dungeoncrawl.util.GameInformation;
-import com.codecool.dungeoncrawl.util.GameManager;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -23,7 +21,6 @@ import java.util.Set;
  */
 public class InitEventHandlers {
     private List<GameEventHandler> gameEventHandlers;
-    private GameData gameData;
 
     private final Display display;
 
@@ -38,7 +35,7 @@ public class InitEventHandlers {
     private final GameInformation gameInformation;
 
     public InitEventHandlers(Display display, List<Label> labels, List<Button> buttons, AssetCollection assetCollection,
-                             GameData gameData, GameInformation gameInformation) {
+                             GameInformation gameInformation) {
 
         this.display = display;
         this.labels = labels;
@@ -46,7 +43,6 @@ public class InitEventHandlers {
         this.assets = assetCollection.getAssets();
         this.player = getPlayer(assets);
         //
-        this.gameData = new GameData(assetCollection, player);
         this.gameInformation = gameInformation;
         gameEventHandlers = new ArrayList<>();
 
@@ -64,7 +60,7 @@ public class InitEventHandlers {
         //Register EventAssetCollision.class to EventHandlerOnCollision
         Set<Class<? extends GameEvent>> onCollisionEvents = new HashSet<>();
         onCollisionEvents.add(EventAssetCollision.class);
-        gameEventHandlers.add(new EventHandlerOnCollision(onCollisionEvents, gameData));
+        gameEventHandlers.add(new EventHandlerOnCollision(onCollisionEvents, gameInformation));
 
         //Register EventRoundEnd.class to EventHandlerRoundEnd
         Set<Class<? extends GameEvent>> endRoundEvents = new HashSet<>();
@@ -80,12 +76,12 @@ public class InitEventHandlers {
         //Register CombatEvents to EventHandlerCombat
         Set<Class<? extends GameEvent>> combatEvents = new HashSet<>();
         combatEvents.add(EventCombatStart.class);
-        gameEventHandlers.add(new EventHandlerCombat(combatEvents, gameData));
+        gameEventHandlers.add(new EventHandlerCombat(combatEvents, gameInformation));
 
         //Register CombatEvents to EventHandlerCombat
         Set<Class<? extends GameEvent>> onDeathEvents = new HashSet<>();
         onDeathEvents.add(EventOnDeath.class);
-        gameEventHandlers.add(new EventHandlerOnDeath(onDeathEvents, gameData));
+        gameEventHandlers.add(new EventHandlerOnDeath(onDeathEvents, gameInformation));
 
         //Register NextLevelEvents to EventHandlerNextLevel
         Set<Class<? extends GameEvent>> nextLevelEvents = new HashSet<>();

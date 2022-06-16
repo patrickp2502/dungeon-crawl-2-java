@@ -1,10 +1,10 @@
 package com.codecool.dungeoncrawl.logic.movementengine.behaviour;
 
 import com.codecool.dungeoncrawl.data.Asset;
-import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.logic.movementengine.Direction;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
+import com.codecool.dungeoncrawl.util.GameInformation;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,14 +17,14 @@ public class AggressiveMovementBehaviour implements MovementBehaviour {
     private HelperCoordinate playerCoordinate;
 
     @Override
-    public <T extends Asset & Moveable> void move(T moveableAsset, PhysEngine physEngine, GameData gameData) {
+    public <T extends Asset & Moveable> void move(T moveableAsset, PhysEngine physEngine, GameInformation gameInformation) {
         if (moveableAsset.getMovementStop()) {
             return;
         }
         this.currentCoordinate = new HelperCoordinate(moveableAsset.getXCoordinate(),
                 moveableAsset.getYCoordinate());
-        this.playerCoordinate = new HelperCoordinate(gameData.player().getXCoordinate(),
-                gameData.player().getYCoordinate());
+        this.playerCoordinate = new HelperCoordinate(gameInformation.getAssetCollection().getPlayer().get().getXCoordinate(),
+                gameInformation.getAssetCollection().getPlayer().get().getYCoordinate());
 
         List<HelperCoordinate> possibleCoordinates = createPossibleCoordinates();
         for (HelperCoordinate coordinate : possibleCoordinates) {

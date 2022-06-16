@@ -1,24 +1,24 @@
 package com.codecool.dungeoncrawl.logic.eventengine.handler;
 
 import com.codecool.dungeoncrawl.data.Asset;
-import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import com.codecool.dungeoncrawl.logic.eventengine.Fighter;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventCombatStart;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventOnDeath;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
+import com.codecool.dungeoncrawl.util.GameInformation;
 
 import java.util.Set;
 
 public class EventHandlerCombat implements GameEventHandler {
-    private final GameData gameData;
+    private final GameInformation gameInformation;
     private Fighter attacker;
     private Fighter defender;
     Set<Class<? extends GameEvent>> gameEventClasses;
 
 
-    public EventHandlerCombat(Set<Class<? extends GameEvent>> gameEventClasses, GameData gameData) {
-        this.gameData = gameData;
+    public EventHandlerCombat(Set<Class<? extends GameEvent>> gameEventClasses, GameInformation gameInformation) {
+        this.gameInformation = gameInformation;
         this.gameEventClasses = gameEventClasses;
     }
 

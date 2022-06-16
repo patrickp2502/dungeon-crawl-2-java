@@ -2,30 +2,22 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.controls.UserInput;
 import com.codecool.dungeoncrawl.data.AssetCollection;
-import com.codecool.dungeoncrawl.data.DataHub;
-import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.data.WorldInformation;
 import com.codecool.dungeoncrawl.display.Display;
-import com.codecool.dungeoncrawl.display.GraphicsData;
 import com.codecool.dungeoncrawl.display.Renderer;
 import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import com.codecool.dungeoncrawl.logic.eventengine.InitEventHandlers;
-import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.movementengine.MovementEngine;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
-import com.codecool.dungeoncrawl.logic.scenery.Scenery;
-import com.codecool.dungeoncrawl.util.GameInformation;
-import com.codecool.dungeoncrawl.util.GameManager;
 import com.codecool.dungeoncrawl.logic.userActionEngine.SaveHandler;
 import com.codecool.dungeoncrawl.persistance.CrawlerDataBaseManager;
-import com.codecool.dungeoncrawl.util.FileDetector;
+import com.codecool.dungeoncrawl.util.GameInformation;
+import com.codecool.dungeoncrawl.util.GameManager;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -45,7 +37,6 @@ public class Main extends Application {
     static Display display;
     AssetCollection assetCollection = new AssetCollection();
     EventEngine eventEngine;
-    PhysEngine physEngine;
     GameMap map;
 
     {
@@ -53,12 +44,27 @@ public class Main extends Application {
         map = GameManager.loadMap(assetCollection, firstLevelToLoad);
     }
 
+    Renderer renderer = new Renderer();
+    Canvas canvas = GameManager.getCanvas(map);
+    GraphicsContext context = GameManager.getGraphicsContext(canvas);
 
     public static void exit() {
         Alert alert = new Alert(Alert.AlertType.WARNING, "YOU LOST!!!");
+        alert.getDialogPane().setStyle("-fx-font-family: 'serif'");
         alert.showAndWait();
         Platform.exit();
 
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+
+    }
+
+    public static void turn() {
+        movementEngine.moveAssets();
+        display.drawMainGame();
+        // System.out.println("Main game drawn");
     }
 
     /* old rendering
@@ -70,25 +76,8 @@ public class Main extends Application {
     */
     private Canvas getCanvas(GameMap gameMap) {
         return new Canvas(
-                20* Tiles.TILE_WIDTH,
+                20 * Tiles.TILE_WIDTH,
                 20 * Tiles.TILE_WIDTH);
-    }
-
-    Renderer renderer = new Renderer();
-
-    Canvas canvas = GameManager.getCanvas(map);
-
-    GraphicsContext context = GameManager.getGraphicsContext(canvas);
-
-    public static void main(String[] args) {
-        launch(args);
-
-    }
-
-    public static void turn() {
-        movementEngine.moveAssets();
-        display.drawMainGame();
-        // System.out.println("Main game drawn");
     }
 
     @Override
@@ -105,7 +94,6 @@ public class Main extends Application {
 
 
         Player player = assetCollection.getPlayer().get();
-        GameData gameData = new GameData(assetCollection, player);
         //*****************   DRAWING   *****************
         display = new Display(gameInformation);
         display.drawMainGame();
@@ -131,8 +119,7 @@ public class Main extends Application {
         //init EventEngine
         eventEngine = EventEngine.getInstance();
         eventEngine.setHandlers(new InitEventHandlers(display, labels, buttons,
-                gameInformation.getAssetCollection(),
-                gameData, gameInformation).getGameEventHandlers());
+                gameInformation.getAssetCollection(), gameInformation).getGameEventHandlers());
 
 
         WorldInformation worldInformation = new WorldInformation(
@@ -142,21 +129,17 @@ public class Main extends Application {
                 map.getHeight() - 1);
 
 
-        PhysEngine.setPhysEngine(gameData, worldInformation);
-        DataHub.setGameData(gameData);
+        PhysEngine.setPhysEngine(gameInformation, worldInformation);
 
-        CrawlerDataBaseManager dataManager = new CrawlerDataBaseManager(gameData);
-        SaveHandler saveHandler = new SaveHandler(gameData, display, dataManager);
-        UserInput userInput = new UserInput(gameData, eventEngine, saveHandler);
+        CrawlerDataBaseManager dataManager = new CrawlerDataBaseManager(gameInformation);
+        SaveHandler saveHandler = new SaveHandler(gameInformation, display, dataManager);
+        UserInput userInput = new UserInput(gameInformation, eventEngine, saveHandler);
         scene.setOnKeyPressed(userInput::onKeyPressed);
         gameInformation.setUserInput(userInput);
         gameInformation.setDisplay(display);
-        gameInformation.setGameData(gameData);
-
-
 
         //Init MovementEngine
-        movementEngine = new MovementEngine(gameInformation.getGameData(), PhysEngine.getEngine(), eventEngine);
+        movementEngine = new MovementEngine(gameInformation, PhysEngine.getEngine(), eventEngine);
 
         display.drawMainGame();
 

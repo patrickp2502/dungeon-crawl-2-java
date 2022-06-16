@@ -1,7 +1,6 @@
 package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.data.Asset;
-import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
@@ -14,7 +13,6 @@ import com.codecool.dungeoncrawl.util.GameManager;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.paint.Color;
@@ -30,17 +28,8 @@ import static com.codecool.dungeoncrawl.display.Tiles.getTile;
  */
 public class Display {
 
-    public void setGraphicsData(GraphicsData graphicsData) {
-        this.graphicsData = graphicsData;
-    }
-
-    private GraphicsData graphicsData;
-
-    private GameInformation gameInformation;
-
-
     private final ProgressBar healthBar;
-
+    private GameInformation gameInformation;
     private StringBuilder stringBuilder;
 
     public Display(GameInformation gameInformation) {
@@ -74,7 +63,7 @@ public class Display {
     public void setHealthProgressBar(Player player) {
         double playerHealth = player.getCombatStats().getHealth();
         double playerMaxHealth = player.getMAX_HEALTH();
-        double healthPercentage = playerHealth/playerMaxHealth ;
+        double healthPercentage = playerHealth / playerMaxHealth;
         healthBar.setProgress(healthPercentage);
     }
 
@@ -125,21 +114,21 @@ public class Display {
                 Asset actual = AssetUtil.getAssetByCoordinates((List<Asset>) assets, x, y).size() > 0 ?
                         AssetUtil.getAssetByCoordinates((List<Asset>) assets, x, y).get(0) : null;
                 if (actual != null && AssetUtil.getAssetByCoordinates((List<Asset>) assets, x, y).size() == 1) {
-                    drawTile(context, getTile(actual), x+differenceX, y+differenceY);
+                    drawTile(context, getTile(actual), x + differenceX, y + differenceY);
                 }
             }
         }
     }
 
     public void drawFirstLayer(GameMap map, GraphicsContext context) {
-    //TODO NEED TO REFACTOR!
+        //TODO NEED TO REFACTOR!
         int playerX = gameInformation.getAssetCollection()
                 .getPlayer().get().getXCoordinate();
         int playerY = gameInformation.getAssetCollection()
                 .getPlayer().get().getYCoordinate();
 
-        int maxX = map.getWidth()+10;
-        int maxY = map.getHeight()+10;
+        int maxX = map.getWidth() + 10;
+        int maxY = map.getHeight() + 10;
         int minX = 0;
         int minY = 0;
         int playerXstart = 5;
@@ -148,10 +137,9 @@ public class Display {
         int differenceY = playerYstart - playerY;
 
 
-
         for (int x = minX; x < maxX; x++) {
             for (int y = minY; y < maxY; y++) {
-                drawTile(context, getTile(null), x+differenceX, y+differenceY);
+                drawTile(context, getTile(null), x + differenceX, y + differenceY);
             }
         }
     }

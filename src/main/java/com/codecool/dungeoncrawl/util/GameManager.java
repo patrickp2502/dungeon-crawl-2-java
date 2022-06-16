@@ -3,14 +3,14 @@ package com.codecool.dungeoncrawl.util;
 import com.codecool.dungeoncrawl.controls.UserInput;
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.AssetCollection;
-import com.codecool.dungeoncrawl.data.GameData;
+import com.codecool.dungeoncrawl.data.WorldInformation;
 import com.codecool.dungeoncrawl.display.Display;
-import com.codecool.dungeoncrawl.display.GraphicsData;
 import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.MapSafer;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.util.List;
+import java.util.Optional;
 
 public class GameManager {
 
@@ -36,7 +37,7 @@ public class GameManager {
         // preparation
         AssetCollection assetCollection = gameInformation.getAssetCollection();
         GameMap map = gameInformation.getMap();
-        UserInput userInput =gameInformation.getUserInput();
+        UserInput userInput = gameInformation.getUserInput();
         Display display = gameInformation.getDisplay();
 
         // safe old Map
@@ -53,7 +54,7 @@ public class GameManager {
         List<Window> open = Stage.getWindows().stream().filter(Window::isShowing).toList();
         Stage stage = (Stage) open.get(0).getScene().getWindow();
         GridPane newGridPane = getNewGridPane(200, 10);
-        Canvas canvas = getCanvas(map);
+        Canvas canvas = getCanvas(newMap);
         BorderPane newBorderPane = getNewBorderPaneWithCanvasCenteredAndGridPaneRight(canvas, newGridPane);
         Scene scene = getNewScene(newBorderPane);
         scene.setOnKeyPressed(userInput::onKeyPressed);
@@ -62,7 +63,12 @@ public class GameManager {
 
         gameInformation.setBorderPane(newBorderPane);
         gameInformation.setGridPane(newGridPane);
-        gameInformation.setGameData(new GameData(assetCollection, getPlayer(assetCollection.getAssets())));
+        WorldInformation worldInformation = new WorldInformation(
+                0,
+                0,
+                newMap.getWidth() - 1,
+                newMap.getHeight() - 1);
+        PhysEngine.setPhysEngine(gameInformation, worldInformation);
         display.drawMainGame();
 
         stage.show();
@@ -82,6 +88,13 @@ public class GameManager {
 
     public static String getFilePathByIntLevel(int level) {
         String fileName = AVAILABLE_LEVELS.size() >= level ? AVAILABLE_LEVELS.get(level - 1) : AVAILABLE_LEVELS.get(0);
+        Optional<String> possibleFileName = AVAILABLE_LEVELS
+                .stream()
+                .filter(file -> file.contains(String.format("%d", level)))
+                .findFirst();
+        if (possibleFileName.isPresent()) {
+            fileName = possibleFileName.get();
+        }
         return fileName; // fileName.substring(1, fileName.length() - 1);
     }
 
@@ -132,4 +145,5 @@ public class GameManager {
                 .findFirst()
                 .get();
     }
+
 }

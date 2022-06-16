@@ -13,6 +13,7 @@ public class SaveDialog {
 
     public SaveDialog() {
         textInputDialog = new TextInputDialog();
+        textInputDialog.getDialogPane().setStyle("-fx-font-family: 'serif'");
         textInputDialog.setHeaderText("Please name your saving:");
         textInputDialog.setContentText("Name:");
     }
