@@ -20,6 +20,8 @@ public class MapSafer {
     public void safeMap(GameMap map, AssetCollection assetCollection) {
         int level = map.getLevel();
         String pathName = GameManager.getFilePathByIntLevel(level);
+        String[] pathNameList = pathName.split("/");
+        pathName = pathNameList[pathNameList.length - 1];
         File file = new File(pathName);
         // write the width and height in the first line
         String firstLine = getWidthAndHeight(map);

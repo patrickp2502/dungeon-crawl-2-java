@@ -17,9 +17,9 @@ import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.movementengine.MovementEngine;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
+import com.codecool.dungeoncrawl.util.GameInformation;
 import com.codecool.dungeoncrawl.util.GameManager;
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -40,15 +40,17 @@ public class Main extends Application {
     EventEngine eventEngine;
     PhysEngine physEngine;
     GameMap map;
-    Canvas canvas = GameManager.getCanvas(map);
-
-    GraphicsContext context = canvas.getGraphicsContext2D();
-    Renderer renderer = new Renderer();
 
     {
         int firstLevelToLoad = 1;
         map = GameManager.loadMap(assetCollection, firstLevelToLoad);
     }
+
+    Renderer renderer = new Renderer();
+
+    Canvas canvas = GameManager.getCanvas(map);
+
+    GraphicsContext context = GameManager.getGraphicsContext(canvas);
 
     public static void main(String[] args) {
         launch(args);
@@ -63,33 +65,24 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        GridPane ui = new GridPane();
-        ui.setPrefWidth(200);
-        ui.setPadding(new Insets(10));
+        GridPane ui = GameManager.getNewGridPane(200, 10);
 
-        BorderPane borderPane = new BorderPane();
+        BorderPane borderPane = GameManager.getNewBorderPaneWithCanvasCenteredAndGridPaneRight(canvas, ui);
 
-        borderPane.setCenter(canvas);
-        borderPane.setRight(ui);
-
-        Scene scene = new Scene(borderPane);
-        scene.getRoot().setStyle("-fx-font-family: 'serif'");
+        Scene scene = GameManager.getNewScene(borderPane);
         primaryStage.setScene(scene);
         renderer.getMapTiles(assetCollection.getAssets(), context, canvas);
+
+        GameInformation gameInformation = new GameInformation(canvas, context, assetCollection, map, ui, borderPane);
 
 
         //TODO NEED ALL DATA HERE
         Player player = assetCollection.getPlayer().get();
-        List<Scenery> scenery = assetCollection.getScenery();
-        List<Collectable> collectables = assetCollection.getCollectables();
-        List<Moveable> moveables = assetCollection.getMovables();
         GameData gameData = new GameData(assetCollection, player);
         //*****************   DRAWING   *****************
-        GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map,
-                scenery, moveables, collectables, ui);
-        display = new Display(graphicsData, gameData);
+        display = new Display(gameInformation);
         display.drawMainGame();
-        Label healthSection = display.initializeHealthProgressBar(); // display.showAndGetNewLabelAlignedLeft("Health: ", 0);
+        Label healthSection = display.initializeHealthProgressBar();
         Label attackPointsSection = display.initializeAttackPointsProgressBar();
         display.showSpacesBetweenInfoboxContent(7, 5);
         Label inventorySection = display.showAndGetNewLabelAlignedLeft("Inventory: \n", 13);
@@ -110,7 +103,9 @@ public class Main extends Application {
 
         //init EventEngine
         eventEngine = EventEngine.getInstance();
-        eventEngine.setHandlers(new InitEventHandlers(display, labels, buttons, graphicsData.assets(), gameData).getGameEventHandlers());
+        eventEngine.setHandlers(new InitEventHandlers(display, labels, buttons,
+                gameInformation.getAssetCollection(),
+                gameData, gameInformation).getGameEventHandlers());
 
 
         WorldInformation worldInformation = new WorldInformation(
@@ -118,18 +113,20 @@ public class Main extends Application {
                 0,
                 map.getWidth() - 1,
                 map.getHeight() - 1);
-        // System.out.println("map.getWidth() = " + map.getWidth());
         PhysEngine.setPhysEngine(gameData, worldInformation);
         DataHub.setGameData(gameData);
         UserInput userInput = new UserInput(gameData, eventEngine);
         scene.setOnKeyPressed(userInput::onKeyPressed);
+        gameInformation.setUserInput(userInput);
+        gameInformation.setDisplay(display);
+        gameInformation.setGameData(gameData);
 
 
-        display = new Display(graphicsData, gameData);
         //Init MovementEngine
-        movementEngine = new MovementEngine(gameData, PhysEngine.getEngine(), eventEngine);
+        movementEngine = new MovementEngine(gameInformation.getGameData(), PhysEngine.getEngine(), eventEngine);
 
         display.drawMainGame();
+
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();

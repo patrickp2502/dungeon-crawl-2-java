@@ -13,6 +13,5 @@ import javafx.scene.layout.GridPane;
 import java.util.List;
 
 public record GraphicsData(List<Asset> assets, GraphicsContext context, Canvas canvas, GameMap map,
-                           List<Scenery> scenery, List<Moveable> moveables, List<Collectable> collectables,
                            GridPane ui) {
 }
