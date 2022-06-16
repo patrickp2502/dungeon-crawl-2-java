@@ -14,11 +14,9 @@ import java.util.Random;
 import java.util.Set;
 
 public class EventHandlerOnDeath implements GameEventHandler {
-    private Set<Class <? extends GameEvent>> gameEventClasses;
-
     private final GameInformation gameInformation;
-
     private final List<Collectable> collectables;
+    private Set<Class<? extends GameEvent>> gameEventClasses;
 
 
     public EventHandlerOnDeath(Set<Class<? extends GameEvent>> gameEventClasses, GameInformation gameInformation) {
@@ -27,15 +25,14 @@ public class EventHandlerOnDeath implements GameEventHandler {
         collectables = gameInformation.getAssetCollection().getCollectables();
     }
 
+    @Override
+    public Set<Class<? extends GameEvent>> getGameEvents() {
+        return gameEventClasses;
+    }
 
     @Override
     public void setGameEvents(Set<Class<? extends GameEvent>> gameEventClasses) {
         this.gameEventClasses = gameEventClasses;
-    }
-
-    @Override
-    public Set<Class<? extends GameEvent>> getGameEvents() {
-        return gameEventClasses;
     }
 
     @Override

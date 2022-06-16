@@ -1,11 +1,7 @@
 package com.codecool.dungeoncrawl.display;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 
-import java.util.List;
 import java.util.Optional;
 
 public class SaveDialog {

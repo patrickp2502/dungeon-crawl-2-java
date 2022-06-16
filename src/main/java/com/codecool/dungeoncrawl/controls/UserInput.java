@@ -31,7 +31,8 @@ public class UserInput {
             case RIGHT:
                 eventEngine.addEvent(new EventPlayerInputMove(gameInformation, 1, 0));
                 break;
-            case S: if (keyEvent.isControlDown()) {
+            case S:
+                if (keyEvent.isControlDown()) {
                     saveHandler.save();
                 }
                 break;

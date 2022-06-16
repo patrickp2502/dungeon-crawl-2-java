@@ -45,13 +45,12 @@ public class PhysEngine {
     }
 
     public boolean tryToMove(Asset movingAsset, int x, int y) {
-        return isInBoundry(x,y) && !isCollision(movingAsset, x, y);
+        return isInBoundry(x, y) && !isCollision(movingAsset, x, y);
     }
 
 
-
     //Maybe move because handles collision logic
-    public boolean isCollision(Asset movingAsset, int x, int y){
+    public boolean isCollision(Asset movingAsset, int x, int y) {
         List<Asset> getsCollidedAssets = assetCollection.getAssetByCoordinates(x, y);
         if (getsCollidedAssets.isEmpty()) {
             return false;

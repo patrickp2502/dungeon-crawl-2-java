@@ -3,7 +3,6 @@ package com.codecool.dungeoncrawl.util;
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.logic.scenery.DoorClosed;
 import com.codecool.dungeoncrawl.logic.scenery.DoorOpened;
-import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 
 import java.util.List;
 

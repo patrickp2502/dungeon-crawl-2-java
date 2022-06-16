@@ -27,7 +27,6 @@ public class Renderer {
     }
 
 
-
     public String getHealthLabelText(Player player, Label healthLabel) {
         return "" + player; // .getHealth();
     }

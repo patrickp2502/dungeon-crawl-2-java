@@ -15,20 +15,10 @@ import java.util.List;
 public class Player extends Asset implements IsSolid, Fighter, Moveable {
 
     private final Inventory inventory;
+    private final int MAX_HEALTH;
+    private final int ATTACK_POINTS;
     private MovementBehaviour movementBehaviour;
     private CombatStats combatStats;
-
-    private final int MAX_HEALTH;
-
-    private final int ATTACK_POINTS;
-
-    public int getMAX_HEALTH() {
-        return MAX_HEALTH;
-    }
-
-    public int getATTACK_POINTS() {
-        return ATTACK_POINTS;
-    }
 
     public Player(String tileName, int xCoordinate, int yCoordinate) {
         super(tileName, xCoordinate, yCoordinate);
@@ -41,6 +31,13 @@ public class Player extends Asset implements IsSolid, Fighter, Moveable {
         ATTACK_POINTS = attackPoints;
     }
 
+    public int getMAX_HEALTH() {
+        return MAX_HEALTH;
+    }
+
+    public int getATTACK_POINTS() {
+        return ATTACK_POINTS;
+    }
 
     public Inventory getInventory() {
         return inventory;
@@ -74,6 +71,7 @@ public class Player extends Asset implements IsSolid, Fighter, Moveable {
     @Override
     public void startCombatMovement() {
     }
+
     /**
      * There will be no movement when player is in combat - player is in full control
      */
@@ -92,22 +90,22 @@ public class Player extends Asset implements IsSolid, Fighter, Moveable {
     }
 
     @Override
-    public void setCollisionMode(boolean isCollision) {
-
-    }
-
-    @Override
     public boolean getCollisionMode() {
         return false;
     }
 
     @Override
-    public void setMovementStop(boolean movementStop) {
+    public void setCollisionMode(boolean isCollision) {
 
     }
 
     @Override
     public boolean getMovementStop() {
         return false;
+    }
+
+    @Override
+    public void setMovementStop(boolean movementStop) {
+
     }
 }

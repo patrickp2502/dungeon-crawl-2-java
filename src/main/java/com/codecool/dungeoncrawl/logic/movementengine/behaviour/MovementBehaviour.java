@@ -7,5 +7,5 @@ import com.codecool.dungeoncrawl.util.GameInformation;
 
 public interface MovementBehaviour {
 
-    public <T extends Asset & Moveable> void move(T moveableAsset, PhysEngine physEngine, GameInformation gameInformation);
+    <T extends Asset & Moveable> void move(T moveableAsset, PhysEngine physEngine, GameInformation gameInformation);
 }

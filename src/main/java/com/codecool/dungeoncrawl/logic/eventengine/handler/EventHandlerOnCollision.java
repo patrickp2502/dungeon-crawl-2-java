@@ -16,20 +16,19 @@ public class EventHandlerOnCollision implements GameEventHandler {
     private Set<Class<? extends GameEvent>> gameEventClasses;
 
 
-
     public EventHandlerOnCollision(Set<Class<? extends GameEvent>> gameEventClasses, GameInformation gameInformation) {
         this.gameEventClasses = gameEventClasses;
         this.gameInformation = gameInformation;
     }
 
     @Override
-    public void setGameEvents(Set<Class<? extends GameEvent>> gameEventClasses) {
-
+    public Set<Class<? extends GameEvent>> getGameEvents() {
+        return gameEventClasses;
     }
 
     @Override
-    public Set<Class<? extends GameEvent>> getGameEvents() {
-        return gameEventClasses;
+    public void setGameEvents(Set<Class<? extends GameEvent>> gameEventClasses) {
+
     }
 
     //TODO throw test a wrong event --> see whats throwing
@@ -44,8 +43,8 @@ public class EventHandlerOnCollision implements GameEventHandler {
 
     private void delegateActions(Asset colliding, Asset getsCollided) {
         if (colliding instanceof Fighter && getsCollided instanceof Fighter &&
-                !(!(colliding instanceof Player) && !(getsCollided instanceof Player) )) {
-            EventEngine.getInstance().addEvent(new EventCombatStart((Fighter) colliding,(Fighter) getsCollided));
+                !(!(colliding instanceof Player) && !(getsCollided instanceof Player))) {
+            EventEngine.getInstance().addEvent(new EventCombatStart((Fighter) colliding, (Fighter) getsCollided));
         }
 
 

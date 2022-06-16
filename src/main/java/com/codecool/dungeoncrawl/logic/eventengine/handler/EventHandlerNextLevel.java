@@ -1,7 +1,5 @@
 package com.codecool.dungeoncrawl.logic.eventengine.handler;
 
-import com.codecool.dungeoncrawl.data.AssetCollection;
-import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
 import com.codecool.dungeoncrawl.util.GameInformation;
 import com.codecool.dungeoncrawl.util.GameManager;
@@ -20,13 +18,13 @@ public class EventHandlerNextLevel implements GameEventHandler {
     }
 
     @Override
-    public void setGameEvents(Set<Class<? extends GameEvent>> gameEventClasses) {
-
+    public Set<Class<? extends GameEvent>> getGameEvents() {
+        return gameEventClasses;
     }
 
     @Override
-    public Set<Class<? extends GameEvent>> getGameEvents() {
-        return gameEventClasses;
+    public void setGameEvents(Set<Class<? extends GameEvent>> gameEventClasses) {
+
     }
 
     @Override

@@ -48,7 +48,6 @@ public class AssetCollection {
     }
 
 
-
     public <T> List<T> separate(Class<T> className) {
         return assets
                 .stream()
@@ -66,9 +65,9 @@ public class AssetCollection {
 
 
     public List<Moveable> getMovables() {
-        List<Moveable> returnList  = new ArrayList<>();
+        List<Moveable> returnList = new ArrayList<>();
         for (Asset asset : assets) {
-            if ( asset instanceof Moveable) {
+            if (asset instanceof Moveable) {
                 returnList.add((Moveable) asset);
             }
         }
@@ -76,9 +75,9 @@ public class AssetCollection {
     }
 
     public List<Scenery> getScenery() {
-        List<Scenery> returnList  = new ArrayList<>();
+        List<Scenery> returnList = new ArrayList<>();
         for (Asset asset : assets) {
-            if ( asset instanceof Scenery) {
+            if (asset instanceof Scenery) {
                 returnList.add((Scenery) asset);
             }
         }
@@ -86,9 +85,9 @@ public class AssetCollection {
     }
 
     public List<Collectable> getCollectables() {
-        List<Collectable> returnList  = new ArrayList<>();
+        List<Collectable> returnList = new ArrayList<>();
         for (Asset asset : assets) {
-            if ( asset instanceof Collectable) {
+            if (asset instanceof Collectable) {
                 returnList.add((Collectable) asset);
             }
         }

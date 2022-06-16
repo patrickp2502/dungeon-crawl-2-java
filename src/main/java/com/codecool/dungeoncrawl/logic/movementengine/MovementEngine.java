@@ -13,7 +13,6 @@ public class MovementEngine {
     final EventEngine eventEngine;
 
 
-
     public MovementEngine(GameInformation gameInformation, PhysEngine physEngine, EventEngine eventEngine) {
         this.gameInformation = gameInformation;
         this.physEngine = physEngine;

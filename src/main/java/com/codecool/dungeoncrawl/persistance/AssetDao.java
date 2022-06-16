@@ -7,9 +7,13 @@ import java.util.Optional;
 
 public interface AssetDao {
     Optional<Asset> get(long id);
+
     List<Asset> getAll();
+
     void safe(Asset asset, int gameStateId);
+
     void update(Asset asset, String[] params);
+
     void delete(Asset asset);
 
-  }
+}

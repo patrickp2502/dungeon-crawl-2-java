@@ -5,7 +5,6 @@ import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.collectables.Sword;
-import com.codecool.dungeoncrawl.logic.eventengine.combat.CombatStats;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventStandingOn;
 import com.codecool.dungeoncrawl.logic.eventengine.events.GameEvent;
 import javafx.event.ActionEvent;
@@ -56,10 +55,10 @@ public class EventHandlerStandingOn implements GameEventHandler {
                 .findFirst()
                 .get();
         Label inventorySection = labels
-                        .stream()
-                        .filter(label -> label.getText().contains("Inventory"))
-                        .findFirst()
-                        .get();
+                .stream()
+                .filter(label -> label.getText().contains("Inventory"))
+                .findFirst()
+                .get();
         display.showNewInformationUnderLabel("\nPick up item with button", hintSection);
         // let user pick up item
         Button pickUpButton = getPickUpButton();

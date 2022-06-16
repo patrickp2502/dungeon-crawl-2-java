@@ -11,8 +11,8 @@ import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.IsSolid;
 public class FatDude extends Asset implements Moveable, Fighter, IsSolid {
 
 
-    private MovementBehaviour movementBehaviour;
     private final CombatStats combatStats;
+    private MovementBehaviour movementBehaviour;
 
     public FatDude(String tileName, int xCoordinate, int yCoordinate) {
         super(tileName, xCoordinate, yCoordinate);
@@ -52,22 +52,22 @@ public class FatDude extends Asset implements Moveable, Fighter, IsSolid {
     }
 
     @Override
-    public void setCollisionMode(boolean isCollision) {
-
-    }
-
-    @Override
     public boolean getCollisionMode() {
         return false;
     }
 
     @Override
-    public void setMovementStop(boolean movementStop) {
+    public void setCollisionMode(boolean isCollision) {
 
     }
 
     @Override
     public boolean getMovementStop() {
         return false;
+    }
+
+    @Override
+    public void setMovementStop(boolean movementStop) {
+
     }
 }

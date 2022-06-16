@@ -49,22 +49,22 @@ public class Goblin extends Asset implements Fighter, Moveable, IsSolid {
     }
 
     @Override
-    public void setCollisionMode(boolean isCollision) {
-
-    }
-
-    @Override
     public boolean getCollisionMode() {
         return false;
     }
 
     @Override
-    public void setMovementStop(boolean movementStop) {
+    public void setCollisionMode(boolean isCollision) {
 
     }
 
     @Override
     public boolean getMovementStop() {
         return false;
+    }
+
+    @Override
+    public void setMovementStop(boolean movementStop) {
+
     }
 }

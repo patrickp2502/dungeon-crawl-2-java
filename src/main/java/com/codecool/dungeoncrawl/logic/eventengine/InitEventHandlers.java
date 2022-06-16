@@ -1,8 +1,8 @@
 package com.codecool.dungeoncrawl.logic.eventengine;
 
+import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.AssetCollection;
 import com.codecool.dungeoncrawl.display.Display;
-import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.eventengine.events.*;
 import com.codecool.dungeoncrawl.logic.eventengine.handler.*;
@@ -20,19 +20,13 @@ import java.util.Set;
  * List, holding GameEventHandlerObjects.{@link #getGameEventHandlers()} method Access the GameEvenHandlers.
  */
 public class InitEventHandlers {
-    private List<GameEventHandler> gameEventHandlers;
-
     private final Display display;
-
     private final List<Label> labels;
-
     private final List<Button> buttons;
-
     private final Player player;
-
     private final List<Asset> assets;
-
     private final GameInformation gameInformation;
+    private List<GameEventHandler> gameEventHandlers;
 
     public InitEventHandlers(Display display, List<Label> labels, List<Button> buttons, AssetCollection assetCollection,
                              GameInformation gameInformation) {

@@ -25,13 +25,13 @@ public class EventHandlerPlayerMove implements GameEventHandler {
     }
 
     @Override
-    public void setGameEvents(Set<Class<? extends GameEvent>> gameEventClasses) {
-        this.gameEventClasses = gameEventClasses;
+    public Set<Class<? extends GameEvent>> getGameEvents() {
+        return gameEventClasses;
     }
 
     @Override
-    public Set<Class<? extends GameEvent>> getGameEvents() {
-        return gameEventClasses;
+    public void setGameEvents(Set<Class<? extends GameEvent>> gameEventClasses) {
+        this.gameEventClasses = gameEventClasses;
     }
 
     @Override

@@ -1,15 +1,9 @@
 package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.data.Asset;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
-import com.codecool.dungeoncrawl.logic.scenery.Floor;
-import com.codecool.dungeoncrawl.logic.scenery.Wall;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Tiles {
@@ -17,20 +11,6 @@ public class Tiles {
 
     private static Image tileset = new Image("/tiles.png", 543 * 2, 543 * 2, true, false);
     private static Map<String, Tile> tileMap = new HashMap<>();
-
-    public static Image getTileset() {
-        return tileset;
-    }
-
-    public static class Tile {
-        public final int x, y, w, h;
-        Tile(int i, int j) {
-            x = i * (TILE_WIDTH + 2);
-            y = j * (TILE_WIDTH + 2);
-            w = TILE_WIDTH;
-            h = TILE_WIDTH;
-        }
-    }
 
     static {
         tileMap.put("empty", new Tile(0, 0));
@@ -45,16 +25,32 @@ public class Tiles {
         tileMap.put("door open", new Tile(12, 11));
         tileMap.put("ghost", new Tile(27, 6));
         tileMap.put("fat dude", new Tile(30, 6));
-        tileMap.put("goblin", new Tile(5,6));
+        tileMap.put("goblin", new Tile(5, 6));
+    }
+
+    public static Image getTileset() {
+        return tileset;
     }
 
     /**
      * Enter null to get an empty tile
+     *
      * @param asset could be null or a real asset
      * @return Tile
      */
     public static Tile getTile(Asset asset) {
         Tile tile = asset != null ? tileMap.get(asset.getTileName()) : tileMap.get("empty");
         return tile;
+    }
+
+    public static class Tile {
+        public final int x, y, w, h;
+
+        Tile(int i, int j) {
+            x = i * (TILE_WIDTH + 2);
+            y = j * (TILE_WIDTH + 2);
+            w = TILE_WIDTH;
+            h = TILE_WIDTH;
+        }
     }
 }

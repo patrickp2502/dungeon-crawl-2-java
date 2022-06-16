@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.eventengine.combat.CombatStats;
 
 public interface Fighter {
     CombatStats getCombatStats();
+
     void setCombatStats(CombatStats combatStats);
 
     /**
@@ -11,6 +12,7 @@ public interface Fighter {
      * movement is possible
      */
     void startCombatMovement();
+
     void stopCombatMovement();
 
 }

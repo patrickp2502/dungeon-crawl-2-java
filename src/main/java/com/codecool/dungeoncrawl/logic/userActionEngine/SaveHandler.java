@@ -18,6 +18,7 @@ public class SaveHandler {
 
 
     }
+
     public void save() {
         SaveDialog saveDialog = new SaveDialog();
         String input = saveDialog.getInputName();

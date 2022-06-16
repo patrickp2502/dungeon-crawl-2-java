@@ -6,7 +6,6 @@ import com.codecool.dungeoncrawl.logic.eventengine.combat.CombatStats;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.movementengine.behaviour.AggressiveMovementBehaviour;
 import com.codecool.dungeoncrawl.logic.movementengine.behaviour.MovementBehaviour;
-import com.codecool.dungeoncrawl.logic.movementengine.behaviour.RandomMovementBehaviour;
 import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.IsSolid;
 
 public class Skeleton extends Asset implements Moveable, IsSolid, Fighter {
@@ -41,23 +40,23 @@ public class Skeleton extends Asset implements Moveable, IsSolid, Fighter {
     }
 
     @Override
-    public void setCollisionMode(boolean isCollision) {
-
-    }
-
-    @Override
     public boolean getCollisionMode() {
         return true;
     }
 
     @Override
-    public void setMovementStop(boolean movementStop) {
-        this.movementStop = movementStop;
+    public void setCollisionMode(boolean isCollision) {
+
     }
 
     @Override
     public boolean getMovementStop() {
         return false;
+    }
+
+    @Override
+    public void setMovementStop(boolean movementStop) {
+        this.movementStop = movementStop;
     }
 
     @Override

@@ -23,11 +23,11 @@ public class ImageCreator {
         BufferedImage bufferedImage = ImageIO.read(imageFile);
         BufferedImage subImage = bufferedImage.getSubimage(x, y, width, height);
         File fileToSave = new File(filePath + imageName + ".png");
-        ImageIO.write(subImage,"png", fileToSave);
+        ImageIO.write(subImage, "png", fileToSave);
         return new Image("www.placeholder.com");
     }
 
-    public Image getImage (String imagePath) throws IOException {
+    public Image getImage(String imagePath) throws IOException {
         File imageFile = new File(imagePath);
         BufferedImage bufferedImage = ImageIO.read(imageFile);
 //        Image image = SwingFXUtils.toFXImage(bufferedImage, null);

@@ -18,16 +18,16 @@ public abstract class Asset {
         return yCoordinate;
     }
 
+    public void setYCoordinate(int yCoordinate) {
+        this.yCoordinate = yCoordinate;
+    }
+
     public int getXCoordinate() {
         return xCoordinate;
     }
 
     public void setXCoordinate(int xCoordinate) {
         this.xCoordinate = xCoordinate;
-    }
-
-    public void setYCoordinate(int yCoordinate) {
-        this.yCoordinate = yCoordinate;
     }
 
     public String getTileName() {

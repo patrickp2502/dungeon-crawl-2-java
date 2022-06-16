@@ -12,7 +12,7 @@ public class ItemControl {
         // print message "Adding <ItemName> to your Inventory was successful <PlayerName>"
     }
 
-    public void  useItem(Player player, Collectable item) {
+    public void useItem(Player player, Collectable item) {
         if (player.getInventory().getItems().contains(item)) {
             //use Item
         }
