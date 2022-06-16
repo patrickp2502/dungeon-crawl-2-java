@@ -53,7 +53,7 @@ public class Main extends Application {
         String firstLevel = levels.get(0);
         String secondLevel = levels.get(1);
         String testLevel = levels.get(2);
-        map = mapLoader.loadMap(assetCollection, "/levels/mapTest.txt");
+        map = mapLoader.loadMap(assetCollection, secondLevel);
     }
 
 
