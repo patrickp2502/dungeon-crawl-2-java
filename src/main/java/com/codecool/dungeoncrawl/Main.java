@@ -10,7 +10,6 @@ import com.codecool.dungeoncrawl.display.GraphicsData;
 import com.codecool.dungeoncrawl.display.Renderer;
 import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
@@ -19,6 +18,8 @@ import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.movementengine.MovementEngine;
 import com.codecool.dungeoncrawl.logic.physengine.PhysEngine;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
+import com.codecool.dungeoncrawl.util.GameInformation;
+import com.codecool.dungeoncrawl.util.GameManager;
 import com.codecool.dungeoncrawl.logic.userActionEngine.SaveHandler;
 import com.codecool.dungeoncrawl.persistance.CrawlerDataBaseManager;
 import com.codecool.dungeoncrawl.util.FileDetector;
@@ -40,24 +41,18 @@ import java.util.List;
 
 
 public class Main extends Application {
+    static MovementEngine movementEngine;
+    static Display display;
     AssetCollection assetCollection = new AssetCollection();
-
     EventEngine eventEngine;
     PhysEngine physEngine;
-    static MovementEngine movementEngine;
-    MapLoader mapLoader = new MapLoader();
-    List<String> levels = FileDetector.getAvailableFileNamesInResources();
     GameMap map;
 
     {
-        String firstLevel = levels.get(0);
-        String secondLevel = levels.get(1);
-        String testLevel = levels.get(2);
-        map = mapLoader.loadMap(assetCollection, secondLevel);
+        int firstLevelToLoad = 1;
+        map = GameManager.loadMap(assetCollection, firstLevelToLoad);
     }
 
-
-    Canvas canvas = getCanvas(map);
 
     public static void exit() {
         Alert alert = new Alert(Alert.AlertType.WARNING, "YOU LOST!!!");
@@ -75,48 +70,46 @@ public class Main extends Application {
     */
     private Canvas getCanvas(GameMap gameMap) {
         return new Canvas(
-                20*Tiles.TILE_WIDTH,
+                20* Tiles.TILE_WIDTH,
                 20 * Tiles.TILE_WIDTH);
     }
 
-    GraphicsContext context = canvas.getGraphicsContext2D();
-    static Display display;
     Renderer renderer = new Renderer();
+
+    Canvas canvas = GameManager.getCanvas(map);
+
+    GraphicsContext context = GameManager.getGraphicsContext(canvas);
 
     public static void main(String[] args) {
         launch(args);
 
     }
 
+    public static void turn() {
+        movementEngine.moveAssets();
+        display.drawMainGame();
+        // System.out.println("Main game drawn");
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        GridPane ui = new GridPane();
-        ui.setPrefWidth(200);
-        ui.setPadding(new Insets(10));
+        GridPane ui = GameManager.getNewGridPane(200, 10);
 
-        BorderPane borderPane = new BorderPane();
+        BorderPane borderPane = GameManager.getNewBorderPaneWithCanvasCenteredAndGridPaneRight(canvas, ui);
 
-        borderPane.setCenter(canvas);
-        borderPane.setRight(ui);
-
-        Scene scene = new Scene(borderPane);
-        scene.getRoot().setStyle("-fx-font-family: 'serif'");
+        Scene scene = GameManager.getNewScene(borderPane);
         primaryStage.setScene(scene);
         renderer.getMapTiles(assetCollection.getAssets(), context, canvas);
 
+        GameInformation gameInformation = new GameInformation(canvas, context, assetCollection, map, ui, borderPane);
+
 
         Player player = assetCollection.getPlayer().get();
-        List<Scenery> scenery = assetCollection.getScenery();
-        List<Collectable> collectables = assetCollection.getCollectables();
-        List<Moveable> moveables = assetCollection.getMovables();
         GameData gameData = new GameData(assetCollection, player);
         //*****************   DRAWING   *****************
-        GraphicsData graphicsData = new GraphicsData(assetCollection.getAssets(), context, canvas, map,
-                scenery, moveables, collectables, ui);
-        display = new Display(graphicsData, gameData);
+        display = new Display(gameInformation);
         display.drawMainGame();
-        Label healthSection = display.initializeHealthProgressBar(); // display.showAndGetNewLabelAlignedLeft("Health: ", 0);
+        Label healthSection = display.initializeHealthProgressBar();
         Label attackPointsSection = display.initializeAttackPointsProgressBar();
         display.showSpacesBetweenInfoboxContent(7, 5);
         Label inventorySection = display.showAndGetNewLabelAlignedLeft("Inventory: \n", 13);
@@ -137,7 +130,9 @@ public class Main extends Application {
 
         //init EventEngine
         eventEngine = EventEngine.getInstance();
-        eventEngine.setHandlers(new InitEventHandlers(display, labels, buttons, graphicsData.assets(), gameData).getGameEventHandlers());
+        eventEngine.setHandlers(new InitEventHandlers(display, labels, buttons,
+                gameInformation.getAssetCollection(),
+                gameData, gameInformation).getGameEventHandlers());
 
 
         WorldInformation worldInformation = new WorldInformation(
@@ -154,24 +149,19 @@ public class Main extends Application {
         SaveHandler saveHandler = new SaveHandler(gameData, display, dataManager);
         UserInput userInput = new UserInput(gameData, eventEngine, saveHandler);
         scene.setOnKeyPressed(userInput::onKeyPressed);
+        gameInformation.setUserInput(userInput);
+        gameInformation.setDisplay(display);
+        gameInformation.setGameData(gameData);
 
 
 
-        display = new Display(graphicsData, gameData);
         //Init MovementEngine
-        movementEngine = new MovementEngine(gameData, PhysEngine.getEngine(), eventEngine);
+        movementEngine = new MovementEngine(gameInformation.getGameData(), PhysEngine.getEngine(), eventEngine);
 
         display.drawMainGame();
+
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
     }
-
-    public static void turn() {
-        movementEngine.moveAssets();
-        display.drawMainGame();
-        // System.out.println("Main game drawn");
-    }
-
-
 }

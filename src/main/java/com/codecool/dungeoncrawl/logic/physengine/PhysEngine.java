@@ -9,6 +9,7 @@ import com.codecool.dungeoncrawl.logic.collectables.Collectable;
 import com.codecool.dungeoncrawl.logic.collectables.Key;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventAssetCollision;
+import com.codecool.dungeoncrawl.logic.eventengine.events.EventNextLevel;
 import com.codecool.dungeoncrawl.logic.eventengine.events.EventStandingOn;
 import com.codecool.dungeoncrawl.logic.physengine.assetPhysics.IsSolid;
 import com.codecool.dungeoncrawl.logic.scenery.DoorClosed;
@@ -62,6 +63,7 @@ public class PhysEngine {
             if (checkForKey(getPlayer()) && asset instanceof DoorClosed) {
                 Scenery door = (Scenery) asset;
                 DoorOpener.openDoor((DoorClosed) door, assetCollection.getAssets());
+                EventEngine.getInstance().addEvent(new EventNextLevel());
                 return false;
             } else if (asset instanceof IsSolid) {
                 EventEngine.getInstance().addEvent(new EventAssetCollision(movingAsset, asset));

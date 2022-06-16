@@ -9,6 +9,8 @@ import com.codecool.dungeoncrawl.logic.collections.Inventory;
 import com.codecool.dungeoncrawl.logic.movementengine.Moveable;
 import com.codecool.dungeoncrawl.logic.scenery.Scenery;
 import com.codecool.dungeoncrawl.util.AssetUtil;
+import com.codecool.dungeoncrawl.util.GameInformation;
+import com.codecool.dungeoncrawl.util.GameManager;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -27,17 +29,22 @@ import static com.codecool.dungeoncrawl.display.Tiles.getTile;
  * Only exit point to display everything
  */
 public class Display {
-    private final GraphicsData graphicsData;
 
-    private final GameData gameData;
+    public void setGraphicsData(GraphicsData graphicsData) {
+        this.graphicsData = graphicsData;
+    }
+
+    private GraphicsData graphicsData;
+
+    private GameInformation gameInformation;
+
 
     private final ProgressBar healthBar;
 
     private StringBuilder stringBuilder;
 
-    public Display(GraphicsData graphicsData, GameData gameData) {
-        this.graphicsData = graphicsData;
-        this.gameData = gameData;
+    public Display(GameInformation gameInformation) {
+        this.gameInformation = gameInformation;
         stringBuilder = new StringBuilder();
         healthBar = new ProgressBar();
     }
@@ -59,7 +66,8 @@ public class Display {
     public void setAttackPointsLabel(Label attackPointsLabel) {
         String currentText = attackPointsLabel.getText();
         String[] textLines = currentText.split(":");
-        int attackPoints = gameData.player().getCombatStats().getAttackPoints();
+        int attackPoints = GameManager.getPlayer(gameInformation.getAssetCollection().getAssets())
+                .getCombatStats().getAttackPoints();
         attackPointsLabel.setText(textLines[0] + ": " + attackPoints);
     }
 
@@ -71,22 +79,22 @@ public class Display {
     }
 
     public void drawMainGame() {
-        GraphicsContext context = graphicsData.context();
-        List<Asset> scenery = graphicsData.assets()
+        GraphicsContext context = gameInformation.getGraphicsContext();
+        List<Asset> scenery = gameInformation.getAssetCollection().getAssets()
                 .stream()
                 .filter(asset -> asset instanceof Scenery)
                 .collect(Collectors.toList());
-        List<Asset> collectables = graphicsData.assets()
+        List<Asset> collectables = gameInformation.getAssetCollection().getAssets()
                 .stream()
                 .filter(asset -> asset instanceof Collectable)
                 .collect(Collectors.toList());
-        List<Asset> moveables = graphicsData.assets()
+        List<Asset> moveables = gameInformation.getAssetCollection().getAssets()
                 .stream()
                 .filter(asset -> asset instanceof Moveable)
                 .collect(Collectors.toList());
-        List<Asset> assets = graphicsData.assets();
-        Canvas canvas = graphicsData.canvas();
-        GameMap map = graphicsData.map();
+        List<Asset> assets = gameInformation.getAssetCollection().getAssets();
+        Canvas canvas = gameInformation.getCanvas();
+        GameMap map = gameInformation.getMap();
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         drawFirstLayer(map, context);
@@ -97,8 +105,10 @@ public class Display {
 
     private <T> void iterateAndDraw(List<T> assets, GameMap map, GraphicsContext context) {
         //TODO NEED TO REFACTOR!
-        int playerX = gameData.player().getXCoordinate();
-        int playerY = gameData.player().getYCoordinate();
+        int playerX = gameInformation.getAssetCollection()
+                .getPlayer().get().getXCoordinate();
+        int playerY = gameInformation.getAssetCollection()
+                .getPlayer().get().getYCoordinate();
         int playerXstart = 10;
         int playerYstart = 9;
         int differenceX = playerXstart - playerX;
@@ -123,8 +133,10 @@ public class Display {
 
     public void drawFirstLayer(GameMap map, GraphicsContext context) {
     //TODO NEED TO REFACTOR!
-        int playerX = gameData.player().getXCoordinate();
-        int playerY = gameData.player().getYCoordinate();
+        int playerX = gameInformation.getAssetCollection()
+                .getPlayer().get().getXCoordinate();
+        int playerY = gameInformation.getAssetCollection()
+                .getPlayer().get().getYCoordinate();
 
         int maxX = map.getWidth()+10;
         int maxY = map.getHeight()+10;
@@ -158,17 +170,17 @@ public class Display {
         IntStream
                 .range(0, emptyLines)
                 .forEach(line -> stringBuilder.append(" \n"));
-        graphicsData.ui().add(new Label(stringBuilder.toString()), 0, startRow);
+        gameInformation.getGridPane().add(new Label(stringBuilder.toString()), 0, startRow);
     }
 
     public Label showAndGetNewLabelAlignedLeft(String labelText, int rowOfLabel) {
         Label label = new Label(labelText);
-        graphicsData.ui().add(label, 0, rowOfLabel);
+        gameInformation.getGridPane().add(label, 0, rowOfLabel);
         return label;
     }
 
     public void drawInventory(Label inventorySection) {
-        Player player = (Player) graphicsData.moveables()
+        Player player = (Player) gameInformation.getAssetCollection().getAssets()
                 .stream()
                 .filter(gamer -> gamer instanceof Player)
                 .findAny().get();
@@ -181,14 +193,14 @@ public class Display {
         Button button = new Button(buttonLabel);
         double layoutX = 0; // label.getLayoutX();
         double layoutY = 25; // label.getLayoutY();
-        graphicsData.ui().add(button, (int) layoutX, (int) layoutY);
+        gameInformation.getGridPane().add(button, (int) layoutX, (int) layoutY);
         return button;
     }
 
     public void addProgressBarUnderLabel(Label label, ProgressBar progressBar) {
         double layoutX = 0; // label.getLayoutX();
         double layoutY = label.getLayoutY() + 1; // label.getLayoutY();
-        graphicsData.ui().add(progressBar, (int) layoutX, (int) layoutY);
+        gameInformation.getGridPane().add(progressBar, (int) layoutX, (int) layoutY);
     }
 
     public void resetLabel(Label label) {

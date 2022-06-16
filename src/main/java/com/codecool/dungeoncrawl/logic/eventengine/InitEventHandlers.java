@@ -1,14 +1,14 @@
 package com.codecool.dungeoncrawl.logic.eventengine;
 
+import com.codecool.dungeoncrawl.data.AssetCollection;
 import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.data.Asset;
-import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.eventengine.events.*;
 import com.codecool.dungeoncrawl.logic.eventengine.handler.*;
-import com.codecool.dungeoncrawl.logic.itemengine.ItemEngine;
-import com.codecool.dungeoncrawl.logic.scenery.Scenery;
+import com.codecool.dungeoncrawl.util.GameInformation;
+import com.codecool.dungeoncrawl.util.GameManager;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -35,15 +35,19 @@ public class InitEventHandlers {
 
     private final List<Asset> assets;
 
-    public InitEventHandlers(Display display, List<Label> labels, List<Button> buttons, List<Asset> assets, GameData gameData) {
+    private final GameInformation gameInformation;
+
+    public InitEventHandlers(Display display, List<Label> labels, List<Button> buttons, AssetCollection assetCollection,
+                             GameData gameData, GameInformation gameInformation) {
 
         this.display = display;
         this.labels = labels;
         this.buttons = buttons;
+        this.assets = assetCollection.getAssets();
         this.player = getPlayer(assets);
-        this.assets = assets;
         //
-        this.gameData = gameData;
+        this.gameData = new GameData(assetCollection, player);
+        this.gameInformation = gameInformation;
         gameEventHandlers = new ArrayList<>();
 
 
@@ -82,6 +86,11 @@ public class InitEventHandlers {
         Set<Class<? extends GameEvent>> onDeathEvents = new HashSet<>();
         onDeathEvents.add(EventOnDeath.class);
         gameEventHandlers.add(new EventHandlerOnDeath(onDeathEvents, gameData));
+
+        //Register NextLevelEvents to EventHandlerNextLevel
+        Set<Class<? extends GameEvent>> nextLevelEvents = new HashSet<>();
+        nextLevelEvents.add(EventNextLevel.class);
+        gameEventHandlers.add(new EventHandlerNextLevel(gameInformation, nextLevelEvents));
     }
 
     private Player getPlayer(List<Asset> assets) {

@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.data.Asset;
 import com.codecool.dungeoncrawl.data.AssetCollection;
+import com.codecool.dungeoncrawl.data.GameData;
 import com.codecool.dungeoncrawl.logic.actors.FatDude;
 import com.codecool.dungeoncrawl.logic.actors.Goblin;
 import com.codecool.dungeoncrawl.logic.actors.Player;
@@ -12,6 +13,8 @@ import com.codecool.dungeoncrawl.logic.scenery.DoorClosed;
 import com.codecool.dungeoncrawl.logic.scenery.DoorOpened;
 import com.codecool.dungeoncrawl.logic.scenery.Floor;
 import com.codecool.dungeoncrawl.logic.scenery.Wall;
+import com.codecool.dungeoncrawl.util.GameInformation;
+import com.codecool.dungeoncrawl.util.GameManager;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -22,10 +25,11 @@ public class MapLoader {
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
         int height = scanner.nextInt();
-
+        int level = GameManager.getLevelFromFileName(filePath);
+        boolean playerInAssets = assetCollection.getAssets().stream().anyMatch(asset -> asset instanceof Player);
         scanner.nextLine(); // empty line
 
-        GameMap map = new GameMap(width, height); // , CellType.EMPTY);
+        GameMap map = new GameMap(width, height, level); // , CellType.EMPTY);
         for (int y = 0; y < height; y++) {
             String line = scanner.nextLine();
             for (int x = 0; x < width; x++) {
@@ -87,11 +91,34 @@ public class MapLoader {
 
                         case '@':
                             // cell.setType(CellType.FLOOR);
-                            Player playerAsset = new Player("player", x, y);
-                            Floor floorUnderPlayerAsset = new Floor("floor", x, y);
-                            assetCollection.addAsset(playerAsset);
-                            assetCollection.addAsset(floorUnderPlayerAsset);
-                            map.setPlayer(playerAsset);
+                            if (playerInAssets) {
+                                Player player = (Player) assetCollection
+                                        .getAssets()
+                                        .stream()
+                                        .filter(asset -> asset instanceof  Player)
+                                        .findFirst()
+                                        .get();
+                                assetCollection.getAssets().remove(player);
+                                player.setYCoordinate(y);
+                                player.setXCoordinate(x);
+                                Floor floorUnderPlayerAsset = new Floor("floor", x, y);
+                                assetCollection.addAsset(floorUnderPlayerAsset);
+                                Key oldKey = (Key) player.getInventory()
+                                        .getItems()
+                                        .stream()
+                                        .filter(item -> item instanceof Key)
+                                        .findFirst().get();
+                                player.getInventory().deleteItem(oldKey);
+                                assetCollection.getAssets().add(player);
+
+                                map.setPlayer(player);
+                            } else {
+                                Player playerAsset = new Player("player", x, y);
+                                Floor floorUnderPlayerAsset = new Floor("floor", x, y);
+                                assetCollection.addAsset(playerAsset);
+                                assetCollection.addAsset(floorUnderPlayerAsset);
+                                map.setPlayer(playerAsset);
+                            }
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
