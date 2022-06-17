@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.util;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FileDetector {
     public static List<String> getAvailableFileNamesInResources() {
@@ -13,6 +14,6 @@ public class FileDetector {
         for (String fileName : listOfFileNames) {
             list.add("/levels/" + fileName);
         }
-        return list;
+        return list.stream().sorted().collect(Collectors.toList());
     }
 }

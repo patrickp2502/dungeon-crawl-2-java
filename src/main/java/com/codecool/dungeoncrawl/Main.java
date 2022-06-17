@@ -40,7 +40,7 @@ public class Main extends Application {
     GameMap map;
 
     {
-        int firstLevelToLoad = 1;
+        int firstLevelToLoad = 4;
         map = GameManager.loadMap(assetCollection, firstLevelToLoad);
     }
 
@@ -64,16 +64,8 @@ public class Main extends Application {
     public static void turn() {
         movementEngine.moveAssets();
         display.drawMainGame();
-        // System.out.println("Main game drawn");
     }
 
-    /* old rendering
-        private Canvas getCanvas(GameMap gameMap) {
-            return new Canvas(
-                    gameMap.getWidth() * Tiles.TILE_WIDTH,
-                    gameMap.getHeight() * Tiles.TILE_WIDTH);
-        }
-    */
     private Canvas getCanvas(GameMap gameMap) {
         return new Canvas(
                 20 * Tiles.TILE_WIDTH,
