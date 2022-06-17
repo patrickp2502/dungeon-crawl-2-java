@@ -110,8 +110,8 @@ public class GameManager {
 
     public static Canvas getCanvas(GameMap gameMap) {
         return new Canvas(
-                gameMap.getWidth() * Tiles.TILE_WIDTH,
-                gameMap.getHeight() * Tiles.TILE_WIDTH);
+                20 * Tiles.TILE_WIDTH,
+                20 * Tiles.TILE_WIDTH);
     }
 
     public static GraphicsContext getGraphicsContext(Canvas canvas) {

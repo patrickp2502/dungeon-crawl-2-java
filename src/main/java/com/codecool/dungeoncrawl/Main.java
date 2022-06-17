@@ -40,7 +40,7 @@ public class Main extends Application {
     GameMap map;
 
     {
-        int firstLevelToLoad = 4;
+        int firstLevelToLoad = 1;
         map = GameManager.loadMap(assetCollection, firstLevelToLoad);
     }
 
@@ -53,7 +53,6 @@ public class Main extends Application {
         alert.getDialogPane().setStyle("-fx-font-family: 'serif'");
         alert.showAndWait();
         Platform.exit();
-
     }
 
     public static void main(String[] args) {
