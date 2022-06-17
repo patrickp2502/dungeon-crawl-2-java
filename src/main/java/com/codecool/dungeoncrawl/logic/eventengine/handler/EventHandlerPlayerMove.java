@@ -43,7 +43,6 @@ public class EventHandlerPlayerMove implements GameEventHandler {
         this.gameInformation = eventPlayerInputMove.gameInformation();
         player = gameInformation.getAssetCollection().getPlayer().get();
         movePlayer();
-        //TODO ask Mentor wtf eventing eventing eventing...
         EventEngine.getInstance().addEvent(new EventRoundEnd(gameInformation));
         EventEngine.getInstance().eventIsHandled(eventPlayerInputMove);
     }

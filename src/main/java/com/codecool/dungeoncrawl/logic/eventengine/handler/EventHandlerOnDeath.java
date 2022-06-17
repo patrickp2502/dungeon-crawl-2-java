@@ -41,7 +41,7 @@ public class EventHandlerOnDeath implements GameEventHandler {
         Asset deadAsset = eventOnDeath.deadAsset();
         Random random = new Random();
         if (deadAsset instanceof Player) {
-            Main.exit();
+            Main.exit(gameInformation);
             return;
         }
         gameInformation.getAssetCollection().removeAsset(deadAsset);

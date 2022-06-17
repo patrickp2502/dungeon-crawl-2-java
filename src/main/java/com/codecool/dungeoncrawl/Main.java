@@ -7,6 +7,7 @@ import com.codecool.dungeoncrawl.display.Display;
 import com.codecool.dungeoncrawl.display.Renderer;
 import com.codecool.dungeoncrawl.display.Tiles;
 import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.MapSafer;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.eventengine.EventEngine;
 import com.codecool.dungeoncrawl.logic.eventengine.InitEventHandlers;
@@ -47,13 +48,6 @@ public class Main extends Application {
     Renderer renderer = new Renderer();
     Canvas canvas = GameManager.getCanvas(map);
     GraphicsContext context = GameManager.getGraphicsContext(canvas);
-
-    public static void exit() {
-        Alert alert = new Alert(Alert.AlertType.WARNING, "YOU LOST!!!");
-        alert.getDialogPane().setStyle("-fx-font-family: 'serif'");
-        alert.showAndWait();
-        Platform.exit();
-    }
 
     public static void main(String[] args) {
         launch(args);
@@ -137,5 +131,13 @@ public class Main extends Application {
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
+    }
+
+    public static void exit(GameInformation gameInformation) {
+        new MapSafer().safeMap(gameInformation.getMap(), gameInformation.getAssetCollection());
+        Alert alert = new Alert(Alert.AlertType.WARNING, "YOU LOST!!!");
+        alert.getDialogPane().setStyle("-fx-font-family: 'serif'");
+        alert.showAndWait();
+        Platform.exit();
     }
 }
